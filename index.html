@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Demo website for Stacked, a fictional Cork food truck serving smash burgers and loaded fries." />
+  <title>Stacked — Smash burgers on the move</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Stacked home">
+        <span class="brand-mark">S</span>
+        <span class="brand-word">Stacked</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#today">Find us</a>
+        <a href="#menu">Menu</a>
+        <a href="#queue">How ordering works</a>
+        <a href="#events">Events</a>
+        <button class="btn btn-yellow" onclick="openDrawer(this)">Build an order request</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-copy">
+          <p class="eyebrow">Smash burgers around Cork</p>
+          <h1>Big flavour.<br><span>Zero patience</span><br>for bad burgers.</h1>
+          <p>
+            Crispy-edged smash burgers, loaded fries and proper sauces.
+            Explore this sample truck schedule and build a demo collection request.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#menu" class="btn btn-yellow">See the menu</a>
+            <button class="btn btn-red" onclick="openDrawer(this)">Build a request</button>
+          </div>
+
+          <div class="live-bar">
+            <div class="live-bit">
+              <span>Demo status</span>
+              <strong>Example only</strong>
+            </div>
+            <div class="live-bit">
+              <span>Sample location</span>
+              <strong>Cork City Centre</strong>
+            </div>
+            <div class="live-bit">
+              <span>Sample hours</span>
+              <strong>5:00–10:00pm</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Double smash</span><span>Loaded fries</span><span>Order ahead</span><span>Collection alerts</span><span>Private events</span>
+        <span>Double smash</span><span>Loaded fries</span><span>Order ahead</span><span>Collection alerts</span><span>Private events</span>
+      </div>
+    </div>
+
+    <section class="today" id="today">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Find the truck</p>
+          <h2>Example stop. No vague Instagram archaeology required.</h2>
+          <p>
+            This demo shows how a client could publish a current location, opening status, directions and weekly schedule. The details below are sample data.
+          </p>
+        </div>
+
+        <div class="today-grid">
+          <article class="today-card">
+            <span class="status">Sample schedule</span>
+            <h3>Cork City Centre</h3>
+            <p>Friday · 5:00–10:00pm</p>
+            <div class="today-actions">
+              <button class="btn btn-yellow demo-action" type="button" onclick="showDemoMessage('Directions are disabled until a client adds their verified Google Maps destination.')">Demo directions</button>
+              <button class="btn btn-red" onclick="openDrawer(this)">Request collection</button>
+            </div>
+          </article>
+
+          <article class="schedule">
+            <p class="eyebrow">This week</p>
+            <h3>Where we're smashing next</h3>
+
+            <div class="schedule-row">
+              <strong>Friday</strong>
+              <p>Cork City Centre</p>
+              <span>5:00–10:00pm</span>
+            </div>
+            <div class="schedule-row">
+              <strong>Saturday</strong>
+              <p>Cork Harbour Area</p>
+              <span>1:00–8:00pm</span>
+            </div>
+            <div class="schedule-row">
+              <strong>Sunday</strong>
+              <p>South Cork Market</p>
+              <span>11:00am–4:00pm</span>
+            </div>
+            <div class="schedule-row sold">
+              <strong>Monday</strong>
+              <p>Private event</p>
+              <span>Closed to public</span>
+            </div>
+            <div class="schedule-row">
+              <strong>Tuesday</strong>
+              <p>Northside Evening Pitch</p>
+              <span>5:00–9:00pm</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">The menu</p>
+          <h2>Burgers that require both hands and a small amount of planning.</h2>
+          <p>
+            Build a collection request, choose a preferred time and ask the truck to confirm it through WhatsApp. This demo does not place or accept an order.
+          </p>
+        </div>
+
+        <div class="menu-tabs" role="tablist" aria-label="Menu categories">
+          <button class="menu-tab active" id="tab-burgers" type="button" role="tab" aria-selected="true" aria-controls="burgers" tabindex="0" data-tab="burgers">Burgers</button>
+          <button class="menu-tab" id="tab-fries" type="button" role="tab" aria-selected="false" aria-controls="fries" tabindex="-1" data-tab="fries">Fries & sides</button>
+          <button class="menu-tab" id="tab-drinks" type="button" role="tab" aria-selected="false" aria-controls="drinks" tabindex="-1" data-tab="drinks">Drinks</button>
+        </div>
+
+        <div class="menu-grid">
+          <div class="menu-panel active" id="burgers" role="tabpanel" aria-labelledby="tab-burgers">
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=320&q=82" alt="Classic smash burger">
+              <div>
+                <h3>The Classic</h3>
+                <p>Double beef, American cheese, pickles, onion and house sauce.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€12</strong>
+                <button class="add-btn" onclick="addToCart('The Classic',12,this)">+ Add</button>
+              </div>
+            </article>
+
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=320&q=82" alt="Spicy smash burger">
+              <div>
+                <h3>Hot Stack</h3>
+                <p>Double beef, pepper jack, jalapeños, crispy onions and hot sauce.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€14</strong>
+                <button class="add-btn" onclick="addToCart('Hot Stack',14,this)">+ Add</button>
+              </div>
+            </article>
+
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=320&q=82" alt="Bacon smash burger">
+              <div>
+                <h3>Bacon Jam</h3>
+                <p>Double beef, smoked cheddar, bacon jam and mustard mayo.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€15</strong>
+                <button class="add-btn" onclick="addToCart('Bacon Jam',15,this)">+ Add</button>
+              </div>
+            </article>
+
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=320&q=82" alt="Vegetarian burger">
+              <div>
+                <h3>Crushed Shroom</h3>
+                <p>Crispy mushroom patty, cheese, lettuce, pickles and garlic mayo.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€13</strong>
+                <button class="add-btn" onclick="addToCart('Crushed Shroom',13,this)">+ Add</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="menu-panel" id="fries" role="tabpanel" aria-labelledby="tab-fries" hidden>
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=320&q=82" alt="Loaded fries">
+              <div>
+                <h3>Stacked Fries</h3>
+                <p>Crispy fries, beef crumb, cheese sauce, pickles and burger sauce.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€8</strong>
+                <button class="add-btn" onclick="addToCart('Stacked Fries',8,this)">+ Add</button>
+              </div>
+            </article>
+
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=320&q=82" alt="Seasoned fries">
+              <div>
+                <h3>Skin-On Fries</h3>
+                <p>Sea salt, smoked paprika and house seasoning.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€5</strong>
+                <button class="add-btn" onclick="addToCart('Skin-On Fries',5,this)">+ Add</button>
+              </div>
+            </article>
+
+            <article class="menu-item sold-out">
+              <img src="https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=320&q=82" alt="Chicken bites">
+              <div>
+                <h3>Hot Chicken Bites</h3>
+                <p>Crispy chicken, hot glaze and ranch dip.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€8</strong>
+                <span class="sold-label">Sold out</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="menu-panel" id="drinks" role="tabpanel" aria-labelledby="tab-drinks" hidden>
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1527960471264-932f39eb5846?auto=format&fit=crop&w=320&q=82" alt="Soft drinks">
+              <div>
+                <h3>Cold Cans</h3>
+                <p>Coke, Coke Zero, Fanta and sparkling water.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€3</strong>
+                <button class="add-btn" onclick="addToCart('Cold Can',3,this)">+ Add</button>
+              </div>
+            </article>
+
+            <article class="menu-item">
+              <img src="https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=320&q=82" alt="House lemonade">
+              <div>
+                <h3>House Lemonade</h3>
+                <p>Fresh lemon, mint and a little too much ice.</p>
+              </div>
+              <div class="menu-meta">
+                <strong>€4</strong>
+                <button class="add-btn" onclick="addToCart('House Lemonade',4,this)">+ Add</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="queue" id="queue">
+      <div class="container queue-grid">
+        <div class="queue-copy">
+          <p class="eyebrow">Less queue chaos</p>
+          <h2>Request. Get confirmation. Wander off like a free person.</h2>
+          <p>
+            Busy service should not mean standing shoulder-to-shoulder waiting for your name.
+            A completed client setup could let customers request an order, receive confirmation and see when the food is ready.
+          </p>
+          <p>
+            This demo shows the customer-facing idea. A real client setup could use a display,
+            SMS, WhatsApp, pager system or an existing ordering platform.
+          </p>
+        </div>
+
+        <div class="ready-board">
+          <div class="ready-head">
+            <strong>Demo collection board</strong>
+            <span>Example view</span>
+          </div>
+
+          <div class="ready-order">
+            <b>#42</b>
+            <span>2 burgers · 1 fries</span>
+            <em>Ready</em>
+          </div>
+          <div class="ready-order">
+            <b>#43</b>
+            <span>1 burger · 1 lemonade</span>
+            <em>Ready</em>
+          </div>
+          <div class="ready-order">
+            <b>#44</b>
+            <span>3 burgers · 2 fries</span>
+            <span style="color:rgba(255,255,255,.45);font-size:.78rem;">2 mins</span>
+          </div>
+          <div class="ready-order">
+            <b>#45</b>
+            <span>1 vegetarian · 1 fries</span>
+            <span style="color:rgba(255,255,255,.45);font-size:.78rem;">5 mins</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container story-grid">
+        <div class="story-image">
+          <div class="story-sticker">Smash hard. Season properly. Keep it simple.</div>
+        </div>
+
+        <div class="story-copy">
+          <p class="eyebrow">Why Stacked exists</p>
+          <h2>Because a burger should be messy for the right reasons.</h2>
+          <p>
+            Stacked is built around hot griddles, crispy edges and short menus.
+            No towering novelty burgers. No dry brioche. No pretending a knife through the middle helps.
+          </p>
+          <p>
+            We keep the menu focused, cook everything to order and move around Cork
+            throughout the week.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>2x</strong>
+              <span>Smash patties</span>
+            </div>
+            <div class="stat">
+              <strong>100%</strong>
+              <span>Cooked fresh</span>
+            </div>
+            <div class="stat">
+              <strong>0</strong>
+              <span>Sad burgers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="events" id="events">
+      <div class="container">
+        <div class="events-inner">
+          <p class="eyebrow">Bring Stacked to the crowd</p>
+          <h2>Weddings, work parties and events that need actual food.</h2>
+          <p>
+            We bring the truck, griddle and menu. You tell us the date, Cork location
+            and expected number of hungry people.
+          </p>
+
+          <div class="event-tags">
+            <span>Weddings</span>
+            <span>Birthday parties</span>
+            <span>Corporate events</span>
+            <span>Festivals</span>
+            <span>Sports clubs</span>
+          </div>
+
+          <button class="btn btn-yellow demo-action" type="button" onclick="showDemoMessage('Event enquiries are disabled until a client adds a verified contact email.')">Demo event enquiry</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Sample reviews</p>
+          <h2>Strong opinions. Mostly about sauce.</h2>
+        </div>
+
+        <div class="reviews-grid">
+          <blockquote class="review">
+            <div class="stars">★★★★★</div>
+            <p>“Crispy edges, soft bun, ridiculous sauce. Exactly what a smash burger should be.”</p>
+            <footer>Demo review · James R. · Cork</footer>
+          </blockquote>
+
+          <blockquote class="review">
+            <div class="stars">★★★★★</div>
+            <p>“Ordered ahead and got the message when it was ready. No standing around in the rain pretending not to be hungry.”</p>
+            <footer>Demo review · Niamh L. · Collection request</footer>
+          </blockquote>
+
+          <blockquote class="review">
+            <div class="stars">★★★★★</div>
+            <p>“Booked Stacked for a work event and the queue moved faster than anyone expected. Everyone was fed and happy.”</p>
+            <footer>Demo review · Private event example</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head" style="margin-inline:auto;text-align:center;">
+          <p class="eyebrow">Useful details</p>
+          <h2>Questions before you commit to the double.</h2>
+        </div>
+
+        <div class="faq-list">
+          <article class="faq-item">
+            <button class="faq-question" type="button" id="faq-question-1" aria-expanded="false" aria-controls="faq-answer-1">Can I order ahead?<span aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1" hidden>You can build an order request, choose a preferred collection time and send it through WhatsApp once the client adds a verified number. The truck must confirm availability and collection time before the order is accepted.</div>
+          </article>
+
+          <article class="faq-item">
+            <button class="faq-question" type="button" id="faq-question-2" aria-expanded="false" aria-controls="faq-answer-2">How do collection notifications work?<span aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2" hidden>The board above is only an example. A real client could use SMS, WhatsApp, a pager, or a collection board connected to their ordering process.</div>
+          </article>
+
+          <article class="faq-item">
+            <button class="faq-question" type="button" id="faq-question-3" aria-expanded="false" aria-controls="faq-answer-3">Do you have vegetarian options?<span aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3" hidden>Yes. The demo includes a crispy mushroom burger, and menu options can be adjusted for the real business.</div>
+          </article>
+
+          <article class="faq-item">
+            <button class="faq-question" type="button" id="faq-question-4" aria-expanded="false" aria-controls="faq-answer-4">What happens when something sells out?<span aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4" hidden>Items can be marked as sold out instantly so customers do not build an order around something unavailable.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="sticky-order" onclick="openDrawer(this)">Your request <span id="cartBadge">0</span></button>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-backdrop" onclick="closeDrawer()" aria-hidden="true"></div>
+
+    <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+      <div class="drawer-head">
+        <h3 id="drawerTitle">Your request</h3>
+        <button class="drawer-close" onclick="closeDrawer()" aria-label="Close request">✕</button>
+      </div>
+
+      <div class="drawer-body" id="cartBody">
+        <div class="empty">Nothing added yet. Start with the Classic. It has never betrayed anyone.</div>
+      </div>
+
+      <div class="drawer-foot">
+        <div class="drawer-total">
+          <span>Total</span>
+          <strong id="cartTotal">€0</strong>
+        </div>
+
+        <label class="time-label" for="collectionTime">Preferred collection time</label>
+        <select class="time-select" id="collectionTime">
+          <option value="">Choose a collection time</option>
+          <option>5:00pm</option>
+          <option>5:30pm</option>
+          <option>6:00pm</option>
+          <option>6:30pm</option>
+          <option>7:00pm</option>
+          <option>7:30pm</option>
+          <option>8:00pm</option>
+          <option>8:30pm</option>
+          <option>9:00pm</option>
+        </select>
+
+        <p class="request-note">Your preferred collection time is not confirmed until the truck replies and accepts the request.</p>
+        <button class="btn btn-red" style="width:100%" onclick="sendOrder()">Request order on WhatsApp</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a href="#top" class="brand">
+          <span class="brand-mark">S</span>
+          <span class="brand-word">Stacked</span>
+        </a>
+        <p>Smash burgers, loaded fries and fewer boring queues.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#today">Find us</a>
+        <a href="#menu">Menu</a>
+        <a href="#events">Events</a>
+        <button class="footer-demo-link" type="button" onclick="showDemoMessage('Instagram is disabled until a client adds their verified profile URL.')">Instagram (demo)</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="truckside-note">
+    Demo food-truck website · Truckside credit link placeholder
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
