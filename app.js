@@ -5,9 +5,99 @@
     const cartTotal = document.getElementById("cartTotal");
     const cartBadge = document.getElementById("cartBadge");
     const drawerPanel = drawer.querySelector(".drawer-panel");
+    const clientConfig = window.CLIENT_CONFIG || {};
     let drawerTrigger = null;
 
     const cart = [];
+
+    function formatCurrency(value) {
+      return (clientConfig.currencySymbol || "€") + value.toFixed(2);
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"]/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;"
+      })[character]);
+    }
+
+    function applyClientConfig() {
+      const businessName = clientConfig.businessName || "Stacked";
+      document.title = `${businessName} — Smash burgers on the move`;
+      const metaDescription = clientConfig.metaDescription || "Food-truck menu, schedule, event enquiries and collection order requests.";
+      document.querySelector('meta[name="description"]').setAttribute("content", metaDescription);
+      document.querySelector('meta[property="og:title"]').setAttribute("content", document.title);
+      document.querySelector('meta[property="og:description"]').setAttribute("content", metaDescription);
+      document.querySelectorAll(".brand").forEach(brand => {
+        brand.setAttribute("aria-label", `${businessName} home`);
+      });
+
+      document.querySelectorAll("[data-client-text]").forEach(element => {
+        const value = clientConfig[element.dataset.clientText];
+        if (typeof value === "string" && value.trim()) element.textContent = value;
+      });
+
+      const hoursParts = (clientConfig.openingHours || "").split("·");
+      document.querySelectorAll('[data-client-text="openingHoursShort"]').forEach(element => {
+        element.textContent = (hoursParts[1] || clientConfig.openingHours || "Sample hours").trim();
+      });
+
+      const collectionTime = document.getElementById("collectionTime");
+      (clientConfig.collectionTimes || []).forEach(time => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        collectionTime.append(option);
+      });
+      cartTotal.textContent = formatCurrency(0);
+
+      configureExternalAction({
+        button: document.getElementById("directionsButton"),
+        url: clientConfig.googleMapsUrl,
+        placeholder: clientConfig.googleMapsPlaceholder,
+        liveLabel: "Get directions",
+        demoLabel: "Demo directions",
+        demoMessage: "Directions are disabled until a client adds their verified Google Maps destination."
+      });
+
+      configureExternalAction({
+        button: document.getElementById("instagramButton"),
+        url: clientConfig.instagramUrl,
+        placeholder: clientConfig.instagramPlaceholder,
+        liveLabel: "Instagram",
+        demoLabel: "Instagram (demo)",
+        demoMessage: "Instagram is disabled until a client adds their verified profile URL."
+      });
+
+      const eventButton = document.getElementById("eventEnquiryButton");
+      const emailReady = clientConfig.contactEmail && !clientConfig.contactEmailPlaceholder;
+      eventButton.classList.toggle("demo-action", !emailReady);
+      eventButton.addEventListener("click", () => {
+        if (!emailReady) {
+          showDemoMessage("Event enquiries are disabled until a client adds a verified contact email.");
+          return;
+        }
+        const subject = encodeURIComponent(clientConfig.eventEmailSubject || "Event enquiry");
+        window.location.href = `mailto:${clientConfig.contactEmail}?subject=${subject}`;
+      });
+    }
+
+    function configureExternalAction({ button, url, placeholder, liveLabel, demoLabel, demoMessage }) {
+      const ready = Boolean(url) && !placeholder;
+      button.textContent = ready ? liveLabel : demoLabel;
+      button.classList.toggle("demo-action", !ready);
+      button.addEventListener("click", () => {
+        if (!ready) {
+          showDemoMessage(demoMessage);
+          return;
+        }
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    }
+
+    applyClientConfig();
 
     navToggle.addEventListener("click", () => {
       const open = navLinks.classList.toggle("open");
@@ -130,14 +220,14 @@
       renderCart();
     }
 
-    function changeQty(name, delta) {
-      const item = cart.find(entry => entry.name === name);
+    function changeQty(index, delta) {
+      const item = cart[index];
       if (!item) return;
 
       item.qty += delta;
 
       if (item.qty <= 0) {
-        cart.splice(cart.indexOf(item), 1);
+        cart.splice(index, 1);
       }
 
       renderCart();
@@ -148,24 +238,27 @@
       const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
       cartBadge.textContent = count;
-      cartTotal.textContent = "€" + total.toFixed(2).replace(/\.00$/, "");
+      cartTotal.textContent = formatCurrency(total);
 
       if (!cart.length) {
         cartBody.innerHTML = '<div class="empty">Nothing added yet. Start with the Classic. It has never betrayed anyone.</div>';
         return;
       }
 
-      cartBody.innerHTML = cart.map(item => `
+      cartBody.innerHTML = cart.map((item, index) => {
+        const safeName = escapeHtml(item.name);
+        return `
         <div class="cart-line">
-          <strong>${item.name}</strong>
+          <strong>${safeName}</strong>
           <div class="qty">
-            <button aria-label="Remove one ${item.name}" onclick="changeQty('${item.name.replace(/'/g, "\\'")}', -1)">−</button>
+            <button aria-label="Remove one ${safeName}" onclick="changeQty(${index}, -1)">−</button>
             <span aria-label="Quantity ${item.qty}">${item.qty}</span>
-            <button aria-label="Add one ${item.name}" onclick="changeQty('${item.name.replace(/'/g, "\\'")}', 1)">+</button>
+            <button aria-label="Add one ${safeName}" onclick="changeQty(${index}, 1)">+</button>
           </div>
-          <span>€${(item.price * item.qty).toFixed(2).replace(/\.00$/, "")}</span>
+          <span>${formatCurrency(item.price * item.qty)}</span>
         </div>
-      `).join("");
+      `;
+      }).join("");
     }
 
     function sendOrder() {
@@ -181,29 +274,35 @@
         return;
       }
 
-      const lines = cart.map(item =>
-        `${item.qty}x ${item.name} (€${(item.price * item.qty).toFixed(2).replace(/\.00$/, "")})`
-      );
+      const lines = cart.map(item => {
+        const lineTotal = item.price * item.qty;
+        return `${item.qty} × ${item.name} — ${formatCurrency(item.price)} each (${formatCurrency(lineTotal)})`;
+      });
 
       const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
       const message =
-        "Hi Stacked! I'd like to request an order for collection:\n\n" +
+        `Hi ${clientConfig.businessName || "Stacked"}! ${clientConfig.orderRequestIntro || "I'd like to request an order for collection:"}\n\n` +
         lines.join("\n") +
-        "\n\nTotal: €" + total.toFixed(2).replace(/\.00$/, "") +
+        "\n\nTotal: " + formatCurrency(total) +
         "\nPreferred collection time: " + time +
-        "\n\nPlease confirm item availability and the collection time. I understand this request is not accepted until you reply.";
+        "\n\n" + (clientConfig.orderConfirmationPrompt || "Please confirm item availability and the collection time. I understand this request is not accepted until you reply.");
 
-      // DEMO PLACEHOLDER: replace with a verified client number before enabling WhatsApp.
-      const whatsappNumber = "353000000000";
-      const isDemoNumber = whatsappNumber === "353000000000";
+      // WhatsApp requires an international number made only of digits.
+      const whatsappNumber = String(clientConfig.whatsappNumber || "").replace(/[\s()+-]/g, "");
+      const isValidNumber = /^\d{8,15}$/.test(whatsappNumber);
+      const isDemoNumber = clientConfig.whatsappPlaceholder || !isValidNumber;
 
       if (isDemoNumber) {
-        showDemoMessage("This is a demo order request. WhatsApp is disabled until a client adds their verified number; no order has been sent.");
+        const reason = clientConfig.whatsappPlaceholder
+          ? "WhatsApp is disabled until a client adds their verified number"
+          : "the configured WhatsApp number is invalid";
+        showDemoMessage(`This is a demo order request. ${reason}; no order has been sent.`);
         return;
       }
 
-      window.open("https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message), "_blank", "noopener");
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     }
 
     function showDemoMessage(message) {

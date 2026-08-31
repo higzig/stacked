@@ -1,3 +1,8 @@
+    /*
+     * CLIENT BRAND COLOURS
+     * Change these variables for each client's palette. Check text contrast after edits.
+     * Layout variables below --shadow are normally left unchanged.
+     */
     :root {
       --ink: #111111;
       --ink-soft: #242424;
@@ -690,6 +695,7 @@
     .events .eyebrow { color: var(--yellow); }
     .events .eyebrow::before { background: var(--yellow); }
     .events p { color: rgba(255,255,255,.7); font-size: 1.05rem; }
+    .events .event-enquiry-help { margin-bottom: 1rem; font-size: .9rem; }
 
     .event-tags {
       display: flex;
