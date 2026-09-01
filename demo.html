@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sales presentation page for a food-truck website demo." />
+  <title>Food Truck Website Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: var(--paper);
+    }
+
+    .demo-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 4rem 1rem;
+      background:
+        linear-gradient(135deg, rgba(17,17,17,.96), rgba(17,17,17,.78)),
+        url("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1800&q=88") center/cover;
+      color: white;
+    }
+
+    .demo-panel {
+      width: min(780px, 100%);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 28px;
+      background: rgba(17,17,17,.62);
+      box-shadow: 0 30px 80px rgba(0,0,0,.28);
+      backdrop-filter: blur(8px);
+    }
+
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      background: var(--yellow);
+      color: var(--ink);
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .demo-panel h1 {
+      margin: 1.1rem 0 1rem;
+      font-family: "Archivo Black", sans-serif;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+      font-size: clamp(2.7rem, 7vw, 5rem);
+      line-height: .96;
+    }
+
+    .demo-panel p {
+      max-width: 620px;
+      color: rgba(255,255,255,.78);
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+
+    .demo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .9rem;
+      margin-top: 2rem;
+    }
+
+    .demo-actions .btn {
+      min-width: 220px;
+    }
+
+    .demo-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-top: 1.5rem;
+      padding-left: 1rem;
+      color: rgba(255,255,255,.82);
+      font-weight: 700;
+    }
+
+    .demo-features li {
+      list-style: disc;
+      margin-left: .2rem;
+    }
+
+    .demo-note {
+      margin-top: 2.1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.68);
+      font-size: .95rem;
+    }
+
+    .demo-cta {
+      margin-top: 2.2rem;
+      padding: 1.4rem 1.2rem;
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 20px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .demo-cta h2 {
+      margin: 0 0 .7rem;
+      font-family: "Archivo Black", sans-serif;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+
+    .demo-cta p {
+      margin: 0 0 1rem;
+      font-size: 1rem;
+    }
+
+    .demo-cta .btn {
+      display: inline-flex;
+      min-width: 220px;
+    }
+
+    @media (max-width: 520px) {
+      .demo-actions,
+      .demo-actions .btn,
+      .demo-cta .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="demo-shell">
+    <div class="demo-panel">
+      <div class="demo-badge">Sales demo</div>
+
+      <h1>Food Truck Website Demo</h1>
+
+      <p>
+        This concept focuses on menu visibility, locations, ordering ahead and event enquiries for a food-truck business.
+      </p>
+
+      <ul class="demo-features">
+        <li>Branding</li>
+        <li>Menu</li>
+        <li>Locations</li>
+        <li>Ordering setup</li>
+        <li>Event enquiries</li>
+      </ul>
+
+      <div class="demo-actions">
+        <a class="btn btn-yellow" href="index.html">View customer website</a>
+        <a class="btn btn-red" href="#demo-next">View collection demo</a>
+      </div>
+
+      <div class="demo-note">
+        Branding, menu, locations and ordering integrations are customised for each business.
+      </div>
+
+      <div class="demo-cta" id="demo-next">
+        <h2>Want a version built for your food truck?</h2>
+        <p>Use this area for the next sales step or a future collection-screen demo link.</p>
+        <a class="btn btn-yellow" href="mailto:hello@stacked.example?subject=Food%20truck%20website%20enquiry">Talk about your truck</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
