@@ -229,6 +229,71 @@
       color: var(--board-ready);
     }
 
+    .board-qr {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: min(520px, 100%);
+      margin: 0 auto;
+      padding: .8rem 1rem;
+      border: 1px solid var(--board-line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+      color: var(--board-muted);
+    }
+
+    .board-qr canvas {
+      width: 88px;
+      height: 88px;
+      flex: 0 0 88px;
+      padding: 5px;
+      border-radius: 7px;
+      background: white;
+    }
+
+    .board-qr-copy {
+      min-width: 0;
+    }
+
+    .board-qr-copy strong,
+    .board-qr-copy span {
+      display: block;
+    }
+
+    .board-qr-copy strong {
+      margin-bottom: .25rem;
+      color: white;
+      font-size: .95rem;
+    }
+
+    .board-qr-copy span {
+      font-size: .82rem;
+      line-height: 1.35;
+    }
+
+    .board-qr-copy a {
+      display: block;
+      margin-top: .35rem;
+      overflow-wrap: anywhere;
+      color: var(--board-ready);
+      font-size: .76rem;
+      font-weight: 800;
+    }
+
+    @media (max-width: 520px) {
+      .board-qr {
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+
+      .board-qr canvas {
+        width: 76px;
+        height: 76px;
+        flex-basis: 76px;
+      }
+    }
+
     @keyframes preparing-shimmer {
       0% { transform: translateX(-52%); opacity: .18; }
       20% { opacity: .42; }
@@ -320,10 +385,20 @@
           <ul class="board-list" id="readyList" aria-live="polite"></ul>
         </section>
       </div>
+
+      <section class="board-qr" aria-labelledby="boardQrTitle">
+        <canvas id="boardQrCode" width="88" height="88" aria-label="QR code for the collection screen"></canvas>
+        <div class="board-qr-copy">
+          <strong id="boardQrTitle">Keep an eye on your order</strong>
+          <span>Scan to follow the collection screen on your phone.</span>
+          <a id="boardQrUrl" href="" rel="noopener">Loading collection screen URL</a>
+        </div>
+      </section>
     </div>
   </main>
 
-  <script src="client-config.js"></script>
+  <script src="client-config.js?v=board-url"></script>
+  <script src="qrcode.js"></script>
   <script>
     const STORAGE_KEY = "stacked-demo-orders-v1";
     const QUEUE_STYLE_KEY = "stacked-demo-queue-style-v1";
@@ -418,6 +493,21 @@
       const businessName = (window.CLIENT_CONFIG && window.CLIENT_CONFIG.businessName) || "Stacked";
       document.title = `${businessName} | Collection board`;
       if (businessNameEl) businessNameEl.textContent = businessName;
+
+      const boardUrl = (window.CLIENT_CONFIG && window.CLIENT_CONFIG.publicBoardUrl) || window.location.href;
+      const boardQrUrl = document.getElementById("boardQrUrl");
+      const boardQrCode = document.getElementById("boardQrCode");
+      if (boardQrUrl) {
+        boardQrUrl.href = boardUrl;
+        boardQrUrl.textContent = boardUrl.replace(/^https?:\/\//, "");
+      }
+      if (boardQrCode && window.QRCode) {
+        window.QRCode.toCanvas(boardQrCode, boardUrl, {
+          width: 88,
+          margin: 1,
+          color: { dark: "#111111", light: "#ffffff" }
+        });
+      }
     }
 
     function showReadyAnnouncement(orderLabel) {

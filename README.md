@@ -20,6 +20,8 @@ The WhatsApp number in `client-config.js` is intentionally invalid and the actio
 
 Start with `client-config.js`. It contains the repeated business name, tagline, WhatsApp number, event email, Instagram link, main location, hours, collection times and event enquiry details.
 
+Set `publicBoardUrl` there to the public `board.html` address used by customers. `board.html` renders the QR code with the local `qrcode.js` bundle; it does not call an external QR service or change the browser-local queue behavior.
+
 For a verified destination, replace its placeholder value and change the matching `...Placeholder` flag to `false`. Keeping the flag `true` safely leaves the demo action disabled.
 
 Search `index.html` for `CLIENT` comments to find the menu, schedule, reviews, events, story/about, collection-board and image content that should be changed manually. Brand colours remain at the top of `styles.css` under `CLIENT BRAND COLOURS`.

@@ -23,6 +23,8 @@ window.CLIENT_CONFIG = {
   instagramPlaceholder: true,
 
   mainLocation: "Cork City, Ireland",
+  // Replace with the public URL customers should scan to open.
+  publicBoardUrl: "https://replace-with-client-domain.example/board.html",
   googleMapsUrl: "https://maps.google.com/?q=replace-with-client-destination",
   googleMapsPlaceholder: true,
   openingHours: "Friday · 5:00–10:00pm",
