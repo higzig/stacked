@@ -1,8 +1,11 @@
 # Stacked sales-ready working copy
 
-This is the existing Stacked demo split into three files without redesigning it:
+This is the existing Stacked site and prospect walkthrough, with the collection tools separated:
 
-- `index.html` — site content and structure
+- `index.html` — reusable real client website
+- `walkthrough.html` — prospect-facing sales walkthrough
+- `board-admin.html` — staff collection controls
+- `board.html` — customer collection display
 - `styles.css` — visual styling and responsive rules
 - `app.js` — navigation, tabs, FAQ, cart and WhatsApp ordering behaviour
 
@@ -29,4 +32,4 @@ To enable it for a client, add a verified international WhatsApp number using di
 
 ## Deployment checklist
 
-Before deployment, replace all demo content and placeholder destinations, update `metaDescription`, and replace `favicon.svg` and the Open Graph image with approved client assets. The current page is static and can be deployed on any host that serves `index.html`, `styles.css`, `client-config.js`, `app.js` and `favicon.svg` from the same directory.
+Before deployment, replace all demo content and placeholder destinations, update `metaDescription`, and replace `favicon.svg` and the Open Graph image with approved client assets. The pages are static and can be deployed on any host that serves the HTML files, `styles.css`, `client-config.js`, `app.js` and `favicon.svg` from the same directory. The walkthrough links to `board-admin.html` and `board.html` for the optional collection solution.

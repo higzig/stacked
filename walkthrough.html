@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A food-truck website designed to make locations, menus, ordering and event enquiries easier to manage." />
+  <title>Stacked | A better home for your food truck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .walkthrough .hero-copy { max-width: 760px; }
+    .walkthrough .hero-copy > p:not(.eyebrow) { max-width: 600px; }
+    .walkthrough .hero-actions { margin-bottom: 0; }
+    .walkthrough .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .walkthrough .collection-copy,
+    .walkthrough .collection-links {
+      padding: 1.5rem;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      box-shadow: 6px 6px 0 var(--yellow);
+    }
+    .walkthrough .collection-copy p { color: var(--muted); }
+    .walkthrough .collection-copy p:last-child { margin-bottom: 0; }
+    .walkthrough .collection {
+      background: var(--ink);
+      color: white;
+    }
+    .walkthrough .collection .eyebrow { color: var(--yellow); }
+    .walkthrough .collection .eyebrow::before { background: var(--yellow); }
+    .walkthrough .collection h2 { max-width: 760px; }
+    .walkthrough .collection-grid { grid-template-columns: 1.15fr .85fr; align-items: start; }
+    .walkthrough .collection-copy { background: var(--ink-soft); border-color: rgba(255,255,255,.16); box-shadow: none; }
+    .walkthrough .collection-copy p { color: rgba(255,255,255,.72); }
+    .walkthrough .collection-links { display: grid; gap: .75rem; background: var(--yellow); }
+    .walkthrough .collection-links p { margin: 0 0 .35rem; color: var(--ink); font-weight: 800; }
+    .walkthrough .collection-links .btn { width: 100%; box-shadow: 4px 4px 0 var(--red); }
+    .walkthrough .owner-note { max-width: 760px; margin-bottom: 2rem; color: var(--muted); font-size: 1.08rem; }
+    .walkthrough .story-grid > * { min-width: 0; }
+    @media (max-width: 760px) {
+      .walkthrough .collection-grid { grid-template-columns: 1fr; }
+      .walkthrough .collection-copy,
+      .walkthrough .collection-links { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body class="walkthrough" style="overflow-x:hidden;">
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Stacked home">
+        <span class="brand-mark">S</span>
+        <span class="brand-word">Stacked</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#today">Find us</a>
+        <a href="#menu">Menu</a>
+        <a href="#queue">Ordering</a>
+        <a href="#events">Events</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-copy">
+          <p class="eyebrow">A sharper home for your truck</p>
+          <h1>Big flavour.<br><span>Less friction</span><br>for your customers.</h1>
+          <p>Give hungry customers one reliable place to find you, browse the menu, request collection and enquire about bringing the truck to their next event.</p>
+          <div class="hero-actions">
+            <a href="#menu" class="btn btn-yellow">Explore the menu</a>
+            <a href="#events" class="btn btn-red">Plan an event</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Be easier to find</span><span>Keep menus current</span><span>Order ahead</span><span>Move the queue</span><span>Win more events</span>
+        <span>Be easier to find</span><span>Keep menus current</span><span>Order ahead</span><span>Move the queue</span><span>Win more events</span>
+      </div>
+    </div>
+
+    <section class="today" id="today">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Find the truck</p>
+          <h2>Make today’s location impossible to miss.</h2>
+          <p class="owner-note">Keep your current pitch, opening hours and weekly stops in one place, so customers can find you without searching through old social posts.</p>
+        </div>
+        <div class="today-grid">
+          <article class="today-card">
+            <span class="status">Serving today</span>
+            <h3>Cork City Centre</h3>
+            <p>Friday · 5:00–10:00pm</p>
+          </article>
+          <article class="schedule">
+            <p class="eyebrow">This week</p>
+            <h3>Where we’re smashing next</h3>
+            <div class="schedule-row"><strong>Friday</strong><p>Cork City Centre</p><span>5:00–10:00pm</span></div>
+            <div class="schedule-row"><strong>Saturday</strong><p>Cork Harbour Area</p><span>1:00–8:00pm</span></div>
+            <div class="schedule-row"><strong>Sunday</strong><p>South Cork Market</p><span>11:00am–4:00pm</span></div>
+            <div class="schedule-row"><strong>Tuesday</strong><p>Northside Evening Pitch</p><span>5:00–9:00pm</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">The menu</p>
+          <h2>Keep the good stuff easy to choose.</h2>
+          <p class="owner-note">A clear, mobile-friendly menu helps people decide before they reach the hatch, while sold-out items can be updated before they cause disappointment.</p>
+        </div>
+
+        <div class="menu-tabs" role="tablist" aria-label="Menu categories">
+          <button class="menu-tab active" type="button" role="tab" aria-selected="true" aria-controls="walkthrough-burgers" data-tab="walkthrough-burgers">Burgers</button>
+          <button class="menu-tab" type="button" role="tab" aria-selected="false" aria-controls="walkthrough-fries" data-tab="walkthrough-fries">Fries & sides</button>
+          <button class="menu-tab" type="button" role="tab" aria-selected="false" aria-controls="walkthrough-drinks" data-tab="walkthrough-drinks">Drinks</button>
+        </div>
+
+        <div class="menu-grid">
+          <div class="menu-panel active" id="walkthrough-burgers" role="tabpanel">
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=320&q=82" alt="Classic smash burger"><div><h3>The Classic</h3><p>Double beef, American cheese, pickles, onion and house sauce.</p></div><div class="menu-meta"><strong>€12</strong><button class="add-btn" type="button" data-name="The Classic" data-price="12">+ Add</button></div></article>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=320&q=82" alt="Spicy smash burger"><div><h3>Hot Stack</h3><p>Double beef, pepper jack, jalapeños, crispy onions and hot sauce.</p></div><div class="menu-meta"><strong>€14</strong><button class="add-btn" type="button" data-name="Hot Stack" data-price="14">+ Add</button></div></article>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=320&q=82" alt="Bacon smash burger"><div><h3>Bacon Jam</h3><p>Double beef, smoked cheddar, bacon jam and mustard mayo.</p></div><div class="menu-meta"><strong>€15</strong><button class="add-btn" type="button" data-name="Bacon Jam" data-price="15">+ Add</button></div></article>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=320&q=82" alt="Vegetarian burger"><div><h3>Crushed Shroom</h3><p>Crispy mushroom patty, cheese, lettuce, pickles and garlic mayo.</p></div><div class="menu-meta"><strong>€13</strong><button class="add-btn" type="button" data-name="Crushed Shroom" data-price="13">+ Add</button></div></article>
+          </div>
+          <div class="menu-panel" id="walkthrough-fries" role="tabpanel" hidden>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=320&q=82" alt="Loaded fries"><div><h3>Stacked Fries</h3><p>Crispy fries, beef crumb, cheese sauce, pickles and burger sauce.</p></div><div class="menu-meta"><strong>€8</strong><button class="add-btn" type="button" data-name="Stacked Fries" data-price="8">+ Add</button></div></article>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=320&q=82" alt="Seasoned fries"><div><h3>Skin-On Fries</h3><p>Sea salt, smoked paprika and house seasoning.</p></div><div class="menu-meta"><strong>€5</strong><button class="add-btn" type="button" data-name="Skin-On Fries" data-price="5">+ Add</button></div></article>
+            <article class="menu-item sold-out"><img src="https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=320&q=82" alt="Chicken bites"><div><h3>Hot Chicken Bites</h3><p>Crispy chicken, hot glaze and ranch dip.</p></div><div class="menu-meta"><strong>€8</strong><span class="sold-label">Sold out</span></div></article>
+          </div>
+          <div class="menu-panel" id="walkthrough-drinks" role="tabpanel" hidden>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1527960471264-932f39eb5846?auto=format&fit=crop&w=320&q=82" alt="Soft drinks"><div><h3>Cold Cans</h3><p>Coke, Coke Zero, Fanta and sparkling water.</p></div><div class="menu-meta"><strong>€3</strong><button class="add-btn" type="button" data-name="Cold Cans" data-price="3">+ Add</button></div></article>
+            <article class="menu-item"><img src="https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=320&q=82" alt="House lemonade"><div><h3>House Lemonade</h3><p>Fresh lemon, mint and a little too much ice.</p></div><div class="menu-meta"><strong>€4</strong><button class="add-btn" type="button" data-name="House Lemonade" data-price="4">+ Add</button></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="collection" id="queue">
+      <div class="container">
+        <p class="eyebrow">Less queue chaos</p>
+        <h2>Give busy service a little more breathing room.</h2>
+        <div class="collection-grid">
+          <div class="collection-copy">
+            <p>Customers can build an order, choose a preferred collection time and send the request through WhatsApp or an existing ordering platform. You confirm the requested time, so expectations stay clear.</p>
+            <p>That can reduce customers standing around the hatch and cut down on repeated “is my order ready?” questions. A collection-display system can be added as an optional service when it suits your workflow.</p>
+          </div>
+          <div class="collection-links">
+            <p>See the optional collection setup</p>
+            <a class="btn btn-dark" href="board-admin.html">Try collection controls</a>
+            <a class="btn btn-light" href="board.html" target="_blank" rel="noopener noreferrer">View collection screen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="events">
+      <div class="container">
+        <div class="events-inner">
+          <p class="eyebrow">Bring the truck to the crowd</p>
+          <h2>Make catering enquiries easier to win.</h2>
+          <p>Give wedding couples, offices, festivals and private hosts a clear route to ask about dates, locations and guest numbers.</p>
+          <div class="event-tags"><span>Weddings</span><span>Work parties</span><span>Festivals</span><span>Private events</span></div>
+          <p class="event-enquiry-help">A focused enquiry prompt turns “Do you cater?” into the details you need to check availability and reply quickly.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container story-grid">
+        <div class="story-image" role="img" aria-label="Cook preparing smash burgers on a griddle"><div class="story-sticker">Smash hard. Season properly. Keep it simple.</div></div>
+        <div class="story-copy">
+          <p class="eyebrow">Your story</p>
+          <h2>Let the food truck feel like a brand, not a noticeboard.</h2>
+          <p>Strong food photography, a focused menu and a clear voice help first-time visitors understand what makes your truck worth finding.</p>
+          <p>Everything customers need can live together, from the next pitch to the next private booking.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="sticky-order" id="stickyOrder" type="button">Your order <span id="cartBadge">0</span></button>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+    <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+      <div class="drawer-head">
+        <h3 id="drawerTitle">Your order</h3>
+        <button class="drawer-close" id="drawerClose" type="button" aria-label="Close order">✕</button>
+      </div>
+      <div class="drawer-body" id="cartBody"><div class="empty">Nothing added yet. Start with the Classic.</div></div>
+      <div class="drawer-foot">
+        <div class="drawer-total"><span>Total</span><strong id="cartTotal">€0.00</strong></div>
+        <label class="time-label" for="collectionTime">Preferred collection time</label>
+        <select class="time-select" id="collectionTime">
+          <option value="">Choose a collection time</option>
+          <option>5:00pm</option><option>5:30pm</option><option>6:00pm</option><option>6:30pm</option><option>7:00pm</option><option>7:30pm</option><option>8:00pm</option><option>8:30pm</option><option>9:00pm</option>
+        </select>
+        <p class="request-note">Choose a time to show how an order request can be prepared for WhatsApp or an existing ordering platform.</p>
+        <button class="btn btn-red" id="requestOrder" type="button" style="width:100%">Prepare order request</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a href="#top" class="brand"><span class="brand-mark">S</span><span class="brand-word">Stacked</span></a><p>Smash burgers, loaded fries and fewer boring queues.</p></div>
+      <div class="footer-links"><a href="#today">Find us</a><a href="#menu">Menu</a><a href="#queue">Ordering</a><a href="#events">Events</a></div>
+    </div>
+  </footer>
+  <script>
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    navToggle.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", open);
+      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      navToggle.textContent = open ? "✕" : "☰";
+    });
+    navLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open menu");
+      navToggle.textContent = "☰";
+    }));
+
+    const cart = [];
+    const drawer = document.getElementById("drawer");
+    const drawerPanel = drawer.querySelector(".drawer-panel");
+    const cartBody = document.getElementById("cartBody");
+    const cartBadge = document.getElementById("cartBadge");
+    const cartTotal = document.getElementById("cartTotal");
+
+    function formatCurrency(value) {
+      return `€${value.toFixed(2)}`;
+    }
+
+    function renderCart() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      cartBadge.textContent = count;
+      cartTotal.textContent = formatCurrency(total);
+      cartBody.innerHTML = cart.length ? cart.map((item, index) => `
+        <div class="cart-line"><strong>${item.name}</strong><div class="qty"><button type="button" aria-label="Remove one ${item.name}" data-quantity="-1" data-index="${index}">−</button><span>${item.qty}</span><button type="button" aria-label="Add one ${item.name}" data-quantity="1" data-index="${index}">+</button></div><span>${formatCurrency(item.price * item.qty)}</span></div>
+      `).join("") : '<div class="empty">Nothing added yet. Start with the Classic.</div>';
+    }
+
+    function openDrawer() {
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden", "false");
+      document.body.classList.add("locked");
+      drawerPanel.focus();
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove("open");
+      drawer.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("locked");
+    }
+
+    document.querySelectorAll(".menu-tab").forEach(tab => tab.addEventListener("click", () => {
+      document.querySelectorAll(".menu-tab").forEach(item => {
+        const selected = item === tab;
+        item.classList.toggle("active", selected);
+        item.setAttribute("aria-selected", selected);
+      });
+      document.querySelectorAll(".menu-panel").forEach(panel => {
+        const selected = panel.id === tab.dataset.tab;
+        panel.classList.toggle("active", selected);
+        panel.hidden = !selected;
+      });
+    }));
+
+    document.querySelectorAll(".add-btn").forEach(button => button.addEventListener("click", () => {
+      const item = cart.find(entry => entry.name === button.dataset.name);
+      if (item) item.qty += 1;
+      else cart.push({ name: button.dataset.name, price: Number(button.dataset.price), qty: 1 });
+      button.textContent = "Added ✓";
+      button.classList.add("added");
+      window.setTimeout(() => { button.textContent = "+ Add"; button.classList.remove("added"); }, 900);
+      renderCart();
+      openDrawer();
+    }));
+
+    cartBody.addEventListener("click", event => {
+      const button = event.target.closest("[data-quantity]");
+      if (!button) return;
+      const item = cart[Number(button.dataset.index)];
+      if (!item) return;
+      item.qty += Number(button.dataset.quantity);
+      if (item.qty <= 0) cart.splice(Number(button.dataset.index), 1);
+      renderCart();
+    });
+
+    document.getElementById("stickyOrder").addEventListener("click", openDrawer);
+    document.getElementById("drawerClose").addEventListener("click", closeDrawer);
+    document.getElementById("drawerBackdrop").addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", event => { if (event.key === "Escape" && drawer.classList.contains("open")) closeDrawer(); });
+    document.getElementById("requestOrder").addEventListener("click", () => {
+      if (!cart.length) return openDrawer();
+      document.getElementById("requestOrder").textContent = "Request ready to send";
+    });
+  </script>
+</body>
+</html>

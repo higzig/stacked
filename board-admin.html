@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sales presentation page for a food-truck website demo." />
-  <title>Food Truck Website Demo</title>
+  <meta name="description" content="Staff collection controls for the Stacked food truck." />
+  <title>Collection controls | Stacked</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,12 +12,14 @@
   <style>
     body {
       background: var(--paper);
+      overflow-x: hidden;
     }
 
     .demo-shell {
       min-height: 100vh;
       display: grid;
       place-items: center;
+      overflow: hidden;
       padding: 4rem 1rem;
       background:
         linear-gradient(135deg, rgba(17,17,17,.96), rgba(17,17,17,.78)),
@@ -26,7 +28,9 @@
     }
 
     .demo-panel {
-      width: min(780px, 100%);
+      width: min(780px, calc(100vw - 24px));
+      max-width: 100%;
+      box-sizing: border-box;
       padding: clamp(1.5rem, 4vw, 3rem);
       border: 2px solid rgba(255,255,255,.18);
       border-radius: 28px;
@@ -469,6 +473,7 @@
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: .5rem;
+      flex-shrink: 0;
     }
 
     .order-action-btn {
@@ -508,6 +513,62 @@
     }
 
     @media (max-width: 520px) {
+      .demo-shell {
+        padding: 1rem .75rem;
+      }
+
+      .demo-panel {
+        padding: 1.25rem;
+        border-radius: 20px;
+      }
+
+      .order-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        gap: .75rem;
+        padding: .9rem;
+      }
+
+      .order-summary {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: .6rem;
+      }
+
+      .order-summary > div {
+        min-width: 0;
+      }
+
+      .order-label {
+        display: block;
+        overflow-wrap: anywhere;
+      }
+
+      .order-status-badge {
+        min-width: 0;
+        white-space: nowrap;
+      }
+
+      .order-timer {
+        display: block;
+        margin-top: .35rem;
+      }
+
+      .order-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: 100%;
+      }
+
+      .order-action-btn {
+        min-width: 0;
+        width: 100%;
+        min-height: 48px;
+        padding-inline: .55rem;
+      }
+
       .demo-actions,
       .demo-actions .btn,
       .demo-cta .btn,
@@ -524,20 +585,19 @@
 <body>
   <main class="demo-shell">
     <div class="demo-panel">
-      <h1>Food Truck Website Demo</h1>
+      <h1>Collection controls</h1>
 
       <p>
-        This concept focuses on menu visibility, locations, ordering ahead and event enquiries for a food-truck business.
+        Keep the collection queue clear during service. Add orders, update their status and open the customer display when you are ready.
       </p>
 
       <div class="demo-actions">
-        <a class="btn btn-yellow" href="index.html">View customer website</a>
         <a class="btn btn-dark" href="board.html" target="_blank" rel="noopener noreferrer">Open board</a>
       </div>
 
       <section class="collection-demo" id="collection-demo" aria-labelledby="collection-demo-title">
-        <h2 id="collection-demo-title">Collection display demo</h2>
-        <p>Adjust the queue for the kitchen TV or collection screen. Changes sync between open tabs in this browser.</p>
+        <h2 id="collection-demo-title">Queue management</h2>
+        <p>Choose how customers identify their orders, add the next order and move it from preparing to ready. Changes sync with the collection screen.</p>
 
         <div id="setupPanel" class="setup-panel" aria-live="polite">
           <h3>How do you identify orders?</h3>
@@ -559,13 +619,13 @@
             <div class="settings-row">
               <label for="readyTimeoutSelect">Ready timeout</label>
               <select id="readyTimeoutSelect">
-                <option value="10">10 seconds (demo)</option>
-                <option value="30">30 seconds (demo)</option>
+                <option value="10">10 seconds</option>
+                <option value="30">30 seconds</option>
                 <option value="300" selected>5 minutes</option>
               </select>
             </div>
             <div class="queue-settings-actions">
-              <button class="queue-settings-btn" id="resetDemoBtn" type="button">Reset demo orders</button>
+              <button class="queue-settings-btn" id="resetDemoBtn" type="button">Reset orders</button>
             </div>
           </div>
 
