@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Collection display board for demo orders." />
+  <title>Collection board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --board-bg: #111111;
+      --board-panel: rgba(255,255,255,.04);
+      --board-line: rgba(255,255,255,.12);
+      --board-ready: #d8f7d0;
+      --board-ready-ink: #132515;
+      --board-preparing: #f7e5a9;
+      --board-preparing-ink: #33250d;
+      --board-muted: rgba(255,255,255,.65);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, rgba(255,216,61,.18), transparent 36%),
+        linear-gradient(135deg, #0d0d0d, #171717 50%, #0d0d0d);
+      color: white;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .board-shell {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 2vw, 2rem);
+    }
+
+    .board-frame {
+      width: min(1400px, 100%);
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .board-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 0 .4rem;
+    }
+
+    .board-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .8rem;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(1.1rem, 2vw, 2rem);
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+
+    .board-brand-mark {
+      width: clamp(2.2rem, 3vw, 3rem);
+      height: clamp(2.2rem, 3vw, 3rem);
+      display: grid;
+      place-items: center;
+      background: var(--yellow);
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      box-shadow: 4px 4px 0 var(--red);
+      font-size: clamp(1rem, 1.6vw, 1.5rem);
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    .board-column {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(1rem, 2vw, 2rem);
+      border: 2px solid var(--board-line);
+      border-radius: 26px;
+      background: var(--board-panel);
+      box-shadow: 0 24px 80px rgba(0,0,0,.25);
+    }
+
+    .board-column h2 {
+      margin: 0 0 1rem;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(1.5rem, 2.6vw, 3rem);
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+
+    .board-column.ready {
+      background: linear-gradient(180deg, rgba(216,247,208,.08), rgba(216,247,208,.02));
+    }
+
+    .board-column.preparing {
+      background: linear-gradient(180deg, rgba(247,229,169,.08), rgba(247,229,169,.02));
+    }
+
+    .board-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      height: 100%;
+    }
+
+    .order-card {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: clamp(140px, 18vw, 220px);
+      border-radius: 22px;
+      border: 2px solid transparent;
+      font-family: "Archivo Black", sans-serif;
+      letter-spacing: -.07em;
+      text-transform: uppercase;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      overflow: hidden;
+    }
+
+    .order-card.ready {
+      background: var(--board-ready);
+      color: var(--board-ready-ink);
+      border-color: rgba(19,37,21,.22);
+    }
+
+    .order-card.ready.just-ready {
+      animation: ready-card-pulse .8s ease-out 1;
+    }
+
+    .order-card.preparing {
+      background: var(--board-preparing);
+      color: var(--board-preparing-ink);
+      border-color: rgba(51,37,13,.2);
+    }
+
+    .order-card.preparing::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.28), rgba(255,255,255,0));
+      transform: translateX(-45%);
+      opacity: .4;
+      animation: preparing-shimmer 9s ease-in-out infinite;
+    }
+
+    .order-card.preparing::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(255,255,255,.2), transparent 28%);
+      opacity: .4;
+    }
+
+    .order-number {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(3.6rem, 8vw, 8rem);
+      line-height: .88;
+    }
+
+    .ready-announcement {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 30;
+      opacity: 0;
+      visibility: hidden;
+      background: rgba(10, 10, 10, .14);
+      transition: opacity .28s ease, visibility .28s ease;
+      pointer-events: none;
+    }
+
+    .ready-announcement.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .ready-announcement-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+      padding: clamp(1.2rem, 2vw, 2rem) clamp(1.6rem, 4vw, 3rem);
+      border: 2px solid rgba(216,247,208,.5);
+      border-radius: 26px;
+      background: rgba(17,17,17,.74);
+      box-shadow: 0 24px 80px rgba(0,0,0,.26);
+      transform: translateY(12px) scale(.97);
+      transition: transform .26s ease;
+    }
+
+    .ready-announcement.is-visible .ready-announcement-inner {
+      transform: translateY(0) scale(1);
+    }
+
+    .ready-announcement-label {
+      font-size: clamp(.75rem, 1.5vw, 1.1rem);
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--board-ready);
+    }
+
+    .ready-announcement-order {
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(2.5rem, 8vw, 7rem);
+      line-height: .9;
+      letter-spacing: -.06em;
+      text-transform: uppercase;
+      color: var(--board-ready);
+    }
+
+    @keyframes preparing-shimmer {
+      0% { transform: translateX(-52%); opacity: .18; }
+      20% { opacity: .42; }
+      50% { transform: translateX(18%); opacity: .54; }
+      100% { transform: translateX(46%); opacity: .18; }
+    }
+
+    @keyframes ready-card-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(216,247,208,.28); }
+      50% { box-shadow: 0 0 0 16px rgba(216,247,208,0); }
+      100% { box-shadow: 0 0 0 0 rgba(216,247,208,0); }
+    }
+
+    .empty-state {
+      display: grid;
+      place-items: center;
+      min-height: clamp(110px, 14vw, 180px);
+      border: 2px dashed rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 1rem;
+      color: var(--board-muted);
+      text-align: center;
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .order-card.preparing::before,
+      .order-card.ready.just-ready {
+        animation: none;
+      }
+
+      .ready-announcement,
+      .ready-announcement-inner {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .board-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .board-column {
+        min-height: 42vh;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .board-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .board-brand {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="readyAnnouncement" class="ready-announcement" aria-live="assertive" aria-atomic="true">
+    <div class="ready-announcement-inner">
+      <span class="ready-announcement-label">Ready</span>
+      <span id="readyAnnouncementOrder" class="ready-announcement-order">Daniel</span>
+    </div>
+  </div>
+
+  <main class="board-shell">
+    <div class="board-frame">
+      <header class="board-header">
+        <div class="board-brand" aria-label="Business name">
+          <span class="board-brand-mark">S</span>
+          <span data-client-text="businessName">Stacked</span>
+        </div>
+      </header>
+
+      <div class="board-grid">
+        <section class="board-column preparing" aria-label="Preparing orders">
+          <h2>Preparing</h2>
+          <ul class="board-list" id="preparingList" aria-live="polite"></ul>
+        </section>
+
+        <section class="board-column ready" aria-label="Ready orders">
+          <h2>Ready</h2>
+          <ul class="board-list" id="readyList" aria-live="polite"></ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="client-config.js"></script>
+  <script>
+    const STORAGE_KEY = "stacked-demo-orders-v1";
+    const QUEUE_STYLE_KEY = "stacked-demo-queue-style-v1";
+    const CHANNEL_NAME = "stacked-demo-orders";
+    const DEFAULT_NUMBER_ORDERS = [
+      { id: "order-42", label: "42", type: "number", status: "ready" },
+      { id: "order-43", label: "43", type: "number", status: "ready" },
+      { id: "order-44", label: "44", type: "number", status: "preparing" },
+      { id: "order-45", label: "45", type: "number", status: "preparing" }
+    ];
+    const DEFAULT_NAME_ORDERS = [
+      { id: "name-aoife", label: "Aoife", type: "name", status: "ready" },
+      { id: "name-jack", label: "Jack", type: "name", status: "ready" },
+      { id: "name-sarah", label: "Sarah", type: "name", status: "preparing" },
+      { id: "name-daniel", label: "Daniel", type: "name", status: "preparing" }
+    ];
+
+    const businessNameEl = document.querySelector('[data-client-text="businessName"]');
+    const preparingList = document.getElementById("preparingList");
+    const readyList = document.getElementById("readyList");
+    const readyAnnouncementEl = document.getElementById("readyAnnouncement");
+    const readyAnnouncementOrderEl = document.getElementById("readyAnnouncementOrder");
+    const channel = "BroadcastChannel" in window ? new BroadcastChannel(CHANNEL_NAME) : null;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const readyAnnouncementQueue = [];
+    let readyAnnouncementActive = false;
+    let previousOrdersById = new Map();
+    let readyTransitionTrackingReady = false;
+    const justReadyOrderIds = new Set();
+
+    function getQueueStyle() {
+      const stored = localStorage.getItem(QUEUE_STYLE_KEY);
+      return stored === "name" ? "name" : "number";
+    }
+
+    function getDefaultOrders() {
+      return (getQueueStyle() === "name" ? DEFAULT_NAME_ORDERS : DEFAULT_NUMBER_ORDERS).map(order => ({ ...order }));
+    }
+
+    function normalizeLegacyNumber(value) {
+      const parsed = Number(value);
+      return Number.isInteger(parsed) && parsed > 0 ? String(parsed) : null;
+    }
+
+    function sanitizeOrder(order) {
+      if (!order || typeof order !== "object") return null;
+
+      const status = order.status === "ready" ? "ready" : "preparing";
+      if (order.type === "name") {
+        const label = String(order.label ?? order.name ?? order.customerName ?? "").trim();
+        if (!label) return null;
+        return { id: String(order.id || label), label, type: "name", status };
+      }
+
+      const label = normalizeLegacyNumber(order.label ?? order.number ?? order.value);
+      if (!label) return null;
+      return { id: String(order.id || label), label, type: "number", status };
+    }
+
+    function loadOrders() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        if (Array.isArray(stored)) {
+          const valid = stored.map(sanitizeOrder).filter(Boolean);
+          if (valid.length) return valid;
+        }
+      } catch (error) {
+        console.warn("Unable to load demo orders from storage.", error);
+      }
+      return getDefaultOrders();
+    }
+
+    function persistOrders(orders) {
+      const safeOrders = orders
+        .map(sanitizeOrder)
+        .filter(Boolean)
+        .sort((a, b) => {
+          if (a.type === "number" && b.type === "number") return Number(a.label) - Number(b.label);
+          if (a.type === "number") return -1;
+          if (b.type === "number") return 1;
+          return a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
+        });
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(safeOrders));
+      if (channel) {
+        channel.postMessage({ type: "orders-update", orders: safeOrders });
+      }
+      return safeOrders;
+    }
+
+    function applyConfig() {
+      const businessName = (window.CLIENT_CONFIG && window.CLIENT_CONFIG.businessName) || "Stacked";
+      document.title = `${businessName} | Collection board`;
+      if (businessNameEl) businessNameEl.textContent = businessName;
+    }
+
+    function showReadyAnnouncement(orderLabel) {
+      if (!readyAnnouncementEl || !readyAnnouncementOrderEl) return;
+
+      readyAnnouncementOrderEl.textContent = orderLabel;
+      readyAnnouncementEl.classList.add("is-visible");
+      const duration = reducedMotion ? 1200 : 1700;
+      window.clearTimeout(showReadyAnnouncement._hideTimer);
+      showReadyAnnouncement._hideTimer = window.setTimeout(() => {
+        readyAnnouncementEl.classList.remove("is-visible");
+      }, duration);
+    }
+
+    function queueReadyAnnouncement(order) {
+      const orderLabel = order.type === "number" ? `#${order.label}` : order.label;
+      const alreadyQueued = readyAnnouncementQueue.some(item => item.id === order.id && item.label === orderLabel);
+      if (alreadyQueued) return;
+
+      readyAnnouncementQueue.push({ id: String(order.id), label: orderLabel });
+      if (!readyAnnouncementActive) {
+        processReadyAnnouncementQueue();
+      }
+    }
+
+    function processReadyAnnouncementQueue() {
+      if (!readyAnnouncementQueue.length) {
+        readyAnnouncementActive = false;
+        return;
+      }
+
+      readyAnnouncementActive = true;
+      const nextOrder = readyAnnouncementQueue.shift();
+      showReadyAnnouncement(nextOrder.label);
+      const nextDelay = reducedMotion ? 1200 : 1600;
+      window.setTimeout(() => {
+        processReadyAnnouncementQueue();
+      }, nextDelay);
+    }
+
+    function queueJustReadyOrder(orderId) {
+      if (!orderId) return;
+      justReadyOrderIds.add(orderId);
+      window.setTimeout(() => {
+        justReadyOrderIds.delete(orderId);
+        renderBoard();
+      }, reducedMotion ? 700 : 900);
+    }
+
+    function detectReadyTransitions(currentOrders) {
+      if (!readyTransitionTrackingReady) {
+        previousOrdersById = new Map(currentOrders.map(order => [String(order.id), { status: order.status, label: order.label, type: order.type }]));
+        readyTransitionTrackingReady = true;
+        return;
+      }
+
+      const nextMap = new Map(currentOrders.map(order => [String(order.id), { status: order.status, label: order.label, type: order.type }]));
+      const readyTransitions = [];
+
+      for (const [orderId, nextOrder] of nextMap.entries()) {
+        const previousOrder = previousOrdersById.get(orderId);
+        if (previousOrder && previousOrder.status === "preparing" && nextOrder.status === "ready") {
+          readyTransitions.push({ id: orderId, label: nextOrder.label, type: nextOrder.type });
+          queueJustReadyOrder(orderId);
+        }
+      }
+
+      previousOrdersById = nextMap;
+      readyTransitions.forEach(order => queueReadyAnnouncement(order));
+    }
+
+    function renderOrderList(listElement, status) {
+      const queueStyle = getQueueStyle();
+      const orders = loadOrders()
+        .filter(order => order.status === status && (queueStyle === "name" ? order.type === "name" : order.type === "number"))
+        .sort((a, b) => {
+          if (a.type === "number" && b.type === "number") return Number(a.label) - Number(b.label);
+          if (a.type === "number") return -1;
+          if (b.type === "number") return 1;
+          return a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
+        });
+
+      if (!orders.length) {
+        listElement.innerHTML = '<li class="empty-state">No orders</li>';
+        return;
+      }
+
+      listElement.innerHTML = orders.map(order => {
+        const classes = ["order-card", status];
+        if (status === "ready" && justReadyOrderIds.has(String(order.id))) {
+          classes.push("just-ready");
+        }
+        return `
+          <li class="${classes.join(" ")}">
+            <span class="order-number">${order.type === "number" ? `#${order.label}` : order.label}</span>
+          </li>
+        `;
+      }).join("");
+    }
+
+    function renderBoard() {
+      const currentOrders = loadOrders();
+      detectReadyTransitions(currentOrders);
+      renderOrderList(preparingList, "preparing");
+      renderOrderList(readyList, "ready");
+    }
+
+    applyConfig();
+    renderBoard();
+
+    if (channel) {
+      channel.addEventListener("message", (event) => {
+        if (!event.data) return;
+        if (event.data.type === "queue-style-update") {
+          localStorage.setItem(QUEUE_STYLE_KEY, event.data.queueStyle || getQueueStyle());
+        }
+        if (event.data.type === "orders-update") {
+          const nextOrders = Array.isArray(event.data.orders) ? event.data.orders : loadOrders();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextOrders));
+        }
+        renderBoard();
+      });
+    }
+
+    window.addEventListener("storage", (event) => {
+      if (event.key === STORAGE_KEY || event.key === QUEUE_STYLE_KEY) {
+        renderBoard();
+      }
+    });
+
+    window.addEventListener("beforeunload", () => {
+      readyAnnouncementQueue.length = 0;
+    });
+  </script>
+</body>
+</html>

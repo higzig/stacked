@@ -124,11 +124,399 @@
       min-width: 220px;
     }
 
+    .collection-demo {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      background: rgba(17,17,17,.48);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    .collection-demo h2 {
+      margin: 0 0 .45rem;
+      font-family: "Archivo Black", sans-serif;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+    }
+
+    .collection-demo p {
+      margin: 0;
+      color: rgba(255,255,255,.76);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .collection-controls {
+      margin-top: 1.25rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr));
+      gap: .9rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      min-width: 0;
+    }
+
+    .field label {
+      color: rgba(255,255,255,.82);
+      font-size: .8rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 52px;
+      padding: .8rem 1rem;
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-weight: 700;
+    }
+
+    .field input::placeholder {
+      color: rgba(255,255,255,.44);
+    }
+
+    .control-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin-top: 1rem;
+    }
+
+    .control-actions .btn {
+      min-width: 150px;
+    }
+
+    .orders-list {
+      margin-top: 1.2rem;
+      display: grid;
+      gap: .75rem;
+    }
+
+    .order-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .8rem 1rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      color: white;
+      font-weight: 700;
+    }
+
+    .order-pill strong {
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      letter-spacing: -.05em;
+      font-family: "Archivo Black", sans-serif;
+      text-transform: uppercase;
+    }
+
+    .order-pill span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 110px;
+      padding: .35rem .6rem;
+      border-radius: 999px;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .order-pill.ready span {
+      background: rgba(216,247,208,.15);
+      color: #d8f7d0;
+    }
+
+    .order-pill.preparing span {
+      background: rgba(247,229,169,.15);
+      color: #f7e5a9;
+    }
+
+    .collection-note {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.72);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .setup-panel {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .setup-panel h3 {
+      margin: 0 0 .9rem;
+      font-size: 1.15rem;
+      letter-spacing: -.03em;
+      text-transform: none;
+    }
+
+    .setup-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+
+    .setup-option {
+      flex: 1 1 190px;
+      min-height: 46px;
+      padding: .75rem .9rem;
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 12px;
+      background: rgba(255,255,255,.05);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .setup-option:hover,
+    .setup-option:focus-visible {
+      border-color: rgba(255,255,255,.4);
+    }
+
+    .setup-option.is-selected {
+      background: var(--yellow);
+      border-color: var(--ink);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 rgba(17,17,17,.4);
+    }
+
+    .queue-settings {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-top: 1rem;
+      padding: .75rem 1rem;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .queue-settings-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: .75rem;
+      margin-left: auto;
+    }
+
+    .queue-settings.hidden,
+    .admin-view.hidden,
+    .setup-panel.hidden {
+      display: none;
+    }
+
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .75rem;
+      color: rgba(255,255,255,.78);
+      font-size: .9rem;
+    }
+
+    .settings-row label {
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .settings-row select {
+      min-height: 42px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 10px;
+      background: rgba(255,255,255,.06);
+      color: white;
+      padding: .45rem .7rem;
+    }
+
+    .queue-settings-btn {
+      min-height: 42px;
+      padding: .5rem .9rem;
+      font-size: .78rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.04);
+      color: white;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+
+    .queue-settings-btn.silver {
+      background: rgba(196, 201, 208, 0.18);
+      border-color: rgba(255,255,255,.22);
+      color: rgba(255,255,255,.96);
+    }
+
+    .queue-settings-btn.silver:hover,
+    .queue-settings-btn.silver:focus-visible {
+      background: rgba(196, 201, 208, 0.26);
+    }
+
+    .admin-top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-top: 1rem;
+      align-items: stretch;
+    }
+
+    .admin-top-actions .btn {
+      min-height: 52px;
+      flex: 0 0 auto;
+    }
+
+    .admin-control-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .9rem;
+      margin-top: 1rem;
+      align-items: end;
+    }
+
+    .admin-action-field {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      justify-content: flex-end;
+    }
+
+    .admin-action-field .btn {
+      width: 100%;
+      min-height: 52px;
+      justify-self: center;
+      align-self: center;
+      text-align: center;
+    }
+
+    .order-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .8rem 1rem;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .order-summary {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .order-label {
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      font-family: "Archivo Black", sans-serif;
+      letter-spacing: -.05em;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .order-status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 110px;
+      padding: .35rem .6rem;
+      border-radius: 999px;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .order-row.ready .order-status-badge {
+      background: rgba(216,247,208,.15);
+      color: #d8f7d0;
+    }
+
+    .order-row.preparing .order-status-badge {
+      background: rgba(247,229,169,.15);
+      color: #f7e5a9;
+    }
+
+    .order-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: .5rem;
+    }
+
+    .order-action-btn {
+      min-height: 42px;
+      padding: .62rem .8rem;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      min-width: 104px;
+    }
+
+    .order-action-btn.preparing {
+      background: rgba(247,229,169,.22);
+      border-color: rgba(247,229,169,.5);
+      color: #f7e5a9;
+    }
+
+    .order-action-btn.ready {
+      background: rgba(216,247,208,.22);
+      border-color: rgba(216,247,208,.5);
+      color: #d8f7d0;
+    }
+
+    .order-action-btn.remove {
+      background: rgba(239,69,56,.14);
+      border-color: rgba(239,69,56,.45);
+      color: #ffb2aa;
+    }
+
+    @media (max-width: 820px) {
+      .collection-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 520px) {
       .demo-actions,
       .demo-actions .btn,
-      .demo-cta .btn {
+      .demo-cta .btn,
+      .control-actions .btn {
         width: 100%;
+      }
+
+      .control-actions {
+        flex-direction: column;
       }
     }
   </style>
@@ -136,37 +524,528 @@
 <body>
   <main class="demo-shell">
     <div class="demo-panel">
-      <div class="demo-badge">Sales demo</div>
-
       <h1>Food Truck Website Demo</h1>
 
       <p>
         This concept focuses on menu visibility, locations, ordering ahead and event enquiries for a food-truck business.
       </p>
 
-      <ul class="demo-features">
-        <li>Branding</li>
-        <li>Menu</li>
-        <li>Locations</li>
-        <li>Ordering setup</li>
-        <li>Event enquiries</li>
-      </ul>
-
       <div class="demo-actions">
         <a class="btn btn-yellow" href="index.html">View customer website</a>
-        <a class="btn btn-red" href="#demo-next">View collection demo</a>
+        <a class="btn btn-dark" href="board.html" target="_blank" rel="noopener noreferrer">Open board</a>
       </div>
 
-      <div class="demo-note">
-        Branding, menu, locations and ordering integrations are customised for each business.
-      </div>
+      <section class="collection-demo" id="collection-demo" aria-labelledby="collection-demo-title">
+        <h2 id="collection-demo-title">Collection display demo</h2>
+        <p>Adjust the queue for the kitchen TV or collection screen. Changes sync between open tabs in this browser.</p>
 
-      <div class="demo-cta" id="demo-next">
-        <h2>Want a version built for your food truck?</h2>
-        <p>Use this area for the next sales step or a future collection-screen demo link.</p>
-        <a class="btn btn-yellow" href="mailto:hello@stacked.example?subject=Food%20truck%20website%20enquiry">Talk about your truck</a>
-      </div>
+        <div id="setupPanel" class="setup-panel" aria-live="polite">
+          <h3>How do you identify orders?</h3>
+          <div class="setup-options">
+            <button class="setup-option" type="button" data-setup-mode="number">Order numbers</button>
+            <button class="setup-option" type="button" data-setup-mode="name">Customer names</button>
+          </div>
+        </div>
+
+        <div id="adminQueueView" class="admin-view hidden">
+          <div id="queueSettingsPanel" class="queue-settings" aria-live="polite">
+            <div class="settings-row">
+              <label for="queueStyleSelect">Queue style</label>
+              <select id="queueStyleSelect">
+                <option value="number">Order numbers</option>
+                <option value="name">Customer names</option>
+              </select>
+            </div>
+            <div class="settings-row">
+              <label for="readyTimeoutSelect">Ready timeout</label>
+              <select id="readyTimeoutSelect">
+                <option value="10">10 seconds (demo)</option>
+                <option value="30">30 seconds (demo)</option>
+                <option value="300" selected>5 minutes</option>
+              </select>
+            </div>
+            <div class="queue-settings-actions">
+              <button class="queue-settings-btn" id="resetDemoBtn" type="button">Reset demo orders</button>
+            </div>
+          </div>
+
+          <div class="admin-control-row">
+            <div class="field" id="customerNameField">
+              <label for="customerNameInput">Customer name</label>
+              <input id="customerNameInput" type="text" placeholder="e.g. Sarah" />
+            </div>
+
+            <div class="field admin-action-field">
+              <label>Queue action</label>
+              <button class="btn btn-yellow" id="addOrderBtn" type="button">Add order</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="orders-list" id="ordersList" aria-live="polite"></div>
+
+      </section>
     </div>
   </main>
+
+  <script src="client-config.js"></script>
+  <script>
+    const STORAGE_KEY = "stacked-demo-orders-v1";
+    const QUEUE_STYLE_KEY = "stacked-demo-queue-style-v1";
+    const READY_TIMEOUT_KEY = "stacked-demo-ready-timeout-v1";
+    const NEXT_NUMBER_KEY = "stacked-demo-next-number-v1";
+    const SETUP_COMPLETE_KEY = "stacked-demo-setup-complete-v1";
+    const CHANNEL_NAME = "stacked-demo-orders";
+    const DEFAULT_TIMEOUT_SECONDS = 300;
+    const DEFAULT_NUMBER_ORDERS = [
+      { id: "order-42", label: "42", type: "number", status: "ready", readyAt: Date.now() },
+      { id: "order-43", label: "43", type: "number", status: "ready", readyAt: Date.now() - 120000 },
+      { id: "order-44", label: "44", type: "number", status: "preparing" },
+      { id: "order-45", label: "45", type: "number", status: "preparing" }
+    ];
+    const DEFAULT_NAME_ORDERS = [
+      { id: "name-aoife", label: "Aoife", type: "name", status: "ready", readyAt: Date.now() },
+      { id: "name-jack", label: "Jack", type: "name", status: "ready", readyAt: Date.now() - 120000 },
+      { id: "name-sarah", label: "Sarah", type: "name", status: "preparing" },
+      { id: "name-daniel", label: "Daniel", type: "name", status: "preparing" }
+    ];
+
+    const setupPanel = document.getElementById("setupPanel");
+    const adminQueueView = document.getElementById("adminQueueView");
+    const queueSettingsPanel = document.getElementById("queueSettingsPanel");
+    const queueStyleSelect = document.getElementById("queueStyleSelect");
+    const readyTimeoutSelect = document.getElementById("readyTimeoutSelect");
+    const customerNameInput = document.getElementById("customerNameInput");
+    const addOrderBtn = document.getElementById("addOrderBtn");
+    const resetDemoBtn = document.getElementById("resetDemoBtn");
+    const ordersList = document.getElementById("ordersList");
+    const setupButtons = Array.from(document.querySelectorAll(".setup-option"));
+    const channel = "BroadcastChannel" in window ? new BroadcastChannel(CHANNEL_NAME) : null;
+
+    function safeText(value) {
+      return String(value ?? "").trim();
+    }
+
+    function makeOrderId(prefix) {
+      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+    }
+
+    function getQueueStyle() {
+      const stored = localStorage.getItem(QUEUE_STYLE_KEY);
+      return stored === "name" ? "name" : "number";
+    }
+
+    function persistQueueStyle(style) {
+      const queueStyle = style === "name" ? "name" : "number";
+      localStorage.setItem(QUEUE_STYLE_KEY, queueStyle);
+      if (channel) {
+        channel.postMessage({ type: "queue-style-update", queueStyle });
+      }
+      return queueStyle;
+    }
+
+    function getReadyTimeoutSeconds() {
+      const stored = Number(localStorage.getItem(READY_TIMEOUT_KEY));
+      if (Number.isInteger(stored) && stored > 0) return stored;
+      localStorage.setItem(READY_TIMEOUT_KEY, String(DEFAULT_TIMEOUT_SECONDS));
+      return DEFAULT_TIMEOUT_SECONDS;
+    }
+
+    function setReadyTimeoutSeconds(value) {
+      const parsed = Number(value);
+      if (!Number.isInteger(parsed) || parsed <= 0) return;
+      localStorage.setItem(READY_TIMEOUT_KEY, String(parsed));
+      if (channel) {
+        channel.postMessage({ type: "queue-settings-update", readyTimeoutSeconds: parsed });
+      }
+      renderOrders();
+    }
+
+    function isSetupComplete() {
+      return localStorage.getItem(SETUP_COMPLETE_KEY) === "true";
+    }
+
+    function completeSetup(style) {
+      const queueStyle = style === "name" ? "name" : "number";
+      localStorage.setItem(SETUP_COMPLETE_KEY, "true");
+      persistQueueStyle(queueStyle);
+      const orders = getDefaultOrdersForStyle(queueStyle);
+      writeOrders(orders, { silent: true, skipRender: true });
+      refreshQueueUi();
+    }
+
+    function getDefaultOrdersForStyle(style = getQueueStyle()) {
+      return (style === "name" ? DEFAULT_NAME_ORDERS : DEFAULT_NUMBER_ORDERS).map(order => ({ ...order }));
+    }
+
+    function normalizeLegacyNumber(value) {
+      const parsed = Number(value);
+      return Number.isInteger(parsed) && parsed > 0 ? String(parsed) : null;
+    }
+
+    function sanitizeOrder(order) {
+      if (!order || typeof order !== "object") return null;
+
+      const status = order.status === "ready" ? "ready" : "preparing";
+      const type = order.type === "name" ? "name" : "number";
+      const readyAt = Number(order.readyAt);
+      const normalizedReadyAt = Number.isFinite(readyAt) ? readyAt : null;
+
+      if (type === "name") {
+        const label = safeText(order.label ?? order.name ?? order.customerName);
+        if (!label) return null;
+        return {
+          id: safeText(order.id) || makeOrderId("name"),
+          label,
+          type: "name",
+          status,
+          readyAt: normalizedReadyAt
+        };
+      }
+
+      const label = normalizeLegacyNumber(order.label ?? order.number ?? order.value ?? order.id);
+      if (!label) return null;
+      return {
+        id: safeText(order.id) || makeOrderId("number"),
+        label,
+        type: "number",
+        status,
+        readyAt: normalizedReadyAt
+      };
+    }
+
+    function loadOrders() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        if (Array.isArray(stored)) {
+          const normalized = stored.map(sanitizeOrder).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
+      } catch (error) {
+        console.warn("Unable to read demo orders.", error);
+      }
+      return getDefaultOrdersForStyle(getQueueStyle());
+    }
+
+    function sortOrders(a, b) {
+      if (a.type === "number" && b.type === "number") {
+        return Number(a.label) - Number(b.label);
+      }
+      if (a.type === "number") return -1;
+      if (b.type === "number") return 1;
+      return a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
+    }
+
+    function getNextNumber() {
+      const stored = Number(localStorage.getItem(NEXT_NUMBER_KEY));
+      if (Number.isInteger(stored) && stored > 0) {
+        return stored;
+      }
+
+      const highest = loadOrders()
+        .filter(order => order.type === "number")
+        .reduce((max, order) => Math.max(max, Number(order.label) || 0), 0);
+
+      const next = highest > 0 ? highest + 1 : 46;
+      localStorage.setItem(NEXT_NUMBER_KEY, String(next));
+      return next;
+    }
+
+    function setNextNumber(nextNumber) {
+      const parsed = Number(nextNumber);
+      if (!Number.isInteger(parsed) || parsed < 1) return;
+      localStorage.setItem(NEXT_NUMBER_KEY, String(parsed));
+    }
+
+    function getReadyRemainingSeconds(order) {
+      if (order.status !== "ready" || !Number.isFinite(Number(order.readyAt))) return null;
+      const timeoutSeconds = getReadyTimeoutSeconds();
+      const elapsedSeconds = (Date.now() - Number(order.readyAt)) / 1000;
+      return Math.max(0, timeoutSeconds - elapsedSeconds);
+    }
+
+    function formatCountdown(totalSeconds) {
+      const rounded = Math.ceil(totalSeconds);
+      const minutes = Math.floor(rounded / 60);
+      const seconds = rounded % 60;
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function shouldExpireReadyOrder(order) {
+      if (order.status !== "ready" || !Number.isFinite(Number(order.readyAt))) return false;
+      return getReadyRemainingSeconds(order) <= 0;
+    }
+
+    function pruneExpiredReadyOrders(orders) {
+      const filtered = orders.filter(order => !shouldExpireReadyOrder(order));
+      if (filtered.length !== orders.length) {
+        writeOrders(filtered, { silent: true, skipRender: true });
+      }
+      return filtered;
+    }
+
+    function writeOrders(nextOrders, options = {}) {
+      const { silent = false, skipRender = false } = options;
+      const safeOrders = nextOrders
+        .map(sanitizeOrder)
+        .filter(Boolean)
+        .sort(sortOrders);
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(safeOrders));
+      if (channel && !silent) {
+        channel.postMessage({ type: "orders-update", queueStyle: getQueueStyle(), orders: safeOrders });
+      }
+      if (!skipRender) {
+        renderOrders();
+      }
+      return safeOrders;
+    }
+
+    function refreshQueueUi() {
+      const queueStyle = getQueueStyle();
+      const setupComplete = isSetupComplete();
+      setupPanel.classList.toggle("hidden", setupComplete);
+      adminQueueView.classList.toggle("hidden", !setupComplete);
+
+      const isNameMode = queueStyle === "name";
+      if (customerNameInput) {
+        document.getElementById("customerNameField").style.display = isNameMode ? "flex" : "none";
+      }
+      addOrderBtn.textContent = queueStyle === "number" ? "Add Order Number" : "Add order";
+      if (queueStyleSelect) {
+        queueStyleSelect.value = queueStyle;
+      }
+      if (readyTimeoutSelect) {
+        readyTimeoutSelect.value = String(getReadyTimeoutSeconds());
+      }
+      if (queueSettingsPanel) {
+        queueSettingsPanel.classList.remove("hidden");
+      }
+    }
+
+    function renderOrders() {
+      const queueStyle = getQueueStyle();
+      const orders = pruneExpiredReadyOrders(loadOrders()).filter(order => order.type === queueStyle);
+      const sortedOrders = orders.sort(sortOrders);
+
+      if (!sortedOrders.length) {
+        ordersList.innerHTML = '<div class="order-row"><div class="order-summary"><span class="order-label">No orders</span><span class="order-status-badge preparing">Waiting</span></div></div>';
+        refreshQueueUi();
+        return;
+      }
+
+      ordersList.innerHTML = sortedOrders.map(order => {
+        const label = order.type === "number" ? `#${order.label}` : order.label;
+        const removalText = getReadyRemainingSeconds(order) !== null
+          ? `<small class="order-timer">Removes in ${formatCountdown(getReadyRemainingSeconds(order))}</small>`
+          : "";
+
+        const isPreparing = order.status === "preparing";
+        const primaryActionLabel = isPreparing ? "Mark Ready" : "Back to Preparing";
+        const primaryAction = isPreparing ? "ready" : "preparing";
+
+        return `
+          <div class="order-row ${order.status}">
+            <div class="order-summary">
+              <div>
+                <span class="order-label">${label}</span>
+                ${removalText}
+              </div>
+              <span class="order-status-badge ${order.status}">${order.status}</span>
+            </div>
+            <div class="order-actions">
+              <button type="button" class="order-action-btn ${isPreparing ? "ready" : "preparing"}" data-order-id="${order.id}" data-action="${primaryAction}">${primaryActionLabel}</button>
+              <button type="button" class="order-action-btn remove" data-order-id="${order.id}" data-action="remove">Remove</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      refreshQueueUi();
+    }
+
+    function ensureQueueStyle(style) {
+      const nextStyle = style === "name" ? "name" : "number";
+      const currentOrders = loadOrders();
+      const hasIncompatibleOrders = currentOrders.some(order => order.type !== nextStyle);
+
+      if (hasIncompatibleOrders) {
+        const confirmed = window.confirm("Switching queue style will replace incompatible demo orders. Continue?");
+        if (!confirmed) return false;
+      }
+
+      persistQueueStyle(nextStyle);
+      const defaultOrders = getDefaultOrdersForStyle(nextStyle);
+      writeOrders(defaultOrders, { silent: false, skipRender: false });
+      refreshQueueUi();
+      return true;
+    }
+
+    function addOrder() {
+      const queueStyle = getQueueStyle();
+      const orders = loadOrders();
+
+      if (queueStyle === "number") {
+        const candidate = getNextNumber();
+        const existingOrder = orders.filter(order => order.type === "number").find(order => Number(order.label) === candidate);
+
+        if (existingOrder) {
+          existingOrder.status = "preparing";
+          delete existingOrder.readyAt;
+        } else {
+          orders.push({ id: makeOrderId("number"), label: String(candidate), type: "number", status: "preparing" });
+        }
+
+        writeOrders(orders, { silent: false, skipRender: false });
+        setNextNumber(candidate + 1);
+        return;
+      }
+
+      const name = safeText(customerNameInput.value);
+      if (!name) {
+        customerNameInput.focus();
+        return;
+      }
+
+      const existingOrder = orders.filter(order => order.type === "name").find(order => order.label.toLowerCase() === name.toLowerCase());
+      if (existingOrder) {
+        existingOrder.status = "preparing";
+        delete existingOrder.readyAt;
+      } else {
+        orders.push({ id: makeOrderId("name"), label: name, type: "name", status: "preparing" });
+      }
+
+      writeOrders(orders, { silent: false, skipRender: false });
+      customerNameInput.value = "";
+      customerNameInput.focus();
+    }
+
+    function updateSpecificOrder(orderId, nextStatus) {
+      const orders = loadOrders();
+      const order = orders.find(item => item.id === orderId);
+      if (!order) return;
+
+      order.status = nextStatus;
+      if (nextStatus === "ready") {
+        order.readyAt = Date.now();
+      } else {
+        delete order.readyAt;
+      }
+
+      writeOrders(orders, { silent: false, skipRender: false });
+    }
+
+    function removeSpecificOrder(orderId) {
+      const orders = loadOrders().filter(order => order.id !== orderId);
+      writeOrders(orders, { silent: false, skipRender: false });
+    }
+
+    function resetDemoOrders() {
+      const queueStyle = getQueueStyle();
+      const defaultOrders = getDefaultOrdersForStyle(queueStyle);
+      writeOrders(defaultOrders, { silent: false, skipRender: false });
+
+      const nextNumber = queueStyle === "number" ? Math.max(...defaultOrders.map(order => Number(order.label) || 0), 0) + 1 : 46;
+      setNextNumber(nextNumber);
+      customerNameInput.value = "";
+      refreshQueueUi();
+    }
+
+    function initSetupButtons() {
+      setupButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const selectedMode = button.dataset.setupMode;
+          setupButtons.forEach((item) => item.classList.toggle("is-selected", item === button));
+          completeSetup(selectedMode);
+        });
+      });
+    }
+
+    readyTimeoutSelect.addEventListener("change", (event) => {
+      setReadyTimeoutSeconds(event.target.value);
+    });
+
+    queueStyleSelect.addEventListener("change", (event) => {
+      ensureQueueStyle(event.target.value);
+    });
+
+    addOrderBtn.addEventListener("click", addOrder);
+    resetDemoBtn.addEventListener("click", resetDemoOrders);
+
+    ordersList.addEventListener("click", (event) => {
+      const actionButton = event.target.closest("[data-action]");
+      if (!actionButton) return;
+
+      const orderId = actionButton.dataset.orderId;
+      const action = actionButton.dataset.action;
+      if (action === "remove") {
+        removeSpecificOrder(orderId);
+        return;
+      }
+      updateSpecificOrder(orderId, action);
+    });
+
+    customerNameInput.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      addOrder();
+    });
+
+    if (channel) {
+      channel.addEventListener("message", (event) => {
+        if (!event.data) return;
+
+        if (event.data.type === "queue-style-update") {
+          localStorage.setItem(QUEUE_STYLE_KEY, event.data.queueStyle || getQueueStyle());
+        }
+
+        if (event.data.type === "queue-settings-update") {
+          if (event.data.readyTimeoutSeconds) {
+            localStorage.setItem(READY_TIMEOUT_KEY, String(event.data.readyTimeoutSeconds));
+          }
+        }
+
+        if (event.data.type === "orders-update") {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(event.data.orders || []));
+        }
+
+        renderOrders();
+      });
+    }
+
+    window.addEventListener("storage", (event) => {
+      if ([STORAGE_KEY, QUEUE_STYLE_KEY, READY_TIMEOUT_KEY, SETUP_COMPLETE_KEY].includes(event.key)) {
+        renderOrders();
+      }
+    });
+
+    function startTimerSweep() {
+      if (window.__stackedReadySweep) {
+        clearInterval(window.__stackedReadySweep);
+      }
+      window.__stackedReadySweep = window.setInterval(() => {
+        const orders = loadOrders();
+        const expired = orders.filter(order => shouldExpireReadyOrder(order));
+        if (expired.length) {
+          const remaining = orders.filter(order => !expired.some(item => item.id === order.id));
+          writeOrders(remaining, { silent: false, skipRender: false });
+        }
+      }, 1000);
+    }
+
+    initSetupButtons();
+    refreshQueueUi();
+    startTimerSweep();
+
+    if (!isSetupComplete()) {
+      setupPanel.classList.remove("hidden");
+      adminQueueView.classList.add("hidden");
+      setupButtons.forEach((button) => button.classList.remove("is-selected"));
+    } else {
+      setupPanel.classList.add("hidden");
+      adminQueueView.classList.remove("hidden");
+      renderOrders();
+    }
+  </script>
 </body>
 </html>
