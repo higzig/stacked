@@ -47,7 +47,9 @@ window.CLIENT_CONFIG = {
     logoUrl: "",
     identificationMode: "number",
     overdueMinutes: 10,
-    readyChime: true
+    readyChime: true,
+    // Set false for a production display once a real connection state is available.
+    showConnectionStatus: true
   },
 
   eventEnquiryLabel: "Demo event enquiry",
