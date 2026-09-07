@@ -45,7 +45,7 @@ window.CLIENT_CONFIG = {
     businessName: "Stacked",
     accentColor: "#ffd83d",
     logoUrl: "",
-    identificationMode: "number",
+    identificationMode: "number-name",
     overdueMinutes: 10,
     readyChime: true,
     // Set false for a production display once a real connection state is available.

@@ -457,22 +457,27 @@
     }
 
     .order-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: .8rem 1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(170px, 220px);
+      grid-template-areas:
+        "summary primary"
+        "summary secondary";
+      align-items: stretch;
+      gap: .65rem 1rem;
+      padding: 1rem;
       border: 1px solid rgba(255,255,255,.1);
-      border-radius: 12px;
+      border-radius: 14px;
       background: rgba(255,255,255,.04);
     }
 
     .order-summary {
+      grid-area: summary;
       display: flex;
-      align-items: center;
-      gap: .75rem;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: .35rem;
       min-width: 0;
-      flex: 1;
     }
 
     .order-label {
@@ -486,14 +491,28 @@
     .order-status-badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-width: 110px;
-      padding: .35rem .6rem;
-      border-radius: 999px;
-      font-size: .7rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
+      min-width: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent !important;
+      font-size: .82rem;
+      letter-spacing: .02em;
+      text-transform: capitalize;
       font-weight: 800;
+    }
+
+    .order-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .35rem;
+      min-height: 1.25rem;
+    }
+
+    .order-meta .order-timer::before {
+      content: "·";
+      margin-right: .35rem;
+      color: rgba(255,255,255,.4);
     }
 
     .order-row.ready .order-status-badge {
@@ -516,11 +535,23 @@
     .order-row.collected { opacity: .58; }
 
     .order-actions {
+      display: contents;
+    }
+
+    .order-primary-action {
+      grid-area: primary;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: .5rem;
-      flex-shrink: 0;
+    }
+
+    .order-secondary-actions {
+      grid-area: secondary;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .4rem;
+    }
+
+    .order-row.ready .order-secondary-actions .preparing {
+      grid-column: 1 / -1;
     }
 
     .order-action-btn {
@@ -533,6 +564,22 @@
       text-transform: uppercase;
       cursor: pointer;
       min-width: 104px;
+    }
+
+    .order-primary-action .order-action-btn {
+      width: 100%;
+      min-height: 58px;
+      font-size: .92rem;
+    }
+
+    .order-secondary-actions .order-action-btn {
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 36px;
+      padding: .42rem .55rem;
+      border-width: 1px;
+      background: rgba(255,255,255,.045);
+      font-size: .66rem;
     }
 
     .order-action-btn.preparing {
@@ -586,14 +633,18 @@
       .order-row {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "summary"
+          "primary"
+          "secondary";
         align-items: start;
         gap: .75rem;
         padding: .9rem;
       }
 
       .order-summary {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        display: flex;
+        flex-direction: column;
         align-items: start;
         gap: .6rem;
       }
@@ -618,9 +669,7 @@
       }
 
       .order-actions {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        width: 100%;
+        display: contents;
       }
 
       .order-action-btn {
@@ -628,6 +677,15 @@
         width: 100%;
         min-height: 48px;
         padding-inline: .55rem;
+      }
+
+      .order-secondary-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .order-row.ready .order-secondary-actions .preparing {
+        grid-column: 1 / -1;
       }
 
       .demo-actions,
@@ -660,7 +718,7 @@
         <h2 id="collection-demo-title">Queue management</h2>
         <p class="admin-demo-note">The queue stays beside your existing register. Changes sync with the local demo collection screen.</p>
 
-        <div id="setupPanel" class="setup-panel" aria-live="polite">
+        <div id="setupPanel" class="setup-panel hidden" aria-live="polite" hidden>
           <h3>How do you identify orders?</h3>
           <div class="setup-options">
             <button class="setup-option" type="button" data-setup-mode="number">Order numbers</button>
@@ -706,7 +764,7 @@
 
           <div class="admin-control-row">
             <div class="field" id="customerNameField">
-              <label for="customerNameInput">Customer name</label>
+              <label for="customerNameInput">Customer name <span aria-hidden="true">(optional)</span></label>
               <input id="customerNameInput" type="text" placeholder="e.g. Sarah" />
             </div>
 
@@ -864,7 +922,22 @@
       const collectedAt = Number(order.collectedAt);
       const normalizedCollectedAt = Number.isFinite(collectedAt) ? collectedAt : null;
 
-      if (type === "name" || type === "number-name") {
+      if (type === "number-name") {
+        const label = safeText(order.label ?? order.name ?? order.customerName);
+        const number = normalizeLegacyNumber(order.number);
+        if (!number) return null;
+        return {
+          id: safeText(order.id) || makeOrderId("name"),
+          label,
+          type,
+          status,
+          readyAt: normalizedReadyAt,
+          collectedAt: normalizedCollectedAt,
+          number
+        };
+      }
+
+      if (type === "name") {
         const label = safeText(order.label ?? order.name ?? order.customerName);
         if (!label) return null;
         return {
@@ -874,7 +947,7 @@
           status,
           readyAt: normalizedReadyAt,
           collectedAt: normalizedCollectedAt,
-          number: normalizeLegacyNumber(order.number)
+          number: null
         };
       }
 
@@ -983,10 +1056,20 @@
       const isNameMode = queueStyle === "name" || queueStyle === "number-name";
       if (customerNameInput) {
         customerNameField.style.display = isNameMode || Boolean(editingOrderId) ? "flex" : "none";
-        customerNameLabel.textContent = editingOrderId && queueStyle === "number" ? "Order number" : "Customer name";
+        customerNameLabel.textContent = editingOrderId && queueStyle === "number"
+          ? "Order number"
+          : queueStyle === "number-name"
+            ? "Customer name (optional)"
+            : "Customer name";
         customerNameInput.placeholder = editingOrderId && queueStyle === "number" ? "e.g. 42" : "e.g. Sarah";
       }
-      addOrderBtn.textContent = editingOrderId ? "Save edit" : (queueStyle === "number" ? "Add Order Number" : "Add order");
+      addOrderBtn.textContent = editingOrderId
+        ? "Save edit"
+        : queueStyle === "number-name"
+          ? `Add order #${getNextNumber()}`
+          : queueStyle === "number"
+            ? `Add order #${getNextNumber()}`
+            : "Add order";
       if (queueStyleSelect) {
         queueStyleSelect.value = queueStyle;
       }
@@ -1013,7 +1096,11 @@
       }
 
       ordersList.innerHTML = sortedOrders.map(order => {
-        const label = order.type === "number" ? `#${order.label}` : order.type === "number-name" ? `#${order.number || "?"} · ${order.label}` : order.label;
+        const label = order.type === "number"
+          ? `#${order.label}`
+          : order.type === "number-name"
+            ? `#${order.number || "?"}${order.label ? ` · ${order.label}` : ""}`
+            : order.label;
         const safeLabel = escapeHtml(label);
         const safeId = escapeHtml(order.id);
         const remaining = getReadyRemainingSeconds(order);
@@ -1029,17 +1116,21 @@
         return `
           <div class="order-row ${order.status}${overdue ? " overdue" : ""}">
             <div class="order-summary">
-              <div>
-                <span class="order-label">${safeLabel}</span>
+              <span class="order-label">${safeLabel}</span>
+              <div class="order-meta">
+                <span class="order-status-badge ${order.status}">${order.status}</span>
                 ${removalText}
               </div>
-              <span class="order-status-badge ${order.status}">${order.status}</span>
             </div>
             <div class="order-actions">
-              <button type="button" class="order-action-btn ${isPreparing ? "ready" : "collected"}" data-order-id="${safeId}" data-action="${primaryAction}">${primaryActionLabel}</button>
-              ${isPreparing ? "" : '<button type="button" class="order-action-btn preparing" data-order-id="' + safeId + '" data-action="preparing">Back to Preparing</button>'}
-              <button type="button" class="order-action-btn edit" data-order-id="${safeId}" data-action="edit">Edit</button>
-              <button type="button" class="order-action-btn remove" data-order-id="${safeId}" data-action="remove">Remove</button>
+              <div class="order-primary-action">
+                <button type="button" class="order-action-btn ${isPreparing ? "ready" : "collected"}" data-order-id="${safeId}" data-action="${primaryAction}">${primaryActionLabel}</button>
+              </div>
+              <div class="order-secondary-actions">
+                ${isPreparing ? "" : '<button type="button" class="order-action-btn preparing" data-order-id="' + safeId + '" data-action="preparing">Back to Preparing</button>'}
+                <button type="button" class="order-action-btn edit" data-order-id="${safeId}" data-action="edit">Edit</button>
+                <button type="button" class="order-action-btn remove" data-order-id="${safeId}" data-action="remove">Remove</button>
+              </div>
             </div>
           </div>
         `;
@@ -1073,7 +1164,11 @@
         const editedOrder = orders.find(order => order.id === editingOrderId);
         const editedValue = safeText(customerNameInput.value);
         const editedNumber = normalizeLegacyNumber(editedValue);
-        if (editedOrder && editedValue && (editedOrder.type !== "number" || editedNumber)) {
+        const validEdit = editedOrder && (
+          editedOrder.type === "number-name" ||
+          (editedOrder.type === "number" ? Boolean(editedNumber) : Boolean(editedValue))
+        );
+        if (validEdit) {
           editedOrder.label = editedOrder.type === "number" ? editedNumber : editedValue;
           if (editedOrder.type === "number-name" && !editedOrder.number) {
             editedOrder.number = String(getNextNumber());
@@ -1104,7 +1199,7 @@
       }
 
       const name = safeText(customerNameInput.value);
-      if (!name) {
+      if (queueStyle === "name" && !name) {
         customerNameInput.focus();
         return;
       }
@@ -1270,19 +1365,19 @@
       }, 1000);
     }
 
-    initSetupButtons();
-    refreshQueueUi();
-    startTimerSweep();
-
     if (!isSetupComplete()) {
-      setupPanel.classList.remove("hidden");
-      adminQueueView.classList.add("hidden");
-      setupButtons.forEach((button) => button.classList.remove("is-selected"));
-    } else {
-      setupPanel.classList.add("hidden");
-      adminQueueView.classList.remove("hidden");
-      renderOrders();
+      localStorage.setItem(SETUP_COMPLETE_KEY, "true");
+      if (!localStorage.getItem(QUEUE_STYLE_KEY)) {
+        persistQueueStyle(window.CLIENT_CONFIG?.collection?.identificationMode || "number-name");
+      }
     }
+
+    initSetupButtons();
+    setupPanel.classList.add("hidden");
+    adminQueueView.classList.remove("hidden");
+    refreshQueueUi();
+    renderOrders();
+    startTimerSweep();
   </script>
 </body>
 </html>
