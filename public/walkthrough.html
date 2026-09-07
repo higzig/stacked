@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A food-truck website designed to make locations, menus, ordering and event enquiries easier to manage." />
-  <title>Stacked | A better home for your food truck</title>
+  <meta name="description" content="A sharper website for independent street-food businesses, from food trucks and market stalls to pop-ups and coffee carts." />
+  <title>Stacked | A better home for your street-food business</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -71,12 +71,12 @@
     <section class="hero">
       <div class="container">
         <div class="hero-copy">
-          <p class="eyebrow">A sharper home for your truck</p>
+          <p class="eyebrow">A sharper home for your street-food business</p>
           <h1>Big flavour.<br><span>Less friction</span><br>for your customers.</h1>
-          <p>Give hungry customers one reliable place to find you, browse the menu, request collection and enquire about bringing the truck to their next event.</p>
+          <p>Give hungry customers one reliable place to find you, browse the menu, order ahead and enquire about events.</p>
           <div class="hero-actions">
             <a href="#menu" class="btn btn-yellow">Explore the menu</a>
-            <a href="#events" class="btn btn-red">Plan an event</a>
+            <a href="#events" class="btn btn-red">Events</a>
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@
         <div class="section-head">
           <p class="eyebrow">Find the truck</p>
           <h2>Make today’s location impossible to miss.</h2>
-          <p class="owner-note">Keep your current pitch, opening hours and weekly stops in one place, so customers can find you without searching through old social posts.</p>
+          <p class="owner-note">Keep your current pitch, opening hours and weekly stops in one place, so customers can find your business without searching through old social posts.</p>
         </div>
         <div class="today-grid">
           <article class="today-card">
@@ -119,7 +119,7 @@
         <div class="section-head">
           <p class="eyebrow">The menu</p>
           <h2>Keep the good stuff easy to choose.</h2>
-          <p class="owner-note">A clear, mobile-friendly menu helps people decide before they reach the hatch, while sold-out items can be updated before they cause disappointment.</p>
+          <p class="owner-note">Keep prices current, make sold-out items clear and communicate menu changes easily, so customers can decide before they reach the hatch.</p>
         </div>
 
         <div class="menu-tabs" role="tablist" aria-label="Menu categories">
@@ -154,8 +154,8 @@
         <h2>Give busy service a little more breathing room.</h2>
         <div class="collection-grid">
           <div class="collection-copy">
-            <p>Customers can build an order, choose a preferred collection time and send the request through WhatsApp or an existing ordering platform. You confirm the requested time, so expectations stay clear.</p>
-            <p>That can reduce customers standing around the hatch and cut down on repeated “is my order ready?” questions. A collection-display system can be added as an optional service when it suits your workflow.</p>
+            <p>Customers can order ahead through WhatsApp or the ordering platform your business already uses.</p>
+            <p>An optional collection screen can show names or order numbers moving from Preparing to Ready during busy service.</p>
           </div>
           <div class="collection-links">
             <p>See the optional collection setup</p>
@@ -166,14 +166,17 @@
       </div>
     </section>
 
-    <section id="events">
+    <section class="events" id="events">
       <div class="container">
-        <div class="events-inner">
-          <p class="eyebrow">Bring the truck to the crowd</p>
-          <h2>Make catering enquiries easier to win.</h2>
-          <p>Give wedding couples, offices, festivals and private hosts a clear route to ask about dates, locations and guest numbers.</p>
-          <div class="event-tags"><span>Weddings</span><span>Work parties</span><span>Festivals</span><span>Private events</span></div>
-          <p class="event-enquiry-help">A focused enquiry prompt turns “Do you cater?” into the details you need to check availability and reply quickly.</p>
+        <div class="events-feature">
+          <div class="events-image" role="img" aria-label="Food truck catering a private event"></div>
+          <div class="events-inner">
+            <p class="eyebrow">Bring your business to the crowd</p>
+            <h2>Make catering enquiries easier to win.</h2>
+            <p>Weddings, corporate events, festivals and private bookings get a structured enquiry path instead of disappearing into social DMs.</p>
+            <div class="event-tags"><span>Weddings</span><span>Work parties</span><span>Festivals</span><span>Private events</span></div>
+            <a class="btn btn-yellow" href="event-enquiry.html">Plan an event</a>
+          </div>
         </div>
       </div>
     </section>
@@ -183,13 +186,27 @@
         <div class="story-image" role="img" aria-label="Cook preparing smash burgers on a griddle"><div class="story-sticker">Smash hard. Season properly. Keep it simple.</div></div>
         <div class="story-copy">
           <p class="eyebrow">Your story</p>
-          <h2>Let the food truck feel like a brand, not a noticeboard.</h2>
-          <p>Strong food photography, a focused menu and a clear voice help first-time visitors understand what makes your truck worth finding.</p>
-          <p>Everything customers need can live together, from the next pitch to the next private booking.</p>
+          <h2>Make your street-food business feel like a brand, not a noticeboard.</h2>
+          <p>Strong food photography, a focused menu and a clear voice help first-time visitors understand what makes your business worth finding.</p>
+          <p>Everything customers need can live together, from the next market pitch to the next private booking.</p>
         </div>
       </div>
     </section>
   </main>
+
+  <section class="walkthrough-cta" aria-labelledby="walkthroughCtaTitle">
+    <div class="container walkthrough-cta-inner">
+      <div>
+        <p class="eyebrow">Make it yours</p>
+        <h2 id="walkthroughCtaTitle">See something here that could work for your business?</h2>
+        <p>From a sharper website to ordering, locations, event enquiries or collection tools, we can put together the pieces that fit the way you trade.</p>
+      </div>
+      <div>
+        <button class="btn btn-yellow" id="businessCta" type="button">Tell us about your business</button>
+        <p class="walkthrough-cta-status" id="businessCtaStatus" role="status" hidden></p>
+      </div>
+    </div>
+  </section>
 
   <button class="sticky-order" id="stickyOrder" type="button">Your order <span id="cartBadge">0</span></button>
 
@@ -220,6 +237,7 @@
       <div class="footer-links"><a href="#today">Find us</a><a href="#menu">Menu</a><a href="#queue">Ordering</a><a href="#events">Events</a></div>
     </div>
   </footer>
+  <script src="client-config.js"></script>
   <script>
     const navToggle = document.getElementById("navToggle");
     const navLinks = document.getElementById("navLinks");
@@ -310,6 +328,20 @@
     document.getElementById("requestOrder").addEventListener("click", () => {
       if (!cart.length) return openDrawer();
       document.getElementById("requestOrder").textContent = "Request ready to send";
+    });
+
+    document.getElementById("businessCta").addEventListener("click", () => {
+      const config = window.CLIENT_CONFIG || {};
+      const status = document.getElementById("businessCtaStatus");
+      if (!config.contactEmail || config.contactEmailPlaceholder) {
+        status.textContent = "The contact email is not configured in this demo yet.";
+        status.hidden = false;
+        return;
+      }
+      const subject = encodeURIComponent("Tell us about my street-food business");
+      window.location.href = `mailto:${config.contactEmail}?subject=${subject}`;
+      status.textContent = "Your email app is ready. Please review the message before sending.";
+      status.hidden = false;
     });
   </script>
 </body>

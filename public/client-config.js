@@ -41,6 +41,30 @@ window.CLIENT_CONFIG = {
     "9:00pm"
   ],
 
+  collection: {
+    businessName: "Stacked",
+    accentColor: "#ffd83d",
+    logoUrl: "",
+    identificationMode: "number",
+    overdueMinutes: 10,
+    readyChime: true
+  },
+
   eventEnquiryLabel: "Demo event enquiry",
-  eventEnquiryHelp: "Tell us the date, location and expected guest count. The truck will reply to confirm availability."
+  eventEnquiryHelp: "Tell us the date, location and expected guest count. The truck will reply to confirm availability.",
+
+  events: {
+    acceptingEnquiries: true,
+    unavailableDates: [
+      "2026-09-12",
+      "2026-09-19"
+    ],
+    eventTypes: [
+      "Wedding",
+      "Corporate event",
+      "Birthday",
+      "Festival",
+      "Private party"
+    ]
+  }
 };

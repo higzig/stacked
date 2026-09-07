@@ -328,7 +328,8 @@
     .section-head p {
       max-width: 650px;
       color: var(--muted);
-      font-size: 1.05rem;
+      font-size: 1.08rem;
+      line-height: 1.62;
     }
 
     .today {
@@ -478,7 +479,8 @@
     .menu-item p {
       margin: 0;
       color: rgba(255,255,255,.52);
-      font-size: .88rem;
+      font-size: .92rem;
+      line-height: 1.45;
     }
 
     .menu-item.sold-out { opacity: .52; }
@@ -645,7 +647,28 @@
       line-height: 1.05;
     }
 
-    .story-copy p { color: var(--muted); font-size: 1.03rem; }
+    .story-copy p { color: var(--muted); font-size: 1.06rem; line-height: 1.58; }
+
+    .walkthrough-cta {
+      background: var(--red);
+      color: white;
+      border-block: 2px solid var(--ink);
+    }
+
+    .walkthrough-cta-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .walkthrough-cta .eyebrow { color: var(--yellow); }
+    .walkthrough-cta .eyebrow::before { background: var(--yellow); }
+    .walkthrough-cta h2 { max-width: 760px; margin-bottom: 1rem; }
+    .walkthrough-cta p:not(.eyebrow):not(.walkthrough-cta-status) { max-width: 720px; margin-bottom: 0; color: rgba(255,255,255,.8); font-size: 1.08rem; line-height: 1.6; }
+    .walkthrough-cta .btn { white-space: nowrap; box-shadow: 5px 5px 0 var(--ink); }
+    .walkthrough-cta-status { max-width: 260px; margin: 1rem 0 0; color: white; font-size: .9rem; }
+    .walkthrough-cta-status[hidden] { display: none; }
 
     .stats {
       display: grid;
@@ -683,13 +706,28 @@
       color: white;
       background:
         linear-gradient(90deg, rgba(17,17,17,.97), rgba(17,17,17,.56)),
-        url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1800&q=85") center/cover;
+        url("event-foodtruck.jpg") center/cover;
     }
 
     .events-inner {
       position: relative;
       z-index: 2;
       max-width: 720px;
+    }
+
+    .events-feature {
+      display: grid;
+      grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr);
+      align-items: stretch;
+      gap: 2.5rem;
+    }
+
+    .events-image {
+      min-height: 420px;
+      border: 2px solid var(--yellow);
+      border-radius: var(--radius-md);
+      background: url("event-foodtruck.jpg") center/cover;
+      box-shadow: 8px 8px 0 var(--red);
     }
 
     .events .eyebrow { color: var(--yellow); }
@@ -712,6 +750,13 @@
       font-size: .8rem;
       font-weight: 900;
       text-transform: uppercase;
+    }
+
+    @media (max-width: 760px) {
+      .events-feature { grid-template-columns: 1fr; gap: 1.5rem; }
+      .events-image { min-height: 260px; }
+      .walkthrough-cta-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .walkthrough-cta .btn { white-space: normal; width: 100%; }
     }
 
     .reviews-grid {

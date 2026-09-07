@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Send a private event enquiry to Stacked food truck." />
+  <title>Plan an event | Stacked</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .event-page { min-height: 100svh; padding: 9rem 0 5rem; }
+    .event-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 3rem; align-items: start; }
+    .event-intro { position: sticky; top: 7rem; }
+    .event-intro h1 { font-size: clamp(3rem, 7vw, 6rem); margin-bottom: 1rem; }
+    .event-intro p:not(.eyebrow) { max-width: 480px; color: var(--muted); font-size: 1.08rem; }
+    .event-form-wrap { padding: clamp(1.25rem, 4vw, 2.5rem); border: 2px solid var(--ink); border-radius: var(--radius-md); background: var(--white); box-shadow: 8px 8px 0 var(--yellow); }
+    .event-form { display: grid; gap: 1rem; }
+    .event-form[hidden] { display: none; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field { display: grid; gap: .4rem; }
+    .field label { font-weight: 800; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 52px; padding: .8rem .9rem; border: 2px solid var(--ink); border-radius: 10px; background: white; color: var(--ink); }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .field small { color: var(--muted); }
+    .form-status { margin: 0; padding: .85rem 1rem; border: 2px solid var(--ink); border-radius: 10px; font-weight: 700; }
+    .form-status[hidden] { display: none; }
+    .form-status.info { background: #e8f0ff; }
+    .form-status.error { background: #ffe1dd; color: #7d211b; }
+    .form-status.success { background: #e3f5df; color: #245c20; }
+    .field-error { min-height: 1.25em; color: #a32920; font-size: .85rem; font-weight: 700; }
+    .event-back { display: inline-block; margin-top: 1.5rem; font-weight: 800; }
+    @media (max-width: 760px) {
+      .event-page { padding-top: 7rem; }
+      .event-layout, .form-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .event-intro { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="walkthrough.html" class="brand" aria-label="Back to Stacked walkthrough"><span class="brand-mark">S</span><span class="brand-word">Stacked</span></a>
+      <a href="walkthrough.html" class="btn btn-yellow">Back to site</a>
+    </div>
+  </header>
+  <main class="event-page">
+    <div class="container event-layout">
+      <section class="event-intro" aria-labelledby="eventTitle">
+        <p class="eyebrow">Private events</p>
+        <h1 id="eventTitle">Plan an event.</h1>
+        <p>Share the essentials and we will check the date, location and guest count before replying. This is an enquiry, not a confirmed booking.</p>
+        <a class="event-back" href="walkthrough.html#events">&larr; Back to event catering</a>
+      </section>
+      <section class="event-form-wrap" aria-label="Event enquiry form">
+        <div id="closedMessage" class="form-status info" hidden></div>
+        <form class="event-form" id="eventForm" novalidate>
+          <div class="form-grid">
+            <div class="field"><label for="eventType">Event type</label><select id="eventType" name="eventType" required></select><span class="field-error" id="eventTypeError" aria-live="polite"></span></div>
+            <div class="field"><label for="eventDate">Preferred date</label><input id="eventDate" name="eventDate" type="date" required aria-describedby="dateStatus eventDateError" /><span class="field-error" id="eventDateError" aria-live="polite"></span></div>
+          </div>
+          <p class="form-status info" id="dateStatus" role="status" hidden></p>
+          <div class="field"><label for="location">Location</label><input id="location" name="location" type="text" autocomplete="street-address" required /><span class="field-error" id="locationError" aria-live="polite"></span></div>
+          <div class="field"><label for="guestCount">Approximate guest count</label><input id="guestCount" name="guestCount" type="number" min="1" max="10000" step="1" inputmode="numeric" required /><small>Give us a sensible estimate so we can plan service.</small><span class="field-error" id="guestCountError" aria-live="polite"></span></div>
+          <div class="form-grid">
+            <div class="field"><label for="contactName">Contact name</label><input id="contactName" name="contactName" type="text" autocomplete="name" required /><span class="field-error" id="contactNameError" aria-live="polite"></span></div>
+            <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required /><span class="field-error" id="emailError" aria-live="polite"></span></div>
+          </div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" required /><span class="field-error" id="phoneError" aria-live="polite"></span></div>
+          <div class="field"><label for="notes">Notes / additional details</label><textarea id="notes" name="notes" placeholder="Tell us anything useful about the event."></textarea><span class="field-error" id="notesError" aria-live="polite"></span></div>
+          <p class="form-status" id="formStatus" role="status" hidden></p>
+          <button class="btn btn-red" type="submit">Prepare enquiry email</button>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script src="client-config.js"></script>
+  <script>
+    const config = window.CLIENT_CONFIG || {};
+    const eventConfig = config.events || {};
+    const form = document.getElementById("eventForm");
+    const closedMessage = document.getElementById("closedMessage");
+    const eventType = document.getElementById("eventType");
+    const eventDate = document.getElementById("eventDate");
+    const dateStatus = document.getElementById("dateStatus");
+    const formStatus = document.getElementById("formStatus");
+    const unavailableDates = Array.isArray(eventConfig.unavailableDates) ? eventConfig.unavailableDates : [];
+
+    function showStatus(element, message, type) {
+      element.textContent = message;
+      element.className = `form-status ${type}`;
+      element.hidden = false;
+    }
+
+    function updateDateStatus() {
+      dateStatus.hidden = true;
+      if (!eventDate.value) return;
+      if (unavailableDates.includes(eventDate.value)) {
+        showStatus(dateStatus, "That date is already unavailable. Please choose another date for your enquiry.", "error");
+        return;
+      }
+      showStatus(dateStatus, "This date looks available for an enquiry. The truck will confirm availability after receiving your request.", "info");
+    }
+
+    function setError(field, message) {
+      const error = document.getElementById(`${field.id}Error`);
+      error.textContent = message;
+      field.setAttribute("aria-invalid", message ? "true" : "false");
+    }
+
+    function validate() {
+      let valid = true;
+      [eventType, eventDate, document.getElementById("location"), document.getElementById("guestCount"), document.getElementById("contactName"), document.getElementById("email"), document.getElementById("phone")].forEach(field => setError(field, ""));
+      if (!eventType.value) { setError(eventType, "Choose an event type."); valid = false; }
+      if (!eventDate.value) { setError(eventDate, "Choose a preferred date."); valid = false; }
+      else if (unavailableDates.includes(eventDate.value)) { setError(eventDate, "Please choose another date; the truck is unavailable."); valid = false; }
+      else if (Number.isNaN(Date.parse(eventDate.value)) || eventDate.value < eventDate.min) { setError(eventDate, "Enter a valid future date."); valid = false; }
+      const location = document.getElementById("location");
+      if (!location.value.trim()) { setError(location, "Enter the event location."); valid = false; }
+      const guestCount = document.getElementById("guestCount");
+      if (!Number.isInteger(Number(guestCount.value)) || Number(guestCount.value) < 1 || Number(guestCount.value) > 10000) { setError(guestCount, "Enter a whole number between 1 and 10,000."); valid = false; }
+      const contactName = document.getElementById("contactName");
+      if (!contactName.value.trim()) { setError(contactName, "Enter your name."); valid = false; }
+      const email = document.getElementById("email");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setError(email, "Enter a valid email address."); valid = false; }
+      const phone = document.getElementById("phone");
+      if (!phone.value.trim()) { setError(phone, "Enter a phone number."); valid = false; }
+      return valid;
+    }
+
+    (Array.isArray(eventConfig.eventTypes) ? eventConfig.eventTypes : []).forEach(type => eventType.add(new Option(type, type)));
+    eventDate.min = new Date().toISOString().slice(0, 10);
+    eventDate.addEventListener("change", updateDateStatus);
+
+    if (eventConfig.acceptingEnquiries === false) {
+      form.hidden = true;
+      showStatus(closedMessage, "Private-event enquiries are currently paused. Please check back another time.", "info");
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!validate()) { showStatus(formStatus, "Please check the highlighted fields and try again.", "error"); return; }
+      if (!config.contactEmail || config.contactEmailPlaceholder) { showStatus(formStatus, "The enquiry destination is not configured in this demo. Add a verified event email in client-config.js.", "error"); return; }
+      const values = new FormData(form);
+      const subject = encodeURIComponent(config.eventEmailSubject || "Event enquiry");
+      const body = encodeURIComponent(`Event type: ${values.get("eventType")}\nDate: ${values.get("eventDate")}\nLocation: ${values.get("location")}\nGuest count: ${values.get("guestCount")}\nContact name: ${values.get("contactName")}\nEmail: ${values.get("email")}\nPhone: ${values.get("phone")}\nNotes: ${values.get("notes") || "None"}`);
+      window.location.href = `mailto:${config.contactEmail}?subject=${subject}&body=${body}`;
+      showStatus(formStatus, "Your enquiry email is ready. Please review it in your email app before sending.", "success");
+    });
+  </script>
+</body>
+</html>

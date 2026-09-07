@@ -12,6 +12,7 @@
   <style>
     :root {
       --board-bg: #111111;
+      --board-accent: #ffd83d;
       --board-panel: rgba(255,255,255,.04);
       --board-line: rgba(255,255,255,.12);
       --board-ready: #d8f7d0;
@@ -55,6 +56,27 @@
       padding: 0 0 .4rem;
     }
 
+    .board-header-meta {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      color: var(--board-muted);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .connection-status::before {
+      content: "";
+      display: inline-block;
+      width: .55rem;
+      height: .55rem;
+      margin-right: .35rem;
+      border-radius: 50%;
+      background: #78df75;
+    }
+
     .board-brand {
       display: inline-flex;
       align-items: center;
@@ -70,7 +92,7 @@
       height: clamp(2.2rem, 3vw, 3rem);
       display: grid;
       place-items: center;
-      background: var(--yellow);
+      background: var(--board-accent);
       color: var(--ink);
       border: 2px solid var(--ink);
       border-radius: 12px;
@@ -82,6 +104,10 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.4rem;
+    }
+
+    .board-grid.single-view {
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .board-column {
@@ -141,6 +167,24 @@
       border-color: rgba(19,37,21,.22);
     }
 
+    .order-card.ready.overdue {
+      background: #ffc9c2;
+      color: #4a1712;
+      border-color: #ef4538;
+    }
+
+    .overdue-note {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: .8rem;
+      font-family: "DM Sans", sans-serif;
+      font-size: clamp(.8rem, 1.5vw, 1.1rem);
+      font-weight: 900;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
     .order-card.ready.just-ready {
       animation: ready-card-pulse .8s ease-out 1;
     }
@@ -175,6 +219,25 @@
       font-size: clamp(3.6rem, 8vw, 8rem);
       line-height: .88;
     }
+
+    .order-name {
+      position: relative;
+      z-index: 1;
+      display: block;
+      max-width: 92%;
+      margin-top: .7rem;
+      font-family: "DM Sans", sans-serif;
+      font-size: clamp(1rem, 2.2vw, 2rem);
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 1.05;
+      text-align: center;
+      text-transform: none;
+    }
+
+    .order-card.number-name { flex-direction: column; }
+
+    .board-column.is-hidden { display: none; }
 
     .ready-announcement {
       position: fixed;
@@ -369,9 +432,11 @@
     <div class="board-frame">
       <header class="board-header">
         <div class="board-brand" aria-label="Business name">
-          <span class="board-brand-mark">S</span>
+          <img id="boardBrandLogo" class="board-brand-mark" alt="" hidden>
+          <span id="boardBrandInitial" class="board-brand-mark">S</span>
           <span data-client-text="businessName">Stacked</span>
         </div>
+        <div class="board-header-meta"><span class="connection-status">Local demo connected</span></div>
       </header>
 
       <div class="board-grid">
@@ -390,7 +455,8 @@
         <canvas id="boardQrCode" width="88" height="88" aria-label="QR code for the collection screen"></canvas>
         <div class="board-qr-copy">
           <strong id="boardQrTitle">Keep an eye on your order</strong>
-          <span>Scan to follow the collection screen on your phone.</span>
+          <span>Scan to open the public collection board on your phone.</span>
+          <!-- TODO: replace public-board QR with track.html?order=<public-token> after shared backend support exists. -->
           <a id="boardQrUrl" href="" rel="noopener">Loading collection screen URL</a>
         </div>
       </section>
@@ -402,6 +468,8 @@
   <script>
     const STORAGE_KEY = "stacked-demo-orders-v1";
     const QUEUE_STYLE_KEY = "stacked-demo-queue-style-v1";
+    const OVERDUE_MINUTES_KEY = "stacked-demo-overdue-minutes-v1";
+    const READY_CHIME_KEY = "stacked-demo-ready-chime-v1";
     const CHANNEL_NAME = "stacked-demo-orders";
     const DEFAULT_NUMBER_ORDERS = [
       { id: "order-42", label: "42", type: "number", status: "ready" },
@@ -415,12 +483,24 @@
       { id: "name-sarah", label: "Sarah", type: "name", status: "preparing" },
       { id: "name-daniel", label: "Daniel", type: "name", status: "preparing" }
     ];
+    const DEFAULT_NUMBER_NAME_ORDERS = [
+      { id: "number-name-42", label: "Aoife", number: "42", type: "number-name", status: "ready" },
+      { id: "number-name-43", label: "Jack", number: "43", type: "number-name", status: "ready" },
+      { id: "number-name-44", label: "Sarah", number: "44", type: "number-name", status: "preparing" },
+      { id: "number-name-45", label: "Daniel", number: "45", type: "number-name", status: "preparing" }
+    ];
 
     const businessNameEl = document.querySelector('[data-client-text="businessName"]');
     const preparingList = document.getElementById("preparingList");
     const readyList = document.getElementById("readyList");
     const readyAnnouncementEl = document.getElementById("readyAnnouncement");
     const readyAnnouncementOrderEl = document.getElementById("readyAnnouncementOrder");
+    const readyAnnouncementLabelEl = document.querySelector(".ready-announcement-label");
+    const preparingColumn = document.querySelector(".board-column.preparing");
+    const readyColumn = document.querySelector(".board-column.ready");
+    const boardGrid = document.querySelector(".board-grid");
+    const boardBrandLogo = document.getElementById("boardBrandLogo");
+    const boardBrandInitial = document.getElementById("boardBrandInitial");
     const channel = "BroadcastChannel" in window ? new BroadcastChannel(CHANNEL_NAME) : null;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const readyAnnouncementQueue = [];
@@ -429,13 +509,29 @@
     let readyTransitionTrackingReady = false;
     const justReadyOrderIds = new Set();
 
+    function getCollectionConfig() {
+      return (window.CLIENT_CONFIG && window.CLIENT_CONFIG.collection) || {};
+    }
+
     function getQueueStyle() {
       const stored = localStorage.getItem(QUEUE_STYLE_KEY);
-      return stored === "name" ? "name" : "number";
+      return ["number", "name", "number-name"].includes(stored) ? stored : (getCollectionConfig().identificationMode || "number");
     }
 
     function getDefaultOrders() {
-      return (getQueueStyle() === "name" ? DEFAULT_NAME_ORDERS : DEFAULT_NUMBER_ORDERS).map(order => ({ ...order }));
+      const queueStyle = getQueueStyle();
+      const defaults = queueStyle === "name" ? DEFAULT_NAME_ORDERS : queueStyle === "number-name" ? DEFAULT_NUMBER_NAME_ORDERS : DEFAULT_NUMBER_ORDERS;
+      return defaults.map(order => ({ ...order }));
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
     }
 
     function normalizeLegacyNumber(value) {
@@ -446,16 +542,19 @@
     function sanitizeOrder(order) {
       if (!order || typeof order !== "object") return null;
 
-      const status = order.status === "ready" ? "ready" : "preparing";
-      if (order.type === "name") {
+      const status = ["preparing", "ready", "collected"].includes(order.status) ? order.status : "preparing";
+      const type = ["name", "number-name", "number"].includes(order.type) ? order.type : "number";
+      const readyAt = Number(order.readyAt);
+      const collectedAt = Number(order.collectedAt);
+      if (type === "name" || type === "number-name") {
         const label = String(order.label ?? order.name ?? order.customerName ?? "").trim();
         if (!label) return null;
-        return { id: String(order.id || label), label, type: "name", status };
+        return { id: String(order.id || label), label, type, status, readyAt: Number.isFinite(readyAt) ? readyAt : null, collectedAt: Number.isFinite(collectedAt) ? collectedAt : null, number: normalizeLegacyNumber(order.number) };
       }
 
       const label = normalizeLegacyNumber(order.label ?? order.number ?? order.value);
       if (!label) return null;
-      return { id: String(order.id || label), label, type: "number", status };
+      return { id: String(order.id || label), label, type: "number", status, readyAt: Number.isFinite(readyAt) ? readyAt : null, collectedAt: Number.isFinite(collectedAt) ? collectedAt : null, number: null };
     }
 
     function loadOrders() {
@@ -463,7 +562,7 @@
         const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
         if (Array.isArray(stored)) {
           const valid = stored.map(sanitizeOrder).filter(Boolean);
-          if (valid.length) return valid;
+          return valid;
         }
       } catch (error) {
         console.warn("Unable to load demo orders from storage.", error);
@@ -477,8 +576,11 @@
         .filter(Boolean)
         .sort((a, b) => {
           if (a.type === "number" && b.type === "number") return Number(a.label) - Number(b.label);
+          if (a.type === "number-name" && b.type === "number-name") return Number(a.number) - Number(b.number);
           if (a.type === "number") return -1;
+          if (a.type === "number-name") return b.type === "number" ? 1 : -1;
           if (b.type === "number") return 1;
+          if (b.type === "number-name") return 1;
           return a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
         });
 
@@ -490,9 +592,24 @@
     }
 
     function applyConfig() {
-      const businessName = (window.CLIENT_CONFIG && window.CLIENT_CONFIG.businessName) || "Stacked";
+      const collectionConfig = getCollectionConfig();
+      const businessName = collectionConfig.businessName || (window.CLIENT_CONFIG && window.CLIENT_CONFIG.businessName) || "Stacked";
       document.title = `${businessName} | Collection board`;
       if (businessNameEl) businessNameEl.textContent = businessName;
+      document.documentElement.style.setProperty("--board-accent", collectionConfig.accentColor || "#ffd83d");
+      if (collectionConfig.logoUrl && boardBrandLogo) {
+        boardBrandLogo.src = collectionConfig.logoUrl;
+        boardBrandLogo.hidden = false;
+        boardBrandInitial.hidden = true;
+      } else if (boardBrandInitial) {
+        boardBrandInitial.textContent = businessName.slice(0, 1).toUpperCase();
+      }
+
+      const requestedView = new URLSearchParams(window.location.search).get("view");
+      const view = ["full", "preparing", "ready"].includes(requestedView) ? requestedView : "full";
+      preparingColumn.classList.toggle("is-hidden", view === "ready");
+      readyColumn.classList.toggle("is-hidden", view === "preparing");
+      boardGrid.classList.toggle("single-view", view !== "full");
 
       const boardUrl = (window.CLIENT_CONFIG && window.CLIENT_CONFIG.publicBoardUrl) || window.location.href;
       const boardQrUrl = document.getElementById("boardQrUrl");
@@ -523,7 +640,7 @@
     }
 
     function queueReadyAnnouncement(order) {
-      const orderLabel = order.type === "number" ? `#${order.label}` : order.label;
+      const orderLabel = order.type === "number" ? `#${order.label}` : order.type === "number-name" ? `#${order.number || "?"} · ${order.label}` : order.label;
       const alreadyQueued = readyAnnouncementQueue.some(item => item.id === order.id && item.label === orderLabel);
       if (alreadyQueued) return;
 
@@ -542,10 +659,32 @@
       readyAnnouncementActive = true;
       const nextOrder = readyAnnouncementQueue.shift();
       showReadyAnnouncement(nextOrder.label);
+      playReadyChime();
       const nextDelay = reducedMotion ? 1200 : 1600;
       window.setTimeout(() => {
         processReadyAnnouncementQueue();
       }, nextDelay);
+    }
+
+    function playReadyChime() {
+      const stored = localStorage.getItem(READY_CHIME_KEY);
+      const enabled = stored === null ? getCollectionConfig().readyChime !== false : stored === "true";
+      if (!enabled || !window.AudioContext) return;
+      try {
+        const context = new AudioContext();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.frequency.value = 740;
+        gain.gain.setValueAtTime(.0001, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(.08, context.currentTime + .01);
+        gain.gain.exponentialRampToValueAtTime(.0001, context.currentTime + .18);
+        oscillator.connect(gain).connect(context.destination);
+        oscillator.start();
+        oscillator.stop(context.currentTime + .2);
+        oscillator.addEventListener("ended", () => context.close());
+      } catch (error) {
+        // Browser autoplay restrictions can prevent a demo chime.
+      }
     }
 
     function queueJustReadyOrder(orderId) {
@@ -559,12 +698,12 @@
 
     function detectReadyTransitions(currentOrders) {
       if (!readyTransitionTrackingReady) {
-        previousOrdersById = new Map(currentOrders.map(order => [String(order.id), { status: order.status, label: order.label, type: order.type }]));
+        previousOrdersById = new Map(currentOrders.map(order => [String(order.id), { status: order.status, label: order.label, type: order.type, number: order.number }]));
         readyTransitionTrackingReady = true;
         return;
       }
 
-      const nextMap = new Map(currentOrders.map(order => [String(order.id), { status: order.status, label: order.label, type: order.type }]));
+      const nextMap = new Map(currentOrders.map(order => [String(order.id), { status: order.status, label: order.label, type: order.type, number: order.number }]));
       const readyTransitions = [];
 
       for (const [orderId, nextOrder] of nextMap.entries()) {
@@ -581,8 +720,9 @@
 
     function renderOrderList(listElement, status) {
       const queueStyle = getQueueStyle();
+      const overdueMinutes = Number(localStorage.getItem(OVERDUE_MINUTES_KEY)) || Number(getCollectionConfig().overdueMinutes) || 10;
       const orders = loadOrders()
-        .filter(order => order.status === status && (queueStyle === "name" ? order.type === "name" : order.type === "number"))
+        .filter(order => order.status === status && order.status !== "collected" && (queueStyle === "number-name" ? order.type === "number-name" : queueStyle === "name" ? order.type === "name" : order.type === "number"))
         .sort((a, b) => {
           if (a.type === "number" && b.type === "number") return Number(a.label) - Number(b.label);
           if (a.type === "number") return -1;
@@ -597,12 +737,19 @@
 
       listElement.innerHTML = orders.map(order => {
         const classes = ["order-card", status];
+        const overdue = status === "ready" && Number.isFinite(Number(order.readyAt)) && Date.now() - Number(order.readyAt) >= overdueMinutes * 60000;
+        if (overdue) classes.push("overdue");
         if (status === "ready" && justReadyOrderIds.has(String(order.id))) {
           classes.push("just-ready");
         }
+        const identifier = escapeHtml(order.type === "number" ? `#${order.label}` : order.type === "number-name" ? `#${order.number || "?"}` : order.label);
+        const customerName = order.type === "number-name"
+          ? `<span class="order-name">${escapeHtml(order.label)}</span>${overdue ? '<span class="overdue-note">Please see staff</span>' : ""}`
+          : overdue ? '<span class="overdue-note">Please see staff</span>' : "";
         return `
-          <li class="${classes.join(" ")}">
-            <span class="order-number">${order.type === "number" ? `#${order.label}` : order.label}</span>
+          <li class="${classes.join(" ")} ${order.type}">
+            <span class="order-number">${identifier}</span>
+            ${customerName}
           </li>
         `;
       }).join("");
@@ -617,6 +764,7 @@
 
     applyConfig();
     renderBoard();
+    window.setInterval(renderBoard, 1000);
 
     if (channel) {
       channel.addEventListener("message", (event) => {
