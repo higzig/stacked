@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Staff collection controls for the Stacked food truck." />
-  <title>Collection controls | Stacked</title>
+  <meta name="description" content="PopBia Collection staff controls for managing preparing, ready and collected orders." />
+  <title>PopBia Collection — Staff controls</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&amp;family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
     body {
@@ -21,9 +21,7 @@
       place-items: center;
       overflow: hidden;
       padding: 4rem 1rem;
-      background:
-        linear-gradient(135deg, rgba(17,17,17,.96), rgba(17,17,17,.78)),
-        url("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1800&q=88") center/cover;
+      background: #10243d;
       color: white;
     }
 
@@ -34,10 +32,54 @@
       padding: clamp(1.5rem, 4vw, 3rem);
       border: 2px solid rgba(255,255,255,.18);
       border-radius: 28px;
-      background: rgba(17,17,17,.62);
+      background: rgba(20,44,72,.9);
       box-shadow: 0 30px 80px rgba(0,0,0,.28);
       backdrop-filter: blur(8px);
     }
+
+    .product-brand {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .65rem;
+      margin-bottom: 2rem;
+      font: 800 1rem/1 "Bricolage Grotesque", sans-serif;
+    }
+
+    .product-brand-mark {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      border-radius: 50%;
+      background: #ff6433;
+    }
+
+    .product-brand-mark::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      height: 8px;
+      border: 2px solid white;
+      border-top: 0;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .product-brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      left: 11px;
+      width: 3px;
+      height: 7px;
+      border-radius: 99px;
+      background: white;
+      box-shadow: 8px 1px 0 white;
+    }
+
+    .product-brand span:last-child { color: rgba(255,255,255,.7); font-weight: 600; }
 
     .demo-badge {
       display: inline-flex;
@@ -704,7 +746,8 @@
 <body>
   <main class="demo-shell">
     <div class="demo-panel">
-      <h1>Collection controls</h1>
+      <div class="product-brand"><span class="product-brand-mark" aria-hidden="true"></span><strong>PopBia Collection</strong><span>Staff controls</span></div>
+      <h1>Manage collection</h1>
 
       <p>
         Add an order, mark it ready, then mark it collected when the customer has it.

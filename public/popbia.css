@@ -183,12 +183,53 @@ h1 em { color: var(--orange); font-style: normal; }
 .site-footer p { margin: 0; color: rgba(255,255,255,.62); font-size: .8rem; }
 .site-footer > a:last-child { font-size: .8rem; font-weight: 800; }
 
+/* PopBia Collection product walkthrough */
+.collection-page { overflow-x: clip; }
+.collection-hero { min-height: min(760px, calc(100svh - 74px)); display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(2.5rem, 7vw, 7rem); width: min(calc(100% - 2.4rem), var(--max)); margin: auto; padding: clamp(4.5rem, 9vw, 8rem) 0; }
+.collection-hero-board { overflow: hidden; border: 2px solid var(--ink); border-radius: var(--radius); background: var(--page); box-shadow: 12px 14px 0 var(--orange); transform: rotate(1deg); }
+.mini-board-head { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 1.3rem; border-bottom: 1px solid var(--line); background: var(--surface); }
+.mini-board-head strong { font: 800 1.2rem "Bricolage Grotesque", sans-serif; }
+.mini-board-head span, .mini-board-columns small { color: var(--muted); font-size: .62rem; font-weight: 800; letter-spacing: .13em; }
+.mini-board-columns { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; padding: .8rem; }
+.mini-board-columns > div { min-width: 0; min-height: 330px; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.mini-board-columns > div:last-child { background: #f3e2d5; }
+.mini-board-columns small { display: block; min-height: 38px; border-bottom: 1px solid var(--line); }
+.mini-board-columns b { display: flex; align-items: center; justify-content: space-between; gap: .7rem; padding: 1.4rem 0; border-bottom: 1px solid var(--line); font: 800 clamp(1.25rem, 2vw, 2rem) "Bricolage Grotesque", sans-serif; }
+.mini-board-columns i { color: var(--orange-dark); font: 800 .85em "Manrope", sans-serif; }
+.collection-flow, .collection-benefits, .full-setup { padding: clamp(5rem, 9vw, 8rem) max(1.2rem, calc((100vw - var(--max)) / 2)); }
+.collection-flow { background: var(--sun); }
+.collection-flow .section-number { color: var(--ink); }
+.collection-flow .section-heading { margin-bottom: 3rem; }
+.flow-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 4vw, 4rem); margin: 0; padding: 0; list-style: none; }
+.flow-steps li { display: grid; grid-template-columns: 46px 1fr; gap: 1rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+.flow-steps li > span { width: 40px; height: 40px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; font-weight: 800; }
+.flow-steps h3 { margin: .35rem 0 .6rem; font-size: clamp(1.35rem, 2vw, 1.8rem); }
+.flow-steps p { margin: 0; color: rgba(16,36,61,.76); }
+.collection-walkthrough { padding: clamp(5rem, 9vw, 8rem) max(1.2rem, calc((100vw - var(--max)) / 2)); background: var(--ink); color: white; }
+.collection-walkthrough .section-heading { margin-bottom: 2.5rem; }
+.collection-product-demo { border-color: rgba(255,255,255,.22); }
+.prototype-note { max-width: 900px; margin: 1.2rem 0 0; color: rgba(255,255,255,.65); font-size: .8rem; }
+.collection-benefits { background: var(--surface); }
+.benefit-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 0; border-top: 2px solid var(--ink); list-style: none; }
+.benefit-list li { display: grid; gap: .5rem; padding: 1.5rem 1.5rem 1.5rem 0; border-bottom: 1px solid var(--line); }
+.benefit-list li:nth-child(odd) { border-right: 1px solid var(--line); }
+.benefit-list li:nth-child(even) { padding-left: 1.5rem; }
+.benefit-list strong { font: 800 clamp(1.2rem, 2vw, 1.6rem) "Bricolage Grotesque", sans-serif; }
+.benefit-list span { max-width: 520px; color: var(--muted); }
+.full-setup { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2rem 4rem; background: var(--page); }
+.full-setup h2 { margin-bottom: 1rem; font-size: clamp(2.7rem, 5vw, 5rem); letter-spacing: -.055em; }
+.full-setup > div:first-child p:last-child { max-width: 720px; color: var(--muted); }
+.setup-links { display: flex; flex-wrap: wrap; gap: .8rem; }
+.full-setup .prototype-note { grid-column: 1 / -1; margin-top: 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--muted); }
+
 @media (max-width: 900px) {
-  .hero, .template-feature, .ordering-layout, .contact-layout { grid-template-columns: 1fr; }
+  .hero, .collection-hero, .template-feature, .ordering-layout, .contact-layout, .full-setup { grid-template-columns: 1fr; }
   .hero { padding-top: 4rem; }
   .hero-art { margin: auto; }
   .template-copy { max-width: 680px; }
   .contact-copy { position: static; }
+  .collection-hero-board { width: min(680px, 100%); margin-inline: auto; }
+  .full-setup .prototype-note { grid-column: auto; }
 }
 
 @media (max-width: 720px) {
@@ -206,6 +247,7 @@ h1 em { color: var(--orange); font-style: normal; }
   .demo-pane-heading { flex-direction: column; gap: .2rem; }
   .customer-columns { min-height: 280px; }
   .site-footer { align-items: flex-start; flex-direction: column; }
+  .flow-steps { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {
@@ -222,6 +264,19 @@ h1 em { color: var(--orange); font-style: normal; }
   .field-pair, .customer-columns { grid-template-columns: 1fr; }
   .demo-add > div { grid-template-columns: 1fr; gap: .5rem; }
   .demo-add input, .demo-add button { border-radius: 10px; }
+  .collection-page .demo-toolbar { align-items: stretch; flex-direction: column; }
+  .collection-page .demo-reset { width: 100%; }
+  .collection-page .staff-order-head { align-items: flex-start; flex-direction: column; gap: .25rem; }
+  .collection-hero { min-height: 0; padding-block: 4rem; }
+  .collection-hero-board { box-shadow: 7px 8px 0 var(--orange); transform: none; }
+  .mini-board-head { min-height: 52px; padding-inline: .8rem; }
+  .mini-board-columns { gap: .45rem; padding: .45rem; }
+  .mini-board-columns > div { min-height: 235px; padding: .7rem; }
+  .mini-board-columns b { padding-block: 1rem; font-size: clamp(.86rem, 4.5vw, 1.25rem); }
+  .mini-board-columns small { min-height: 34px; font-size: .48rem; }
+  .benefit-list { grid-template-columns: 1fr; }
+  .benefit-list li, .benefit-list li:nth-child(even) { padding: 1.25rem 0; border-right: 0; }
+  .setup-links, .setup-links .button { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

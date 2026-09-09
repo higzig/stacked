@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="See how PopBia Collection helps independent food businesses manage preparing, ready and collected orders during busy service.">
+  <title>PopBia Collection — Less shouting. More serving.</title>
+  <link rel="icon" href="popbia-favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popbia.css">
+</head>
+<body class="collection-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="popbia-brand" href="index.html" aria-label="PopBia home">
+      <span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+      <a href="index.html#templates">Templates</a>
+      <a href="#walkthrough">Collection</a>
+      <a href="index.html#ordering">Digital ordering</a>
+      <a class="nav-cta" href="index.html#contact">Tell us about your business</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="collection-hero">
+      <div>
+        <p class="kicker"><span></span> PopBia Collection</p>
+        <h1>Less shouting.<br><em>More serving.</em></h1>
+        <p class="hero-lede">A simple way for busy food businesses to show customers when orders are being prepared and when they are ready.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#walkthrough">Try the walkthrough</a>
+          <a class="button button-secondary" href="#full-setup">See the full setup</a>
+        </div>
+      </div>
+      <div class="collection-hero-board" aria-label="Example Stacked collection display">
+        <div class="mini-board-head"><strong>STACKED</strong><span>ORDER STATUS</span></div>
+        <div class="mini-board-columns">
+          <div><small>NOW MAKING</small><b>AOIFE <i>#51</i></b><b>JACK <i>#52</i></b></div>
+          <div><small>READY FOR PICKUP</small><b>MAYA <i>#49</i></b><b>RYAN <i>#48</i></b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="collection-flow" aria-labelledby="flow-title">
+      <div class="section-heading">
+        <p class="section-number">The service flow</p>
+        <h2 id="flow-title">Three taps from order to handover.</h2>
+      </div>
+      <ol class="flow-steps">
+        <li><span>1</span><div><h3>Add the order</h3><p>Every order gets an automatic number. Staff may optionally add the customer’s name.</p></div></li>
+        <li><span>2</span><div><h3>Mark it Ready</h3><p>When the order is finished, staff tap Ready.</p></div></li>
+        <li><span>3</span><div><h3>Customer collects</h3><p>The display updates, then staff mark the order Collected when it is handed over.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="collection-walkthrough" id="walkthrough" aria-labelledby="walkthrough-title">
+      <div class="section-heading section-heading-light">
+        <p class="section-number">Interactive walkthrough</p>
+        <h2 id="walkthrough-title">See both sides of service.</h2>
+        <p>Add an order on the staff side, then move it through Ready and Collected. The customer-facing display updates alongside it.</p>
+      </div>
+
+      <div class="collection-demo collection-product-demo">
+        <div class="demo-toolbar">
+          <div><span class="demo-label">Try it now</span><h3>Staff controls + customer display</h3></div>
+          <button class="demo-reset" id="demoReset" type="button">Reset walkthrough</button>
+        </div>
+        <div class="demo-grid">
+          <section class="staff-demo" aria-labelledby="staffDemoTitle">
+            <div class="demo-pane-heading"><span>Staff controls</span><small>Add → Ready → Collected</small></div>
+            <h4 id="staffDemoTitle">Add an order</h4>
+            <div class="demo-add">
+              <label for="demoName">Customer name <span>(optional)</span></label>
+              <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Sarah"><button id="demoAdd" type="button">Add <span id="demoNextNumber">#53</span></button></div>
+            </div>
+            <ol class="staff-orders" id="staffOrders" aria-live="polite"></ol>
+          </section>
+          <section class="customer-demo" aria-labelledby="customerDemoTitle">
+            <div class="demo-pane-heading"><span>Customer display</span><small>What customers see</small></div>
+            <h4 id="customerDemoTitle">Order status</h4>
+            <div class="customer-columns">
+              <div><h5>Preparing</h5><ul id="customerPreparing" aria-live="polite"></ul></div>
+              <div class="customer-ready"><h5>Ready</h5><ul id="customerReady" aria-live="polite"></ul></div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <p class="prototype-note"><strong>Current prototype:</strong> the working demo uses local browser state. Live multi-device syncing and personal phone tracking are part of the deployment roadmap.</p>
+    </section>
+
+    <section class="collection-benefits" aria-labelledby="benefits-title">
+      <div class="section-heading">
+        <p class="section-number">Built for busy counters</p>
+        <h2 id="benefits-title">A calmer wait. A clearer handover.</h2>
+      </div>
+      <ul class="benefit-list">
+        <li><strong>Fewer repeated questions</strong><span>Customers can see whether their order is still being made or ready to collect.</span></li>
+        <li><strong>Less shouting</strong><span>Use automatic order numbers with optional customer names.</span></li>
+        <li><strong>More room to serve</strong><span>Customers can wait away from the serving hatch without losing sight of progress.</span></li>
+        <li><strong>Fits the process you have</strong><span>Collection works alongside the business’s existing register or ordering process.</span></li>
+      </ul>
+    </section>
+
+    <section class="full-setup" id="full-setup" aria-labelledby="full-setup-title">
+      <div>
+        <p class="section-number">Working prototype</p>
+        <h2 id="full-setup-title">See the full setup.</h2>
+        <p>Open the current working interfaces to see the complete staff workflow and the client-branded customer board using Stacked as the example business.</p>
+      </div>
+      <div class="setup-links">
+        <a class="button button-primary" href="board-admin.html">Open staff controls</a>
+        <a class="button button-secondary" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board ↗</a>
+      </div>
+      <p class="prototype-note"><strong>Prototype note:</strong> these interfaces sync between tabs in the same browser using local state; they are not yet a live cross-device service.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
+    <p>Practical digital tools for independent food businesses.</p>
+    <a href="index.html#contact">Tell us about your business →</a>
+  </footer>
+  <script src="collection.js"></script>
+</body>
+</html>

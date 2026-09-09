@@ -1,15 +1,17 @@
-# Stacked
+# PopBia
 
-Static food-truck website, prospect walkthrough, and collection-board demo prepared for Cloudflare Workers static assets.
+Static PopBia sales website, Stacked food-truck template, and collection-board prototype prepared for Cloudflare Workers static assets.
 
 ## Project structure
 
 ```text
 Stacked/
 ├── public/
-│   ├── index.html          # Clean reusable client-facing website
-│   ├── walkthrough.html    # Prospect-facing walkthrough
-│   ├── board-admin.html    # Collection board controls
+│   ├── index.html          # PopBia sales website
+│   ├── collection.html     # PopBia Collection product walkthrough
+│   ├── stacked.html        # Stacked food-truck template demo
+│   ├── walkthrough.html    # Stacked prospect walkthrough
+│   ├── board-admin.html    # PopBia Collection staff controls
 │   ├── board.html          # Customer-facing collection display
 │   ├── styles.css
 │   ├── app.js
@@ -44,6 +46,8 @@ python3 -m http.server 4173 --directory public
 Then test:
 
 - http://127.0.0.1:4173/
+- http://127.0.0.1:4173/collection.html
+- http://127.0.0.1:4173/stacked.html
 - http://127.0.0.1:4173/walkthrough.html
 - http://127.0.0.1:4173/board-admin.html
 - http://127.0.0.1:4173/board.html
