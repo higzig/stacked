@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PopBia">
+  <circle cx="32" cy="32" r="32" fill="#ff6433"/>
+  <path d="M18 35h28v4c0 8-6 14-14 14S18 47 18 39v-4Z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M25 28c-2-4 2-6 0-10M37 28c-2-4 2-6 0-10" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg>
