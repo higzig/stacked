@@ -134,14 +134,26 @@
   const verifiedEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactConfig.contactEmail || "");
   const verifiedUrl = /^https:\/\//.test(contactConfig.contactUrl || "");
 
+  const interest = document.getElementById("contactInterest");
+  const collectionQuestion = document.getElementById("collectionQuestion");
+  const collectionMethod = document.getElementById("collectionMethod");
+
+  function updateCollectionQuestion() {
+    const relevant = ["Collection system", "Website + Collection"].includes(interest.value);
+    collectionQuestion.hidden = !relevant;
+    collectionMethod.disabled = !relevant;
+    collectionMethod.required = relevant;
+    if (!relevant) collectionMethod.value = "";
+  }
+  interest.addEventListener("change", updateCollectionQuestion);
+  window.addEventListener("pageshow", updateCollectionQuestion);
+  updateCollectionQuestion();
+
   if (verifiedEmail || verifiedUrl) {
     contactSubmit.disabled = false;
-    contactSubmit.textContent = verifiedEmail ? "Prepare email" : "Continue to contact";
     contactStatus.textContent = verifiedEmail
-      ? "This opens an email draft; nothing is sent automatically."
-      : "This continues to PopBia’s configured contact destination.";
-  } else {
-    contactStatus.textContent = "A verified PopBia contact destination has not been configured yet. This form cannot send.";
+      ? "This opens an email draft for you to review and send."
+      : "Continue to our contact page to share your enquiry. Nothing is sent from this form.";
   }
 
   contactForm.addEventListener("submit", event => {
@@ -149,15 +161,15 @@
     if (!verifiedEmail && !verifiedUrl) return;
     if (!contactForm.reportValidity()) return;
 
-    if (verifiedUrl) {
+    if (verifiedUrl && !verifiedEmail) {
       window.location.href = contactConfig.contactUrl;
       return;
     }
 
     const data = new FormData(contactForm);
-    const subject = encodeURIComponent(`PopBia enquiry from ${data.get("business")}`);
+    const subject = encodeURIComponent(`PopBia — ${data.get("interest")} — ${data.get("business")}`);
     const body = encodeURIComponent(
-      `Name: ${data.get("name")}\nBusiness: ${data.get("business")}\nEmail: ${data.get("email")}\n\n${data.get("message")}`
+      `Name: ${data.get("name")}\nBusiness: ${data.get("business")}\nEmail: ${data.get("email")}\nInterest: ${data.get("interest")}\nWhere they trade: ${data.get("location") || "Not provided"}${data.has("collectionMethod") ? `\nCurrent collection method: ${data.get("collectionMethod")}` : ""}\n\n${data.get("message")}`
     );
     window.location.href = `mailto:${contactConfig.contactEmail}?subject=${subject}&body=${body}`;
   });

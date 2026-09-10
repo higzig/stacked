@@ -141,7 +141,7 @@
     form.addEventListener("submit", event => {
       event.preventDefault();
       if (!validate()) { showStatus(formStatus, "Please check the highlighted fields and try again.", "error"); return; }
-      if (!config.contactEmail || config.contactEmailPlaceholder) { showStatus(formStatus, "The enquiry destination is not configured in this demo. Add a verified event email in client-config.js.", "error"); return; }
+      if (!config.contactEmail || config.contactEmailPlaceholder) { showStatus(formStatus, "This fictional business isn’t taking event enquiries. Nothing has been sent.", "error"); return; }
       const values = new FormData(form);
       const subject = encodeURIComponent(config.eventEmailSubject || "Event enquiry");
       const body = encodeURIComponent(`Event type: ${values.get("eventType")}\nDate: ${values.get("eventDate")}\nLocation: ${values.get("location")}\nGuest count: ${values.get("guestCount")}\nContact name: ${values.get("contactName")}\nEmail: ${values.get("email")}\nPhone: ${values.get("phone")}\nNotes: ${values.get("notes") || "None"}`);

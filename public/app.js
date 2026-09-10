@@ -59,7 +59,7 @@
         placeholder: clientConfig.googleMapsPlaceholder,
         liveLabel: "Get directions",
         demoLabel: "Demo directions",
-        demoMessage: "Directions are disabled until a client adds their verified Google Maps destination."
+        demoMessage: "This fictional business has no visiting address."
       });
 
       configureExternalAction({
@@ -68,7 +68,7 @@
         placeholder: clientConfig.instagramPlaceholder,
         liveLabel: "Instagram",
         demoLabel: "Instagram (demo)",
-        demoMessage: "Instagram is disabled until a client adds their verified profile URL."
+        demoMessage: "This fictional business has no Instagram profile."
       });
 
       const eventButton = document.getElementById("eventEnquiryButton");
@@ -294,10 +294,7 @@
       const isDemoNumber = clientConfig.whatsappPlaceholder || !isValidNumber;
 
       if (isDemoNumber) {
-        const reason = clientConfig.whatsappPlaceholder
-          ? "WhatsApp is disabled until a client adds their verified number"
-          : "the configured WhatsApp number is invalid";
-        showDemoMessage(`This is a demo order request. ${reason}; no order has been sent.`);
+        showDemoMessage("This fictional business isn’t taking orders. Your sample request has not been sent.");
         return;
       }
 

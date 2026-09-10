@@ -742,25 +742,16 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="collection-staff.css">
 </head>
 <body>
   <main class="demo-shell">
     <div class="demo-panel">
-      <div class="product-brand"><span class="product-brand-mark" aria-hidden="true"></span><strong>PopBia Collection</strong><span>Staff controls</span></div>
-      <h1>Manage collection</h1>
-
-      <p>
-        Add an order, mark it ready, then mark it collected when the customer has it.
-      </p>
-
-      <div class="demo-actions">
+      <header class="staff-header">
+        <div class="product-brand"><span class="product-brand-mark" aria-hidden="true"></span><div><h1>PopBia Collection</h1><span>Staff controls</span></div></div>
         <a class="btn btn-dark" href="board.html" target="_blank" rel="noopener noreferrer">Open board</a>
-      </div>
-
-      <section class="collection-demo" id="collection-demo" aria-labelledby="collection-demo-title">
-        <h2 id="collection-demo-title">Queue management</h2>
-        <p class="admin-demo-note">The queue stays beside your existing register. Changes sync with the local demo collection screen.</p>
-
+      </header>
+      <section class="collection-demo" id="collection-demo" aria-label="Active queue">
         <div id="setupPanel" class="setup-panel hidden" aria-live="polite" hidden>
           <h3>How do you identify orders?</h3>
           <div class="setup-options">
@@ -774,7 +765,7 @@
           <div id="queueSettingsPanel" class="queue-settings" aria-live="polite">
             <button class="queue-settings-btn" id="queueSettingsToggle" type="button" aria-expanded="false" aria-controls="queueSettingsBody">Queue settings</button>
             <!-- Local demo transport only; this is not a cloud or cross-device connection. -->
-            <span class="admin-connection-status">Local demo connected</span>
+            <span class="admin-connection-status">Local preview</span>
             <div id="queueSettingsBody" class="queue-settings-body hidden">
             <div class="settings-row">
               <label for="queueStyleSelect">Queue style</label>
@@ -800,10 +791,12 @@
               </select>
             </div>
             <div class="queue-settings-actions">
-              <button class="queue-settings-btn" id="resetDemoBtn" type="button">Reset orders</button>
+              <button class="queue-settings-btn" id="resetDemoBtn" type="button">Start over</button>
             </div>
             </div>
           </div>
+
+        </div>
 
           <div class="admin-control-row">
             <div class="field" id="customerNameField">
@@ -812,11 +805,10 @@
             </div>
 
             <div class="field admin-action-field">
-              <label>Queue action</label>
+              <span class="action-label">Add order</span>
               <button class="btn btn-yellow" id="addOrderBtn" type="button">Add order</button>
             </div>
           </div>
-        </div>
 
         <div class="orders-list" id="ordersList" aria-live="polite"></div>
 
@@ -962,6 +954,8 @@
       const type = ["name", "number-name", "number"].includes(order.type) ? order.type : "number";
       const readyAt = Number(order.readyAt);
       const normalizedReadyAt = Number.isFinite(readyAt) ? readyAt : null;
+      const createdAt = Number(order.createdAt);
+      const normalizedCreatedAt = Number.isFinite(createdAt) && createdAt > 0 ? createdAt : null;
       const collectedAt = Number(order.collectedAt);
       const normalizedCollectedAt = Number.isFinite(collectedAt) ? collectedAt : null;
 
@@ -975,6 +969,7 @@
           type,
           status,
           readyAt: normalizedReadyAt,
+          createdAt: normalizedCreatedAt,
           collectedAt: normalizedCollectedAt,
           number
         };
@@ -989,6 +984,7 @@
           type,
           status,
           readyAt: normalizedReadyAt,
+          createdAt: normalizedCreatedAt,
           collectedAt: normalizedCollectedAt,
           number: null
         };
@@ -1002,6 +998,7 @@
         type: "number",
         status,
         readyAt: normalizedReadyAt,
+          createdAt: normalizedCreatedAt,
         collectedAt: normalizedCollectedAt,
         number: null
       };
@@ -1127,6 +1124,30 @@
       }
     }
 
+    function elapsedLabel(order) {
+      const timestamp = Number(order.status === "ready" ? order.readyAt : order.createdAt);
+      if (!Number.isFinite(timestamp) || timestamp <= 0) return order.status === "ready" ? "Ready time unavailable" : "Waiting time unavailable";
+      const minutes = Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
+      return `${order.status === "ready" ? "Ready" : "Waiting"} ${minutes} min`;
+    }
+
+    // Update time text without rebuilding buttons or interrupting keyboard focus.
+    function updateOrderTimes() {
+      const orders = new Map(loadOrders().map(order => [order.id, order]));
+      ordersList.querySelectorAll("[data-row-id]").forEach(row => {
+        const order = orders.get(row.dataset.rowId);
+        if (!order) return;
+        row.querySelector(".order-elapsed").textContent = elapsedLabel(order);
+        const reminder = row.querySelector(".order-timer");
+        const overdue = isOverdue(order);
+        row.classList.toggle("overdue", overdue);
+        if (reminder) {
+          reminder.classList.toggle("overdue", overdue);
+          reminder.textContent = overdue ? "Please see staff" : `Ready reminder in ${formatCountdown(getReadyRemainingSeconds(order))}`;
+        }
+      });
+    }
+
     function renderOrders() {
       const queueStyle = getQueueStyle();
       const orders = loadOrders().filter(order => order.status !== "collected" && (queueStyle === "number-name" ? order.type === "number-name" : order.type === queueStyle));
@@ -1157,11 +1178,12 @@
         const primaryAction = isPreparing ? "ready" : "collected";
 
         return `
-          <div class="order-row ${order.status}${overdue ? " overdue" : ""}">
+          <div class="order-row ${order.status}${overdue ? " overdue" : ""}" data-row-id="${safeId}">
             <div class="order-summary">
               <span class="order-label">${safeLabel}</span>
               <div class="order-meta">
                 <span class="order-status-badge ${order.status}">${order.status}</span>
+                <span class="order-elapsed">${elapsedLabel(order)}</span>
                 ${removalText}
               </div>
             </div>
@@ -1188,7 +1210,7 @@
       const hasIncompatibleOrders = currentOrders.some(order => order.type !== nextStyle);
 
       if (hasIncompatibleOrders) {
-        const confirmed = window.confirm("Switching queue style will replace incompatible demo orders. Continue?");
+        const confirmed = window.confirm("Switching queue style will replace incompatible sample orders. Continue?");
         if (!confirmed) return false;
       }
 
@@ -1233,7 +1255,7 @@
           existingOrder.status = "preparing";
           delete existingOrder.readyAt;
         } else {
-          orders.push({ id: makeOrderId("number"), label: String(candidate), type: "number", status: "preparing" });
+          orders.push({ id: makeOrderId("number"), label: String(candidate), type: "number", status: "preparing", createdAt: Date.now() });
         }
 
         writeOrders(orders, { silent: false, skipRender: false });
@@ -1254,7 +1276,7 @@
         existingOrder.status = "preparing";
         delete existingOrder.readyAt;
       } else {
-        const nextOrder = { id: makeOrderId(queueStyle), label: name, type: queueStyle, status: "preparing" };
+        const nextOrder = { id: makeOrderId(queueStyle), label: name, type: queueStyle, status: "preparing", createdAt: Date.now() };
         if (queueStyle === "number-name") {
           nextOrder.number = String(getNextNumber());
           setNextNumber(Number(nextOrder.number) + 1);
@@ -1404,7 +1426,7 @@
         clearInterval(window.__stackedReadySweep);
       }
       window.__stackedReadySweep = window.setInterval(() => {
-        renderOrders();
+        updateOrderTimes();
       }, 1000);
     }
 

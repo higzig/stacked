@@ -1,0 +1,47 @@
+/* Operational light theme, shared with the warm customer display. */
+body { background: #f5f3ed; color: #10243d; overflow-x: visible; font-family: "DM Sans", sans-serif; }
+.demo-shell { display: block; min-height: 100vh; overflow: visible; padding: 1.25rem 12px; background: #f5f3ed; color: #10243d; }
+.demo-panel { width: min(900px, 100%); margin: auto; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none; }
+.staff-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #c6c9c7; }
+.product-brand { margin: 0; }
+.demo-panel .product-brand h1 { margin: 0 0 .35rem; font: 800 1.2rem/1.1 "Bricolage Grotesque", sans-serif; letter-spacing: -.025em; text-transform: none; }
+.product-brand span:last-child { color: #526170; font-size: .875rem; }
+.collection-demo { margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.demo-panel .btn { min-width: 0; border: 1px solid #10243d; border-radius: 10px; background: #10243d; color: white; box-shadow: none; transform: none; font-family: "DM Sans", sans-serif; }
+.demo-panel .btn:hover { background: #25415e; box-shadow: none; transform: none; }
+.demo-panel .btn::before, .demo-panel .btn::after { display: none; }
+.queue-settings { background: transparent; border-color: #c6c9c7; }
+.settings-row, .field label, .action-label { color: #10243d; }
+.queue-settings-btn, .setup-option, .settings-row select { background: #fffefb; color: #10243d; border: 1px solid #8b969e; }
+.admin-connection-status { color: #526170; }
+.admin-connection-status::before { background: #8b969e; }
+.admin-control-row { position: sticky; top: 0; z-index: 10; margin: 0; padding: .8rem 0; background: #f5f3ed; border-bottom: 2px solid #c6c9c7; grid-template-columns: minmax(0, 1fr) auto; }
+.action-label { font-size: .8rem; font-weight: 800; }
+.field input { background: white; color: #10243d; border: 1px solid #748391; font-size: 1rem; }
+.field input::placeholder { color: #61707c; }
+.order-row { background: #fffefb; border: 1px solid #aeb6bb; scroll-margin-top: 155px; }
+.order-row.ready { border-left: 5px solid #39734b; }
+.order-label { color: #10243d; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.order-row.preparing .order-status-badge { color: #60471a; }
+.order-row.ready .order-status-badge { color: #275d39; }
+.order-row.ready.overdue .order-status-badge, .order-timer.overdue { color: #a33220; }
+.order-row.ready.overdue { border-color: #a33220; }
+.order-meta { gap: .35rem .65rem; color: #526170; font-size: .85rem; }
+.order-meta .order-timer { color: #526170; flex-basis: 100%; font-size: .75rem; }
+.order-meta .order-timer.overdue { color: #a33220; }
+.order-meta .order-timer::before { content: none; }
+.order-primary-action .order-action-btn.ready { background: #ff6433; color: #10243d; border-color: #ff6433; }
+.order-primary-action .order-action-btn.collected { background: #285f3b; color: white; border-color: #285f3b; }
+.order-secondary-actions .order-action-btn { background: transparent; color: #364b5d; border-color: #aeb6bb; min-height: 44px; font-size: .75rem; text-transform: none; letter-spacing: 0; }
+.order-secondary-actions .order-action-btn.remove { color: #973421; }
+.order-action-btn:hover { filter: brightness(.94); }
+:where(button, a, input, select):focus-visible { outline: 3px solid #10243d; outline-offset: 3px; }
+@media (max-width: 520px) {
+  .admin-control-row { gap: .6rem; grid-template-columns: minmax(0, 1fr) auto; }
+  .admin-action-field .btn { padding-inline: .7rem; font-size: .8rem; }
+  .field label { font-size: .7rem; letter-spacing: 0; text-transform: none; }
+  .field input { padding-inline: .65rem; }
+  .staff-header .btn { padding: .6rem .8rem; font-size: .8rem; }
+  .order-row { padding: .85rem; }
+}
+.staff-header { position: static; inset: auto; z-index: auto; background: transparent; backdrop-filter: none; }

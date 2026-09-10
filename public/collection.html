@@ -31,11 +31,12 @@
     <section class="collection-hero">
       <div>
         <p class="kicker"><span></span> PopBia Collection</p>
+        <p class="availability availability-preview">Preview</p>
         <h1>Less shouting.<br><em>More serving.</em></h1>
         <p class="hero-lede">A simple way for busy food businesses to show customers when orders are being prepared and when they are ready.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#walkthrough">Try the walkthrough</a>
-          <a class="button button-secondary" href="#full-setup">See the full setup</a>
+          <a class="button button-secondary" href="#phone-board">Explore the QR option</a>
         </div>
       </div>
       <div class="collection-hero-board" aria-label="Example Stacked collection display">
@@ -61,15 +62,15 @@
 
     <section class="collection-walkthrough" id="walkthrough" aria-labelledby="walkthrough-title">
       <div class="section-heading section-heading-light">
-        <p class="section-number">Interactive walkthrough</p>
-        <h2 id="walkthrough-title">See both sides of service.</h2>
-        <p>Add an order on the staff side, then move it through Ready and Collected. The customer-facing display updates alongside it.</p>
+        <p class="section-number">The Collection workflow</p>
+        <h2 id="walkthrough-title">Staff controls on one side. Customer board on the other.</h2>
+        <p>Add an order, move it to Ready, and watch the customer display update beside it.</p>
       </div>
 
       <div class="collection-demo collection-product-demo">
         <div class="demo-toolbar">
-          <div><span class="demo-label">Try it now</span><h3>Staff controls + customer display</h3></div>
-          <button class="demo-reset" id="demoReset" type="button">Reset walkthrough</button>
+          <span class="demo-label">Preview</span>
+          <button class="demo-reset" id="demoReset" type="button">Start over</button>
         </div>
         <div class="demo-grid">
           <section class="staff-demo" aria-labelledby="staffDemoTitle">
@@ -77,7 +78,7 @@
             <h4 id="staffDemoTitle">Add an order</h4>
             <div class="demo-add">
               <label for="demoName">Customer name <span>(optional)</span></label>
-              <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Sarah"><button id="demoAdd" type="button">Add <span id="demoNextNumber">#53</span></button></div>
+              <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Sarah"><button id="demoAdd" type="button">Add order <span id="demoNextNumber">#53</span></button></div>
             </div>
             <ol class="staff-orders" id="staffOrders" aria-live="polite"></ol>
           </section>
@@ -91,7 +92,15 @@
           </section>
         </div>
       </div>
-      <p class="prototype-note"><strong>Current prototype:</strong> the working demo uses local browser state. Live multi-device syncing and personal phone tracking are part of the deployment roadmap.</p>
+      <div class="board-popout">
+        <aside class="collection-utilities" id="full-setup" aria-label="Collection screens">
+          <span>Explore the separate screens</span>
+          <div class="setup-links">
+            <a class="button button-ink" href="board-admin.html">Open staff controls</a>
+            <a class="button button-secondary" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board ↗</a>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <section class="collection-benefits" aria-labelledby="benefits-title">
@@ -107,17 +116,18 @@
       </ul>
     </section>
 
-    <section class="full-setup" id="full-setup" aria-labelledby="full-setup-title">
-      <div>
-        <p class="section-number">Working prototype</p>
-        <h2 id="full-setup-title">See the full setup.</h2>
-        <p>Open the current working interfaces to see the complete staff workflow and the client-branded customer board using Stacked as the example business.</p>
+    <section class="collection-phone" id="phone-board" aria-labelledby="phone-board-title">
+      <div class="section-heading">
+        <p class="section-number">A little more room to wait</p>
+        <h2 id="phone-board-title">No spare screen — or don’t want customers crowding the counter?</h2>
+        <p>A QR code gives customers a quick way to open the collection board on their phone.</p>
+        <p>The board shows which orders are being prepared and which are Ready.</p>
+        <p class="qr-availability">This preview shares order updates only between tabs on the same device. The sample QR needs your public board address before customer use.</p>
       </div>
-      <div class="setup-links">
-        <a class="button button-primary" href="board-admin.html">Open staff controls</a>
-        <a class="button button-secondary" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board ↗</a>
-      </div>
-      <p class="prototype-note"><strong>Prototype note:</strong> these interfaces sync between tabs in the same browser using local state; they are not yet a live cross-device service.</p>
+      <figure class="collection-qr">
+        <canvas id="collectionQrCode" width="200" height="200" role="img" aria-label="Sample QR code for the collection board" aria-describedby="collectionQrCaption"></canvas>
+        <figcaption id="collectionQrCaption">A board in your pocket.<span>Sample QR · Preview</span></figcaption>
+      </figure>
     </section>
   </main>
 
@@ -127,5 +137,8 @@
     <a href="index.html#contact">Tell us about your business →</a>
   </footer>
   <script src="collection.js"></script>
+  <script src="client-config.js"></script>
+  <script src="qrcode.js"></script>
+  <script src="collection-qr.js"></script>
 </body>
 </html>

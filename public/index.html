@@ -38,7 +38,7 @@
         <h1>Good food up front. <em>PopBia behind it.</em></h1>
         <p class="hero-lede">We help food trucks, market traders and independent kitchens look easier to find, simpler to order from and calmer to collect from—without sanding away what makes them special.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#templates">Explore the first template</a>
+          <a class="button button-primary" href="#templates">Explore Templates</a>
           <a class="button button-secondary" href="#contact">Start a conversation</a>
         </div>
       </div>
@@ -70,16 +70,14 @@
       </div>
 
       <article class="template-feature">
-        <a class="template-preview" href="stacked.html" aria-label="Open the Stacked website demo">
-          <div class="browser-bar"><span></span><span></span><span></span><b>STACKED / DEMO</b></div>
-          <div class="stacked-preview">
-            <p>Smash burgers around Cork</p>
-            <strong>Big flavour.<br><mark>Zero patience</mark><br>for bad burgers.</strong>
-            <span>Explore menu →</span>
+        <div class="template-preview">
+          <div class="phone-top" aria-hidden="true"><span></span></div>
+          <div class="stacked-preview" role="region" aria-label="Stacked website preview" aria-describedby="stackedPreviewHint" tabindex="0">
+            <img src="assets/stacked-mobile-preview.png" width="2174" height="14088" alt="Full-page preview of the Stacked street-food website template" loading="lazy" decoding="async">
           </div>
-        </a>
+          
+        </div>
         <div class="template-copy">
-          <p class="availability">Available now</p>
           <h3>Stacked</h3>
           <p>A bold, mobile-ready website template created for food trucks and energetic independent food brands.</p>
           <ul class="tick-list">
@@ -87,26 +85,26 @@
             <li>Locations, hours and event enquiries</li>
             <li>Your colours, photography and voice</li>
           </ul>
-          <a class="text-link" href="stacked.html">Open the working demo <span>↗</span></a>
+          <p><b>Different flavour?</b> We can create other visual directions or a custom approach around your business.</p>
+          <a class="text-link" href="stacked.html">Explore Stacked <span>↗</span></a>
         </div>
       </article>
     </section>
 
     <section class="section collection" id="collection">
-      <div class="section-heading section-heading-light">
+      <div class="sfection-heading section-heading-light">
         <p class="section-number">02 / Collection</p>
         <h2>Less shouting.<br>More serving.</h2>
         <p>PopBia Collection sits beside the register and gives staff one obvious sequence: add the order, mark it ready, then mark it collected.</p>
-        <a class="button button-primary" href="collection.html">Explore PopBia Collection</a>
       </div>
 
       <div class="collection-demo" aria-labelledby="collectionDemoTitle">
         <div class="demo-toolbar">
           <div>
-            <span class="demo-label">Interactive preview</span>
+            <span class="demo-label">Preview</span>
             <h3 id="collectionDemoTitle">Try a busy-service flow</h3>
           </div>
-          <button class="demo-reset" id="demoReset" type="button">Reset demo</button>
+          <button class="demo-reset" id="demoReset" type="button">Start over</button>
         </div>
 
         <div class="demo-grid">
@@ -136,7 +134,8 @@
           </section>
         </div>
 
-        <p class="demo-disclaimer"><strong>Current prototype:</strong> this preview uses browser-local state. Live multi-device syncing and personal phone tracking are part of the deployment roadmap.</p>
+        <div class="collection-explore"><a class="button button-primary" href="collection.html">Explore Collection</a></div>
+        <p class="demo-disclaimer">Try the workflow right here. Add an order, mark it Ready, then mark it Collected.</p>
       </div>
     </section>
 
@@ -145,14 +144,14 @@
         <div class="section-heading">
           <p class="section-number">03 / Digital ordering</p>
           <h2>A clearer route from “looks good” to “can I collect?”</h2>
-          <p>The current Stacked flow lets a customer browse a menu, build an order request, choose a preferred collection time and prepare it for WhatsApp.</p>
-          <p class="truth-note">The business still confirms availability and collection time. It does not take payment, accept automatically, manage stock or add the request to Collection.</p>
-          <a class="button button-ink" href="stacked.html#menu">Try the menu demo</a>
+          <p>Give customers a simple way to browse, choose their food and ask about collection. Try the request flow in Stacked to see the idea.</p>
+          <p class="truth-note">You stay in control of every order. Requests can be reviewed before they’re accepted, so nothing gets promised automatically.</p>
+          <a class="button button-ink" href="stacked.html#menu">Try the menu</a>
         </div>
         <ol class="ordering-steps">
           <li><span>1</span><div><strong>Browse</strong><p>A focused menu designed to read well on a phone.</p></div></li>
           <li><span>2</span><div><strong>Build a request</strong><p>Choose items and a preferred collection time.</p></div></li>
-          <li><span>3</span><div><strong>Ask the business</strong><p>Prepare the request for WhatsApp when a verified number is configured.</p></div></li>
+          <li><span>3</span><div><strong>Ask the business</strong><p>Bring the food choices and preferred time into one clear request for WhatsApp.</p></div></li>
           <li><span>4</span><div><strong>Staff confirm</strong><p>The order only proceeds after the business replies.</p></div></li>
         </ol>
       </div>
@@ -163,17 +162,31 @@
         <div class="contact-copy">
           <p class="section-number">04 / Contact</p>
           <h2>Tell us about your business.</h2>
-          <p>Share what you sell, where you trade and what currently slows you down. We’ll start with the useful part—not a generic sales pitch.</p>
+          <p>Share what you sell, where you trade and what currently slows you down.</p>
         </div>
         <form class="contact-form" id="contactForm" novalidate>
           <div class="field-pair">
             <label>Your name<input name="name" required autocomplete="name"></label>
             <label>Business name<input name="business" required autocomplete="organization"></label>
           </div>
-          <label>Email address<input name="email" type="email" required autocomplete="email"></label>
-          <label>Tell us a little about the business<textarea name="message" required rows="5" placeholder="What do you sell, where do you trade, and what would you like to improve?"></textarea></label>
-          <button class="button button-primary" id="contactSubmit" type="submit" disabled>Contact destination needed</button>
-          <p class="form-status" id="contactStatus" role="status">No verified PopBia contact destination is configured yet. This form will not send or store anything.</p>
+          <label>Email<input name="email" type="email" required autocomplete="email"></label>
+          <label for="contactInterest">What are you interested in?
+            <select id="contactInterest" name="interest" required aria-controls="collectionQuestion">
+              <option value="">Choose an option</option>
+              <option>Collection system</option><option>Website / template</option><option>Digital ordering</option>
+              <option>Website + Collection</option><option>Not sure yet</option><option>Something else</option>
+            </select>
+          </label>
+          <label id="collectionQuestion" for="collectionMethod" hidden>How do you currently let customers know when an order is ready?
+            <select id="collectionMethod" name="collectionMethod" disabled>
+              <option value="">Choose an option</option><option>Call out names</option><option>Call out numbers</option>
+              <option>Pagers / beepers</option><option>SMS</option><option>Existing collection display</option><option>Other</option>
+            </select>
+          </label>
+          <label>Where do you trade? <span class="field-hint">Optional</span><input name="location" autocomplete="address-level2" placeholder="Town, market or regular pitch"></label>
+          <label>Tell us a little about what you need<textarea name="message" required rows="4" placeholder="What would make service easier for you?"></textarea></label>
+          <button class="button button-primary" id="contactSubmit" type="submit" aria-describedby="contactStatus" disabled>Start a conversation</button>
+          <p class="form-status" id="contactStatus" role="status">Enquiries aren’t open just yet. You can explore the form, but your details won’t be sent or saved.</p>
         </form>
       </div>
     </section>
@@ -182,7 +195,7 @@
   <footer class="site-footer">
     <a class="popbia-brand" href="#top"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
     <p>Digital foundations for independent food businesses.</p>
-    <a href="stacked.html">Stacked demo ↗</a>
+    <a href="stacked.html">Explore Stacked ↗</a>
   </footer>
 
   <script src="popbia-config.js"></script>
