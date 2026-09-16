@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Demo website for Stacked, a fictional Cork food truck serving smash burgers and loaded fries." />
+  <meta name="description" content="Stacked, serving smash burgers and loaded fries." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Stacked — Smash burgers on the move" />
-  <meta property="og:description" content="Demo website for Stacked, a fictional Cork food truck serving smash burgers and loaded fries." />
+  <meta property="og:title" content="Stacked by PopBia — Smash burgers on the move" />
+  <meta property="og:description" content="Stacked, a food truck serving smash burgers and loaded fries." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" />
-  <title>Stacked — Smash burgers on the move</title>
+  <title>Stacked by PopBia — Smash burgers on the move</title>
 
   <!-- CLIENT FAVICON: replace favicon.svg with the client's approved icon. -->
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -25,7 +25,7 @@
     <div class="container nav">
       <a href="#top" class="brand" aria-label="Stacked home">
         <span class="brand-mark">S</span>
-        <span class="brand-word" data-client-text="businessName">Stacked</span>
+        <span class="brand-lockup"><span class="brand-word" data-client-text="businessName">Stacked</span><span class="brand-credit"><img class="popbia-credit-mark" src="popbia-favicon.svg" alt="" width="16" height="16"> by PopBia</span></span>
       </a>
 
       <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
@@ -35,12 +35,13 @@
         <a href="#menu">Menu</a>
         <a href="#queue">How ordering works</a>
         <a href="#events">Events</a>
-        <button class="btn btn-yellow" onclick="openDrawer(this)">Build an order request</button>
+        <a class="parent-site-link" href="index.html"><img class="popbia-credit-mark" src="popbia-favicon.svg" alt="" width="16" height="16"> Visit PopBia <span aria-hidden="true">↗</span></a>
       </nav>
     </div>
   </header>
 
   <main id="top">
+    <aside class="demo-disclosure"><div class="container">You're viewing Stacked by PopBia, a demo for a fictional food business. Yours would use your brand, menu and locations.</div></aside>
     <section class="hero">
       <div class="container">
         <div class="hero-copy">
@@ -48,25 +49,24 @@
           <h1>Big flavour.<br><span>Zero patience</span><br>for bad burgers.</h1>
           <p>
             Crispy-edged smash burgers, loaded fries and proper sauces.
-            Explore this sample truck schedule and build a demo collection request.
+            Find the truck and build a collection request.
           </p>
 
           <div class="hero-actions">
             <a href="#menu" class="btn btn-yellow">See the menu</a>
-            <button class="btn btn-red" onclick="openDrawer(this)">Build a request</button>
           </div>
 
           <div class="live-bar">
             <div class="live-bit">
-              <span>Demo status</span>
-              <strong>Example only</strong>
+              <span>Made to order</span>
+              <strong>Fresh off the griddle</strong>
             </div>
             <div class="live-bit">
-              <span>Sample location</span>
+              <span>Location</span>
               <strong data-client-text="mainLocation">Cork City Centre</strong>
             </div>
             <div class="live-bit">
-              <span>Sample hours</span>
+              <span>Opening hours</span>
               <strong data-client-text="openingHoursShort">5:00–10:00pm</strong>
             </div>
           </div>
@@ -86,20 +86,17 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Find the truck</p>
-          <h2>Example stop. No vague Instagram archaeology required.</h2>
-          <p>
-            This demo shows how a client could publish a current location, opening status, directions and weekly schedule. The details below are sample data.
-          </p>
+          <h2>Your next stop.</h2>
+
         </div>
 
         <div class="today-grid">
           <article class="today-card">
-            <span class="status">Sample schedule</span>
+            <span class="status">Next stop</span>
             <h3 data-client-text="mainLocation">Cork City Centre</h3>
             <p data-client-text="openingHours">Friday · 5:00–10:00pm</p>
             <div class="today-actions">
-              <button class="btn btn-yellow demo-action" id="directionsButton" type="button">Demo directions</button>
-              <button class="btn btn-red" onclick="openDrawer(this)">Request collection</button>
+              <button class="btn btn-yellow demo-action" id="directionsButton" type="button">Get directions</button>
             </div>
           </article>
 
@@ -144,7 +141,7 @@
           <p class="eyebrow">The menu</p>
           <h2>Burgers that require both hands and a small amount of planning.</h2>
           <p>
-            Build a collection request, choose a preferred time and ask the truck to confirm it through WhatsApp. This demo does not place or accept an order.
+            Customers can build a collection request, choose a preferred time, and ask the truck to confirm methods like WhatsApp or email, however you prefer to run it.
           </p>
         </div>
 
@@ -169,7 +166,7 @@
             </article>
 
             <article class="menu-item">
-              <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=320&q=82" alt="Spicy smash burger">
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=320&q=82" alt="Spicy smash burger">
               <div>
                 <h3>Hot Stack</h3>
                 <p>Double beef, pepper jack, jalapeños, crispy onions and hot sauce.</p>
@@ -283,15 +280,15 @@
             A completed client setup could let customers request an order, receive confirmation and see when the food is ready.
           </p>
           <p>
-            This demo shows the customer-facing idea. A real client setup could use a display,
-            SMS, WhatsApp, pager system or an existing ordering platform.
+            This demo shows the customer-facing idea. Explore how it works in the PopBia Collection demo.
           </p>
+          <a class="btn btn-yellow" href="collection.html#walkthrough">Try the Collection demo <span aria-hidden="true">→</span></a>
         </div>
 
         <div class="ready-board">
           <div class="ready-head">
-            <strong>Demo collection board</strong>
-            <span>Example view</span>
+            <strong>Collection board</strong>
+            <span>Order status</span>
           </div>
 
           <div class="ready-order">
@@ -307,12 +304,12 @@
           <div class="ready-order">
             <b>#44</b>
             <span>3 burgers · 2 fries</span>
-            <span style="color:rgba(255,255,255,.45);font-size:.78rem;">2 mins</span>
+            <span style="color:var(--paper);font-size:.78rem;">2 mins</span>
           </div>
           <div class="ready-order">
             <b>#45</b>
             <span>1 vegetarian · 1 fries</span>
-            <span style="color:rgba(255,255,255,.45);font-size:.78rem;">5 mins</span>
+            <span style="color:var(--paper);font-size:.78rem;">5 mins</span>
           </div>
         </div>
       </div>
@@ -333,7 +330,7 @@
             No towering novelty burgers. No dry brioche. No pretending a knife through the middle helps.
           </p>
           <p>
-            We keep the menu focused, cook everything to order and move around Cork
+            We keep the menu focused, cook everything to order and move around the country.
             throughout the week.
           </p>
 
@@ -362,20 +359,21 @@
           <p class="eyebrow">Bring Stacked to the crowd</p>
           <h2>Weddings, work parties and events that need actual food.</h2>
           <p>
-            We bring the truck, griddle and menu. You tell us the date, Cork location
-            and expected number of hungry people.
+            We bring the truck, griddle and menu. You tell us the date, location
+            and expected number of hungry souls.
           </p>
 
           <div class="event-tags">
             <span>Weddings</span>
             <span>Birthday parties</span>
-            <span>Corporate events</span>
+            <span>Corporate events</span> 
             <span>Festivals</span>
             <span>Sports clubs</span>
           </div>
 
-          <p class="event-enquiry-help" data-client-text="eventEnquiryHelp">Tell us the date, location and expected guest count. The truck will reply to confirm availability.</p>
-          <button class="btn btn-yellow demo-action" id="eventEnquiryButton" type="button" data-client-text="eventEnquiryLabel">Demo event enquiry</button>
+          <p class="event-enquiry-help" data-client-text="eventEnquiryHelp">The truck will reply to confirm availability.</p>
+          <button class="btn btn-yellow demo-action" id="eventEnquiryButton" type="button" data-client-text="eventEnquiryLabel">Enquire about an event</button>
+          <p class="event-enquiry-help" id="eventDemoWarning">Demo only — no real enquiry will be sent.</p>
         </div>
       </div>
     </section>
@@ -384,7 +382,7 @@
     <section>
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Sample reviews</p>
+          <p class="eyebrow">Reviews</p>
           <h2>Strong opinions. Mostly about sauce.</h2>
         </div>
 
@@ -392,19 +390,19 @@
           <blockquote class="review">
             <div class="stars">★★★★★</div>
             <p>“Crispy edges, soft bun, ridiculous sauce. Exactly what a smash burger should be.”</p>
-            <footer>Demo review · James R. · Cork</footer>
+            <footer>James R. · Cork</footer>
           </blockquote>
 
           <blockquote class="review">
             <div class="stars">★★★★★</div>
             <p>“Ordered ahead and got the message when it was ready. No standing around in the rain pretending not to be hungry.”</p>
-            <footer>Demo review · Niamh L. · Collection request</footer>
+            <footer>Niamh L. · Collection request</footer>
           </blockquote>
 
           <blockquote class="review">
             <div class="stars">★★★★★</div>
             <p>“Booked Stacked for a work event and the queue moved faster than anyone expected. Everyone was fed and happy.”</p>
-            <footer>Demo review · Private event example</footer>
+            <footer>Private event</footer>
           </blockquote>
         </div>
       </div>
@@ -413,14 +411,14 @@
     <section>
       <div class="container">
         <div class="section-head" style="margin-inline:auto;text-align:center;">
-          <p class="eyebrow">Useful details</p>
+          <p class="eyebrow">Useful details for the customer</p>
           <h2>Questions before you commit to the double.</h2>
         </div>
 
         <div class="faq-list">
           <article class="faq-item">
             <button class="faq-question" type="button" id="faq-question-1" aria-expanded="false" aria-controls="faq-answer-1">Can I order ahead?<span aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1" hidden>You can build an order request, choose a preferred collection time and send it through WhatsApp once the client adds a verified number. The truck must confirm availability and collection time before the order is accepted.</div>
+            <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1" hidden>You can build an order request, choose a preferred collection time and send it via <span data-order-channel>the configured contact channel</span> once the business adds verified contact details. The truck must confirm availability and collection time before the order is accepted.</div>
           </article>
 
           <article class="faq-item">
@@ -430,7 +428,7 @@
 
           <article class="faq-item">
             <button class="faq-question" type="button" id="faq-question-3" aria-expanded="false" aria-controls="faq-answer-3">Do you have vegetarian options?<span aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3" hidden>Yes. The demo includes a crispy mushroom burger, and menu options can be adjusted for the real business.</div>
+            <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3" hidden>Yes. Our Crushed Shroom has a crispy mushroom patty. Ask us about dietary requirements before ordering.</div>
           </article>
 
           <article class="faq-item">
@@ -443,15 +441,15 @@
 
   </main>
 
-  <button class="sticky-order" onclick="openDrawer(this)">Your request <span id="cartBadge">0</span></button>
+  <button class="sticky-order" onclick="openDrawer(this)">Your order <span id="cartBadge">0</span></button>
 
   <div class="drawer" id="drawer" aria-hidden="true">
     <div class="drawer-backdrop" onclick="closeDrawer()" aria-hidden="true"></div>
 
     <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
       <div class="drawer-head">
-        <h3 id="drawerTitle">Your request</h3>
-        <button class="drawer-close" onclick="closeDrawer()" aria-label="Close request">✕</button>
+        <h3 id="drawerTitle">Your order</h3>
+        <button class="drawer-close" onclick="closeDrawer()" aria-label="Close order">✕</button>
       </div>
 
       <div class="drawer-body" id="cartBody">
@@ -470,7 +468,9 @@
         </select>
 
         <p class="request-note">Your preferred collection time is not confirmed until the truck replies and accepts the request.</p>
-        <button class="btn btn-red" style="width:100%" onclick="sendOrder()">Request order on WhatsApp</button>
+        <p class="request-note" id="orderDemoWarning">Demo only — no real order will be sent.</p>
+        <button class="btn btn-red" id="orderRequestButton" style="width:100%" onclick="sendOrder()" aria-describedby="orderChannelNote orderDemoWarning">Confirm order</button>
+        <p class="request-note order-channel-note" id="orderChannelNote">On your end you can have this be received via e-mail, WhatsApp or SMS depending on your needs. This demo uses <span data-order-channel>the configured channel</span>; SMS would require additional setup.</p>
       </div>
     </aside>
   </div>
@@ -480,7 +480,7 @@
       <div>
         <a href="#top" class="brand">
           <span class="brand-mark">S</span>
-          <span class="brand-word" data-client-text="businessName">Stacked</span>
+          <span class="brand-lockup"><span class="brand-word" data-client-text="businessName">Stacked</span><span class="brand-credit"><img class="popbia-credit-mark" src="popbia-favicon.svg" alt="" width="16" height="16"> by PopBia</span></span>
         </a>
         <p>Smash burgers, loaded fries and fewer boring queues.</p>
       </div>
@@ -489,13 +489,14 @@
         <a href="#today">Find us</a>
         <a href="#menu">Menu</a>
         <a href="#events">Events</a>
-        <button class="footer-demo-link" id="instagramButton" type="button">Instagram (demo)</button>
+        <button class="footer-demo-link" id="instagramButton" type="button">Instagram</button>
+        <a class="parent-site-link" href="index.html"><img class="popbia-credit-mark" src="popbia-favicon.svg" alt="" width="16" height="16"> Visit PopBia</a>
       </div>
     </div>
   </footer>
 
   <div class="truckside-note">
-    Fictional food-truck example · Made by PopBia
+    Fictional food-truck example · Made by <a class="parent-site-link" href="index.html"><img class="popbia-credit-mark" src="popbia-favicon.svg" alt="" width="16" height="16"> PopBia</a>
   </div>
 
   <script src="client-config.js" defer></script>

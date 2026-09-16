@@ -354,7 +354,7 @@
       box-shadow: 8px 8px 0 var(--yellow);
       background:
         linear-gradient(to top, rgba(17,17,17,.95), rgba(17,17,17,.18)),
-        url("https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1400&q=85") center/cover;
+        url("event-foodtruck.jpg") center/cover;
     }
 
     .status {
@@ -527,8 +527,8 @@
     }
 
     .queue {
-      background: var(--blue);
-      color: white;
+      background: var(--ink);
+      color: var(--paper);
       overflow: hidden;
       position: relative;
     }
@@ -554,14 +554,14 @@
     }
 
     .queue .eyebrow { color: var(--yellow); }
-    .queue .eyebrow::before { background: var(--yellow); }
-    .queue-copy p { color: rgba(255,255,255,.75); font-size: 1.05rem; }
+    .queue .eyebrow::before { background: var(--red); }
+    .queue-copy p { color: var(--paper); font-size: 1.05rem; }
 
     .ready-board {
       padding: 1.25rem;
       border-radius: var(--radius-lg);
-      background: var(--ink);
-      border: 2px solid white;
+      background: var(--ink-soft);
+      border: 2px solid var(--paper);
       box-shadow: 9px 9px 0 var(--yellow);
     }
 
@@ -581,7 +581,7 @@
     }
 
     .ready-head span {
-      color: #78df75;
+      color: var(--yellow);
       font-size: .78rem;
       font-weight: 900;
       text-transform: uppercase;
@@ -602,13 +602,13 @@
       color: var(--yellow);
       font-size: 1.05rem;
     }
-    .ready-order span { color: rgba(255,255,255,.66); }
+    .ready-order span { color: var(--paper); }
     .ready-order em {
       font-style: normal;
       padding: .35rem .55rem;
       border-radius: 8px;
-      background: rgba(120,223,117,.14);
-      color: #78df75;
+      background: var(--yellow);
+      color: var(--ink);
       font-size: .7rem;
       font-weight: 900;
       text-transform: uppercase;
@@ -1011,7 +1011,7 @@
       .reviews-grid { grid-template-columns: 1fr 1fr; }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 960px) {
       .nav-toggle { display: grid; place-items: center; }
       .nav-links {
         position: absolute;
@@ -1064,3 +1064,26 @@
       }
       .ticker-track { animation: none; }
     }
+
+    .demo-disclosure { margin-top: 76px; padding: .85rem 0; background: var(--paper); color: var(--ink-soft); border-bottom: 3px solid var(--yellow); font-size: .85rem; line-height: 1.5; }
+    .demo-disclosure + .hero { padding-top: 5rem; }
+    .queue-grid > * { min-width: 0; }
+    .queue-copy h2 { font-size: clamp(2rem, 4vw, 3rem); overflow-wrap: anywhere; }
+    .ready-head { gap: .75rem; flex-wrap: wrap; }
+    .ready-order { grid-template-columns: 48px minmax(0, 1fr) auto; gap: .6rem; }
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 2.65rem; }
+      h2 { overflow-wrap: anywhere; }
+    }
+
+    .order-channel-note { margin: .75rem 0 0; }
+
+    .brand-lockup { display: grid; gap: .1rem; }
+    .brand-credit { color: var(--yellow); font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
+    .nav-links .parent-site-link { color: var(--yellow); }
+    .truckside-note a { color: inherit; text-underline-offset: .2em; }
+
+    .brand-credit, .parent-site-link { display: inline-flex; align-items: center; gap: .35rem; }
+    .popbia-credit-mark { width: 16px; height: 16px; flex: 0 0 16px; }
+    .brand-credit .popbia-credit-mark { width: 13px; height: 13px; flex-basis: 13px; }
+    .truckside-note .parent-site-link { vertical-align: middle; }

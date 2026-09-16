@@ -61,3 +61,12 @@ Before sharing the QR code publicly, replace `publicBoardUrl` with the deployed 
 ```js
 publicBoardUrl: "https://stacked.example.workers.dev/board.html"
 ```
+
+Ordering uses `CLIENT_CONFIG.ordering.channels` and `defaultChannel`. The default
+must be enabled and either `"whatsapp"` or `"email"`; invalid configurations disable
+the request action. There is no customer channel picker. WhatsApp uses the existing
+`whatsappNumber` / `whatsappPlaceholder` settings; email uses `contactEmail` /
+`contactEmailPlaceholder` and `ordering.emailSubject`. Keep placeholder flags enabled
+for the fictional demo. Neither channel sends automatically: a configured business
+opens a composed request in WhatsApp or an email app for the customer to review.
+Ordering has no backend or connection to Collection.

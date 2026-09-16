@@ -6,6 +6,22 @@
     const cartBadge = document.getElementById("cartBadge");
     const drawerPanel = drawer.querySelector(".drawer-panel");
     const clientConfig = window.CLIENT_CONFIG || {};
+    // The default must be supported and enabled; never silently choose another channel.
+    const ordering = clientConfig.ordering || {};
+    const orderChannels = {
+      whatsapp: {
+        label: "WhatsApp",
+        ready: () => !clientConfig.whatsappPlaceholder && /^\d{8,15}$/.test(String(clientConfig.whatsappNumber || "").replace(/[\s()+-]/g, "")),
+        open: message => window.open(`https://wa.me/${String(clientConfig.whatsappNumber).replace(/[\s()+-]/g, "")}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer")
+      },
+      email: {
+        label: "email",
+        ready: () => !clientConfig.contactEmailPlaceholder && /^[^\s@?&#]+@[^\s@?&#]+\.[^\s@?&#]+$/.test(clientConfig.contactEmail || ""),
+        open: message => { window.location.href = `mailto:${clientConfig.contactEmail}?subject=${encodeURIComponent(ordering.emailSubject || "Collection request")}&body=${encodeURIComponent(message)}`; }
+      }
+    };
+    const orderChannel = Array.isArray(ordering.channels) && ordering.channels.includes(ordering.defaultChannel)
+      ? orderChannels[ordering.defaultChannel] : null;
     let drawerTrigger = null;
 
     const cart = [];
@@ -25,13 +41,13 @@
 
     function applyClientConfig() {
       const businessName = clientConfig.businessName || "Stacked";
-      document.title = `${businessName} — Smash burgers on the move`;
+      document.title = `${businessName} by PopBia — Smash burgers on the move`;
       const metaDescription = clientConfig.metaDescription || "Food-truck menu, schedule, event enquiries and collection order requests.";
       document.querySelector('meta[name="description"]').setAttribute("content", metaDescription);
       document.querySelector('meta[property="og:title"]').setAttribute("content", document.title);
       document.querySelector('meta[property="og:description"]').setAttribute("content", metaDescription);
       document.querySelectorAll(".brand").forEach(brand => {
-        brand.setAttribute("aria-label", `${businessName} home`);
+        brand.setAttribute("aria-label", `${businessName} by PopBia home`);
       });
 
       document.querySelectorAll("[data-client-text]").forEach(element => {
@@ -41,7 +57,7 @@
 
       const hoursParts = (clientConfig.openingHours || "").split("·");
       document.querySelectorAll('[data-client-text="openingHoursShort"]').forEach(element => {
-        element.textContent = (hoursParts[1] || clientConfig.openingHours || "Sample hours").trim();
+        element.textContent = (hoursParts[1] || clientConfig.openingHours || "Opening hours").trim();
       });
 
       const collectionTime = document.getElementById("collectionTime");
@@ -52,13 +68,20 @@
         collectionTime.append(option);
       });
       cartTotal.textContent = formatCurrency(0);
+      const requestButton = document.getElementById("orderRequestButton");
+      requestButton.textContent = orderChannel ? "Confirm order" : "Ordering unavailable";
+      requestButton.disabled = !orderChannel;
+      document.querySelectorAll("[data-order-channel]").forEach(element => {
+        element.textContent = orderChannel ? orderChannel.label : "the configured contact channel";
+      });
+      document.getElementById("orderDemoWarning").hidden = Boolean(orderChannel && orderChannel.ready());
+      document.getElementById("eventDemoWarning").hidden = Boolean(clientConfig.contactEmail && !clientConfig.contactEmailPlaceholder);
 
       configureExternalAction({
         button: document.getElementById("directionsButton"),
         url: clientConfig.googleMapsUrl,
         placeholder: clientConfig.googleMapsPlaceholder,
         liveLabel: "Get directions",
-        demoLabel: "Demo directions",
         demoMessage: "This fictional business has no visiting address."
       });
 
@@ -67,7 +90,6 @@
         url: clientConfig.instagramUrl,
         placeholder: clientConfig.instagramPlaceholder,
         liveLabel: "Instagram",
-        demoLabel: "Instagram (demo)",
         demoMessage: "This fictional business has no Instagram profile."
       });
 
@@ -76,7 +98,7 @@
       eventButton.classList.toggle("demo-action", !emailReady);
       eventButton.addEventListener("click", () => {
         if (!emailReady) {
-          showDemoMessage("Event enquiries are disabled until a client adds a verified contact email.");
+          showDemoMessage("Demo only — no real enquiry will be sent.");
           return;
         }
         const subject = encodeURIComponent(clientConfig.eventEmailSubject || "Event enquiry");
@@ -84,9 +106,9 @@
       });
     }
 
-    function configureExternalAction({ button, url, placeholder, liveLabel, demoLabel, demoMessage }) {
+    function configureExternalAction({ button, url, placeholder, liveLabel, demoMessage }) {
       const ready = Boolean(url) && !placeholder;
-      button.textContent = ready ? liveLabel : demoLabel;
+      button.textContent = liveLabel;
       button.classList.toggle("demo-action", !ready);
       button.addEventListener("click", () => {
         if (!ready) {
@@ -288,18 +310,15 @@
         "\nPreferred collection time: " + time +
         "\n\n" + (clientConfig.orderConfirmationPrompt || "Please confirm item availability and the collection time. I understand this request is not accepted until you reply.");
 
-      // WhatsApp requires an international number made only of digits.
-      const whatsappNumber = String(clientConfig.whatsappNumber || "").replace(/[\s()+-]/g, "");
-      const isValidNumber = /^\d{8,15}$/.test(whatsappNumber);
-      const isDemoNumber = clientConfig.whatsappPlaceholder || !isValidNumber;
-
-      if (isDemoNumber) {
-        showDemoMessage("This fictional business isn’t taking orders. Your sample request has not been sent.");
+      if (!orderChannel) {
+        showDemoMessage("Ordering is unavailable until an enabled default channel is configured.");
         return;
       }
-
-      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      if (!orderChannel.ready()) {
+        showDemoMessage(`Demo only — no real order will be sent. Your ${orderChannel.label} request has not been sent.`);
+        return;
+      }
+      orderChannel.open(message);
     }
 
     function showDemoMessage(message) {

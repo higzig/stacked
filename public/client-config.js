@@ -4,13 +4,18 @@
  * Leave placeholder contact values in place until the client has verified them.
  */
 window.CLIENT_CONFIG = {
-  businessName: "Firestorm Burgers",
+  businessName: "Stacked",
   tagline: "Fiery smashburgers, fries & shakes",
   metaDescription: "Demo website for a Cork food truck serving smash burgers and loaded fries.",
 
   // Use digits only with country code, for example: 353871234567.
   whatsappNumber: "353000000000",
   whatsappPlaceholder: true,
+  ordering: {
+    channels: ["whatsapp", "email"],
+    defaultChannel: "whatsapp",
+    emailSubject: "Collection request"
+  },
   currencySymbol: "€",
   orderRequestIntro: "I'd like to request an order for collection:",
   orderConfirmationPrompt: "Please confirm item availability and the collection time. I understand this request is not accepted until you reply.",
@@ -52,7 +57,7 @@ window.CLIENT_CONFIG = {
     showConnectionStatus: true
   },
 
-  eventEnquiryLabel: "Demo event enquiry",
+  eventEnquiryLabel: "Enquire about an event",
   eventEnquiryHelp: "Tell us the date, location and expected guest count. The truck will reply to confirm availability.",
 
   events: {

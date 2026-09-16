@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="popbia.css">
 </head>
-<body>
+<body class="homepage">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -24,10 +24,10 @@
     </a>
     <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
     <nav class="site-nav" id="siteNav" aria-label="Main navigation">
-      <a href="#templates">Templates</a>
+      <a href="#templates">Sites</a>
+      <a href="#ordering">Ordering</a>
       <a href="#collection">Collection</a>
-      <a href="#ordering">Digital ordering</a>
-      <a class="nav-cta" href="#contact">Tell us about your business</a>
+      <a class="nav-cta" href="#contact">Let’s talk</a>
     </nav>
   </header>
 
@@ -36,10 +36,9 @@
       <div class="hero-copy">
         <p class="kicker"><span></span> Behind independent food businesses</p>
         <h1>Good food up front. <em>PopBia behind it.</em></h1>
-        <p class="hero-lede">We help food trucks, market traders and independent kitchens look easier to find, simpler to order from and calmer to collect from—without sanding away what makes them special.</p>
+        <p class="hero-lede">We help independent food businesses pop — online, at the counter and at collection. A distinctive online home and a smoother customer experience, with your character intact.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#templates">Explore Templates</a>
-          <a class="button button-secondary" href="#contact">Start a conversation</a>
+          <a class="button button-primary" href="#contact">Start a conversation</a>
         </div>
       </div>
       <div class="hero-art" aria-label="A PopBia market stall serving window">
@@ -49,24 +48,25 @@
           <div class="stall-menu"><small>TODAY</small><strong>Your menu.<br>Your voice.</strong><span>Clear on every screen.</span></div>
           <div class="stall-order"><span>NOW SERVING</span><strong>#48</strong><small>Ready for pickup</small></div>
         </div>
-        <div class="stall-counter"><span>Find us</span><span>Order clearly</span><span>Collect calmly</span></div>
+        <nav class="stall-counter" id="stallServices" aria-label="Explore PopBia services">
+          <a class="is-active" href="#templates" data-description="Start strong or refresh what you already have.">Our templates</a>
+          <a href="#collection" data-description="Keep customers updated without crowding the counter.">Collection</a>
+          <a href="#ordering" data-description="Give customers a clearer route to collection.">Ordering</a>
+        </nav>
+        <p class="stall-support" id="stallSupport">Start strong or refresh what you already have.</p>
       </div>
     </section>
 
-    <section class="intro-band" aria-label="What PopBia offers">
-      <p>We help where service gets messy</p>
-      <ul>
-        <li>Before service: get found</li>
-        <li>At the counter: reduce friction</li>
-        <li>At collection: keep people moving</li>
-      </ul>
+    <section class="intro-band" aria-labelledby="startHeading">
+      <h2 id="startHeading">Start where you are.</h2>
+      <p>Opening your first pitch, refreshing what you have or smoothing out a busy service? Start with the part that helps. You don’t need the whole lot.</p>
     </section>
 
     <section class="section templates" id="templates">
       <div class="section-heading">
-        <p class="section-number">01 / Templates</p>
-        <h2>A strong starting point.<br>Made unmistakably yours.</h2>
-        <p>Start with a considered food-business template, then customise the branding, menu, photography, location, schedule and details around the way you trade.</p>
+        <p class="section-number">01 / Your online home</p>
+        <h2>Starting from scratch or ready for a refresh?</h2>
+        <p>Choose a strong starting point and make it unmistakably yours. We tailor the branding, menu, locations and photography around your business — or create a more custom direction together. Templates are starting points, not rigid themes.</p>
       </div>
 
       <article class="template-feature">
@@ -92,16 +92,15 @@
     </section>
 
     <section class="section collection" id="collection">
-      <div class="sfection-heading section-heading-light">
+      <div class="section-heading section-heading-light">
         <p class="section-number">02 / Collection</p>
         <h2>Less shouting.<br>More serving.</h2>
-        <p>PopBia Collection sits beside the register and gives staff one obvious sequence: add the order, mark it ready, then mark it collected.</p>
+        <p>When the queue starts building, give customers somewhere better to look than over the counter. PopBia Collection sits beside the register: add the order, mark it ready, then mark it collected.</p>
       </div>
 
       <div class="collection-demo" aria-labelledby="collectionDemoTitle">
         <div class="demo-toolbar">
           <div>
-            <span class="demo-label">Preview</span>
             <h3 id="collectionDemoTitle">Try a busy-service flow</h3>
           </div>
           <button class="demo-reset" id="demoReset" type="button">Start over</button>
@@ -144,25 +143,34 @@
         <div class="section-heading">
           <p class="section-number">03 / Digital ordering</p>
           <h2>A clearer route from “looks good” to “can I collect?”</h2>
-          <p>Give customers a simple way to browse, choose their food and ask about collection. Try the request flow in Stacked to see the idea.</p>
+          <p>Make ordering easier without replacing the way you work. Start with a simple way for customers to browse, choose their food and ask about collection. Try the request flow in Stacked to see the idea.</p>
+          <p>No new ordering system to learn. PopBia can fit around the way the business already handles requests.</p>
           <p class="truth-note">You stay in control of every order. Requests can be reviewed before they’re accepted, so nothing gets promised automatically.</p>
-          <a class="button button-ink" href="stacked.html#menu">Try the menu</a>
+          <a class="button button-ink" href="stacked.html#menu">See how ordering works</a>
         </div>
         <ol class="ordering-steps">
           <li><span>1</span><div><strong>Browse</strong><p>A focused menu designed to read well on a phone.</p></div></li>
           <li><span>2</span><div><strong>Build a request</strong><p>Choose items and a preferred collection time.</p></div></li>
-          <li><span>3</span><div><strong>Ask the business</strong><p>Bring the food choices and preferred time into one clear request for WhatsApp.</p></div></li>
+          <li><span>3</span><div><strong>Ask the business</strong><p>Send the request straight to the business — by WhatsApp or email, depending on how they like to work.</p></div></li>
           <li><span>4</span><div><strong>Staff confirm</strong><p>The order only proceeds after the business replies.</p></div></li>
         </ol>
       </div>
     </section>
 
+    <section class="custom-ideas" aria-labelledby="ideaHeading">
+      <div>
+        <p class="section-number">04 / Your idea</p>
+        <h2 id="ideaHeading">Got something else in mind?</h2>
+      </div>
+      <p>Not every useful idea fits neatly into a package. If there’s something frustrating customers or slowing down service, tell us about it.</p>
+    </section>
+
     <section class="section contact" id="contact">
       <div class="contact-layout">
         <div class="contact-copy">
-          <p class="section-number">04 / Contact</p>
-          <h2>Tell us about your business.</h2>
-          <p>Share what you sell, where you trade and what currently slows you down.</p>
+          <p class="section-number">Let’s talk</p>
+          <h2>Interested — or have an idea of your own?</h2>
+          <p>Tell us what you sell, how you currently work and what you’d like to make easier. We’ll start with the useful bit.</p>
         </div>
         <form class="contact-form" id="contactForm" novalidate>
           <div class="field-pair">

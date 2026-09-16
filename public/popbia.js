@@ -14,6 +14,48 @@
     navToggle.textContent = "Menu";
   }));
 
+  const stallServices = document.getElementById("stallServices");
+  if (stallServices) {
+    const links = [...stallServices.querySelectorAll("a")];
+    const support = document.getElementById("stallSupport");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let active = 0;
+    let timer;
+    let hovered = false;
+
+    function activate(index) {
+      active = index;
+      links.forEach((link, i) => link.classList.toggle("is-active", i === index));
+      support.textContent = links[index].dataset.description;
+    }
+
+    function schedule() {
+      window.clearTimeout(timer);
+      if (reducedMotion.matches || hovered || stallServices.contains(document.activeElement) || document.hidden) return;
+      timer = window.setTimeout(() => {
+        if (reducedMotion.matches || hovered || stallServices.contains(document.activeElement) || document.hidden) return;
+        activate((active + 1) % links.length);
+        schedule();
+      }, 3500);
+    }
+
+    links.forEach((link, index) => {
+      link.addEventListener("pointerenter", event => {
+        if (event.pointerType === "touch") return;
+        hovered = true;
+        activate(index);
+        schedule();
+      });
+      link.addEventListener("focus", () => { activate(index); schedule(); });
+      link.addEventListener("click", () => { activate(index); schedule(); });
+    });
+    stallServices.addEventListener("pointerleave", () => { hovered = false; schedule(); });
+    stallServices.addEventListener("focusout", () => queueMicrotask(schedule));
+    reducedMotion.addEventListener("change", schedule);
+    document.addEventListener("visibilitychange", schedule);
+    schedule();
+  }
+
   const initialOrders = [
     { id: 47, number: 47, name: "Maya", status: "ready" },
     { id: 48, number: 48, name: "", status: "preparing" }
