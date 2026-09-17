@@ -11,7 +11,7 @@
   <link rel="icon" href="popbia-favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;family=Caveat:wght@600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="popbia.css">
 </head>
 <body class="homepage">
@@ -36,7 +36,7 @@
       <div class="hero-copy">
         <p class="kicker"><span></span> Behind independent food businesses</p>
         <h1>Good food up front. <em>PopBia behind it.</em></h1>
-        <p class="hero-lede">We help independent food businesses pop — online, at the counter and at collection. A distinctive online home and a smoother customer experience, with your character intact.</p>
+        <p class="hero-lede">We help independent food businesses online, at the counter and at collection for a smoother experience that keeps the character of what makes your business yours intact.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#contact">Start a conversation</a>
         </div>
@@ -57,22 +57,17 @@
       </div>
     </section>
 
-    <section class="intro-band" aria-labelledby="startHeading">
-      <h2 id="startHeading">Start where you are.</h2>
-      <p>Opening your first pitch, refreshing what you have or smoothing out a busy service? Start with the part that helps. You don’t need the whole lot.</p>
-    </section>
-
     <section class="section templates" id="templates">
       <div class="section-heading">
         <p class="section-number">01 / Your online home</p>
-        <h2>Starting from scratch or ready for a refresh?</h2>
-        <p>Choose a strong starting point and make it unmistakably yours. We tailor the branding, menu, locations and photography around your business — or create a more custom direction together. Templates are starting points, not rigid themes.</p>
+        <h2>Starting fresh or ready for a refresh?</h2>
+        <p>Start with one of our designs, then make it yours — branding, menu, locations, photography and all. Need something different? We can go custom.</p>
       </div>
 
       <article class="template-feature">
         <div class="template-preview">
           <div class="phone-top" aria-hidden="true"><span></span></div>
-          <div class="stacked-preview" role="region" aria-label="Stacked website preview" aria-describedby="stackedPreviewHint" tabindex="0">
+          <div class="stacked-preview" role="region" aria-label="Stacked website preview" tabindex="0">
             <img src="assets/stacked-mobile-preview.png" width="2174" height="14088" alt="Full-page preview of the Stacked street-food website template" loading="lazy" decoding="async">
           </div>
           
@@ -83,9 +78,7 @@
           <ul class="tick-list">
             <li>Menu and collection-request flow</li>
             <li>Locations, hours and event enquiries</li>
-            <li>Your colours, photography and voice</li>
           </ul>
-          <p><b>Different flavour?</b> We can create other visual directions or a custom approach around your business.</p>
           <a class="text-link" href="stacked.html">Explore Stacked <span>↗</span></a>
         </div>
       </article>
@@ -95,28 +88,40 @@
       <div class="section-heading section-heading-light">
         <p class="section-number">02 / Collection</p>
         <h2>Less shouting.<br>More serving.</h2>
-        <p>When the queue starts building, give customers somewhere better to look than over the counter. PopBia Collection sits beside the register: add the order, mark it ready, then mark it collected.</p>
+        <p>When the queue starts building, give customers somewhere better to look than over the counter. PopBia Collection sits on a screen of your choice. Add the order, mark it ready, then mark it collected.</p>
       </div>
 
       <div class="collection-demo" aria-labelledby="collectionDemoTitle">
         <div class="demo-toolbar">
           <div>
-            <h3 id="collectionDemoTitle">Try a busy-service flow</h3>
+            <h3 id="collectionDemoTitle">Collection System</h3>
           </div>
           <button class="demo-reset" id="demoReset" type="button">Start over</button>
         </div>
 
         <div class="demo-grid">
           <section class="staff-demo" aria-labelledby="staffDemoTitle">
-            <div class="demo-pane-heading">
-              <span>Staff controls</span>
-              <small>Add → Ready → Collected</small>
-            </div>
             <h4 id="staffDemoTitle">Add an order</h4>
+            <p class="demo-handnote demo-handnote-add">
+              <span>Step 1: Add an order</span>
+              <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M5 8C36 0 70 8 68 37M56 28l12 12 13-12"/></svg>
+            </p>
             <div class="demo-add">
               <label for="demoName">Customer name <span>(optional)</span></label>
               <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Sarah"><button id="demoAdd" type="button">Add order <span id="demoNextNumber">#49</span></button></div>
             </div>
+            <template id="demoBackHint">
+              <p class="demo-handnote demo-handnote-back">
+                <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M5 40C35 47 68 38 68 9M56 20l12-14 13 13"/></svg>
+                <span>Made a mistake? You can return it to preparing at any time.</span>
+              </p>
+            </template>
+            <template id="demoReadyHint">
+              <span class="demo-handnote demo-handnote-ready">
+                <span>Step 2: Mark ready</span>
+                <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M5 8C36 0 70 8 68 37M56 28l12 12 13-12"/></svg>
+              </span>
+            </template>
             <ol class="staff-orders" id="staffOrders" aria-live="polite"></ol>
           </section>
 
@@ -133,8 +138,18 @@
           </section>
         </div>
 
-        <div class="collection-explore"><a class="button button-primary" href="collection.html">Explore Collection</a></div>
-        <p class="demo-disclaimer">Try the workflow right here. Add an order, mark it Ready, then mark it Collected.</p>
+        <div class="collection-explore">
+          <p>Interested to see how the proper collection system works?</p>
+          <a class="collection-explore-link" href="collection.html">
+            <span>Click here <span class="sr-only">to explore PopBia Collection</span></span>
+            <svg class="collection-link-arrow" viewBox="0 0 90 48" aria-hidden="true"><path d="M5 28C26 6 54 7 78 23M66 10l15 14-20 5"/></svg>
+            <svg class="collection-smile" viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M18 35h28v4c0 8-6 14-14 14S18 47 18 39v-4Z" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M25 28c-2-4 2-6 0-10M37 28c-2-4 2-6 0-10" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+        <p class="demo-disclaimer">Interactive preview — in development. Demo orders stay on this page.</p>
       </div>
     </section>
 
@@ -142,19 +157,28 @@
       <div class="ordering-layout">
         <div class="section-heading">
           <p class="section-number">03 / Digital ordering</p>
-          <h2>A clearer route from “looks good” to “can I collect?”</h2>
-          <p>Make ordering easier without replacing the way you work. Start with a simple way for customers to browse, choose their food and ask about collection. Try the request flow in Stacked to see the idea.</p>
-          <p>No new ordering system to learn. PopBia can fit around the way the business already handles requests.</p>
-          <p class="truth-note">You stay in control of every order. Requests can be reviewed before they’re accepted, so nothing gets promised automatically.</p>
+          <h2>Turn appetite into an order.</h2>
+          <p>Let customers browse, choose and send a collection request straight to you — through WhatsApp or email.</p>
+          <p class="truth-note">You decide what gets accepted. Nothing is promised automatically.</p>
           <a class="button button-ink" href="stacked.html#menu">See how ordering works</a>
         </div>
-        <ol class="ordering-steps">
-          <li><span>1</span><div><strong>Browse</strong><p>A focused menu designed to read well on a phone.</p></div></li>
-          <li><span>2</span><div><strong>Build a request</strong><p>Choose items and a preferred collection time.</p></div></li>
-          <li><span>3</span><div><strong>Ask the business</strong><p>Send the request straight to the business — by WhatsApp or email, depending on how they like to work.</p></div></li>
-          <li><span>4</span><div><strong>Staff confirm</strong><p>The order only proceeds after the business replies.</p></div></li>
-        </ol>
+        <figure class="order-mockup" id="orderMockup" data-stage="0" aria-labelledby="orderMockupTitle">
+          <div class="request-card">
+            <div class="request-card-head"><strong id="orderMockupTitle">Your order</strong><span>Collection request</span></div>
+            <div class="request-food" data-request-part="1"><p><b>2 ×</b> Hot Stack</p><p><b>1 ×</b> Fries</p></div>
+            <div class="request-time" data-request-part="2"><span>Preferred collection</span><strong>18:30</strong></div>
+            <div class="request-channels" data-request-part="3" aria-label="Illustrated channel options, not send buttons"><span>Send via WhatsApp <i aria-hidden="true">↗</i></span><span>Send via email <i aria-hidden="true">↗</i></span></div>
+            <p class="request-confirmation" data-request-part="4"><span aria-hidden="true">✓</span> Business confirmation required</p>
+          </div>
+          <figcaption>Illustration only · No order is sent.</figcaption>
+        </figure>
       </div>
+      <ol class="ordering-steps" aria-label="Explore the ordering flow">
+        <li><button type="button" data-order-step="1" aria-controls="orderMockup" aria-pressed="false"><span class="step-number">01</span><span class="step-copy"><strong>Browse</strong><span>See the menu clearly on any phone.</span></span></button></li>
+        <li><button type="button" data-order-step="2" aria-controls="orderMockup" aria-pressed="false"><span class="step-number">02</span><span class="step-copy"><strong>Choose</strong><span>Pick food and a preferred collection time.</span></span></button></li>
+        <li><button type="button" data-order-step="3" aria-controls="orderMockup" aria-pressed="false"><span class="step-number">03</span><span class="step-copy"><strong>Send</strong><span>Send the request by WhatsApp or email.</span></span></button></li>
+        <li><button type="button" data-order-step="4" aria-controls="orderMockup" aria-pressed="false"><span class="step-number">04</span><span class="step-copy"><strong>Confirm</strong><span>You accept it before anything is promised.</span></span></button></li>
+      </ol>
     </section>
 
     <section class="custom-ideas" aria-labelledby="ideaHeading">
@@ -169,8 +193,8 @@
       <div class="contact-layout">
         <div class="contact-copy">
           <p class="section-number">Let’s talk</p>
-          <h2>Interested — or have an idea of your own?</h2>
-          <p>Tell us what you sell, how you currently work and what you’d like to make easier. We’ll start with the useful bit.</p>
+          <h2>Tell us what would make service easier.</h2>
+          <p>Tell us what you sell, how you work and what you’d like to make easier.</p>
         </div>
         <form class="contact-form" id="contactForm" novalidate>
           <div class="field-pair">
@@ -192,7 +216,7 @@
             </select>
           </label>
           <label>Where do you trade? <span class="field-hint">Optional</span><input name="location" autocomplete="address-level2" placeholder="Town, market or regular pitch"></label>
-          <label>Tell us a little about what you need<textarea name="message" required rows="4" placeholder="What would make service easier for you?"></textarea></label>
+          <label>Tell us a little about what you need<textarea name="message" required rows="4" placeholder="A busy-service challenge, a new site or an idea to explore…"></textarea></label>
           <button class="button button-primary" id="contactSubmit" type="submit" aria-describedby="contactStatus" disabled>Start a conversation</button>
           <p class="form-status" id="contactStatus" role="status">Enquiries aren’t open just yet. You can explore the form, but your details won’t be sent or saved.</p>
         </form>

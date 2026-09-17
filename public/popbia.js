@@ -109,6 +109,7 @@
     demoNextNumber.textContent = `#${nextNumber}`;
     staffOrders.replaceChildren();
 
+    let readyHintShown = false;
     orders.filter(order => order.status !== "collected").forEach(order => {
       const item = document.createElement("li");
       item.className = "staff-order";
@@ -123,12 +124,21 @@
       const actions = document.createElement("div");
       actions.className = "staff-order-actions";
       if (order.status === "preparing") {
+        const hint = document.getElementById("demoReadyHint");
+        if (hint && !readyHintShown) {
+          actions.append(hint.content.cloneNode(true));
+          readyHintShown = true;
+        }
         actions.append(actionButton("Mark ready", "ready", order));
       } else {
         actions.append(actionButton("Collected", "collected", order));
         actions.append(actionButton("Back", "preparing", order));
       }
       item.append(head, actions);
+      if (order.status === "ready") {
+        const backHint = document.getElementById("demoBackHint");
+        if (backHint) item.append(backHint.content.cloneNode(true));
+      }
       staffOrders.append(item);
     });
 
@@ -217,4 +227,64 @@
   });
 
   renderDemo();
+})();
+
+// Optional presentation only: all copy and illustration content is visible by default.
+(() => {
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ordering = document.getElementById('ordering');
+  if (!ordering) return;
+  const steps = [...ordering.querySelectorAll('[data-order-step]')];
+  const mockup = document.getElementById('orderMockup');
+  let timers = [];
+  let interacted = false;
+  const animations = new Set();
+  const stopSequence = () => { timers.forEach(clearTimeout); timers = []; };
+  function activate(stage) {
+    mockup.dataset.stage = String(stage);
+    steps.forEach((button, index) => {
+      button.setAttribute('aria-pressed', String(index + 1 === stage));
+      button.closest('li').classList.toggle('is-complete', index + 1 <= stage);
+    });
+    mockup.querySelectorAll('[data-request-part]').forEach(part => {
+      part.classList.toggle('is-highlighted', Number(part.dataset.requestPart) === stage || (stage === 2 && part.dataset.requestPart === '1'));
+    });
+  }
+  steps.forEach(button => {
+    const select = () => { interacted = true; stopSequence(); activate(Number(button.dataset.orderStep)); };
+    button.addEventListener('focus', select);
+    button.addEventListener('click', select);
+    button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') select(); });
+  });
+  motion.addEventListener('change', () => {
+    if (!motion.matches) return;
+    stopSequence();
+    animations.forEach(animation => animation.cancel());
+    animations.clear();
+    if (!interacted) activate(4);
+  });
+  if (!('IntersectionObserver' in window)) return;
+  const groups = [...document.querySelectorAll('.homepage main > .section, .homepage .custom-ideas')];
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      if (!motion.matches) {
+        const elements = entry.target.querySelectorAll('.section-number, .section-heading h2, .section-heading > p:not(.section-number), .contact-copy h2, .contact-copy > p:not(.section-number), .template-feature, .collection-demo, .order-mockup, .ordering-steps, .contact-form, .custom-ideas h2, .custom-ideas > p');
+        if (typeof Element.prototype.animate === 'function') elements.forEach((element, index) => {
+          const animation = element.animate([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 520, delay: Math.min(index, 3) * 75, easing: 'cubic-bezier(.2,.65,.3,1)' });
+          animations.add(animation);
+          animation.onfinish = () => animations.delete(animation);
+        });
+      }
+      if (entry.target === ordering && !interacted) {
+        if (motion.matches) activate(4);
+        else {
+          activate(1);
+          [2, 3, 4].forEach((stage, index) => timers.push(setTimeout(() => activate(stage), (index + 1) * 1000)));
+        }
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+  groups.forEach(group => observer.observe(group));
 })();
