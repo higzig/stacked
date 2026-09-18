@@ -149,7 +149,7 @@
             </svg>
           </a>
         </div>
-        <p class="demo-disclaimer">Interactive preview — in development. Demo orders stay on this page.</p>
+      
       </div>
     </section>
 
@@ -190,36 +190,16 @@
     </section>
 
     <section class="section contact" id="contact">
-      <div class="contact-layout">
+      <div class="contact-layout contact-layout-email">
         <div class="contact-copy">
-          <p class="section-number">Let’s talk</p>
-          <h2>Tell us what would make service easier.</h2>
-          <p>Tell us what you sell, how you work and what you’d like to make easier.</p>
+          <p class="section-number">Let’s chat</p>
+          <h2>Tell us what would make your service easier.</h2>
+          <p>Interested in a demo or chat? Tell us what you sell, how you work and what you’d like to make easier.</p>
         </div>
-        <form class="contact-form" id="contactForm" novalidate>
-          <div class="field-pair">
-            <label>Your name<input name="name" required autocomplete="name"></label>
-            <label>Business name<input name="business" required autocomplete="organization"></label>
-          </div>
-          <label>Email<input name="email" type="email" required autocomplete="email"></label>
-          <label for="contactInterest">What are you interested in?
-            <select id="contactInterest" name="interest" required aria-controls="collectionQuestion">
-              <option value="">Choose an option</option>
-              <option>Collection system</option><option>Website / template</option><option>Digital ordering</option>
-              <option>Website + Collection</option><option>Not sure yet</option><option>Something else</option>
-            </select>
-          </label>
-          <label id="collectionQuestion" for="collectionMethod" hidden>How do you currently let customers know when an order is ready?
-            <select id="collectionMethod" name="collectionMethod" disabled>
-              <option value="">Choose an option</option><option>Call out names</option><option>Call out numbers</option>
-              <option>Pagers / beepers</option><option>SMS</option><option>Existing collection display</option><option>Other</option>
-            </select>
-          </label>
-          <label>Where do you trade? <span class="field-hint">Optional</span><input name="location" autocomplete="address-level2" placeholder="Town, market or regular pitch"></label>
-          <label>Tell us a little about what you need<textarea name="message" required rows="4" placeholder="A busy-service challenge, a new site or an idea to explore…"></textarea></label>
-          <button class="button button-primary" id="contactSubmit" type="submit" aria-describedby="contactStatus" disabled>Start a conversation</button>
-          <p class="form-status" id="contactStatus" role="status">Enquiries aren’t open just yet. You can explore the form, but your details won’t be sent or saved.</p>
-        </form>
+        <div class="contact-email">
+          <a href="mailto:hello@popbia.com?subject=Let%E2%80%99s%20chat%20about%20my%20business&amp;body=Hi%20PopBia%2C%0A%0AMy%20name%20is%20%5Byour%20name%5D%20and%20my%20business%20is%20%5Bbusiness%20name%5D.%0A%0AI%E2%80%99m%20interested%20in%20%5Ba%20collection%20system%20%2F%20a%20website%20or%20template%20%2F%20digital%20ordering%20%2F%20a%20website%20%2B%20collection%20%2F%20something%20else%20%2F%20not%20sure%20yet%5D.%0A%0AWe%20trade%20in%20%5Byour%20town%2C%20market%20or%20regular%20pitch%20%E2%80%94%20optional%5D.%0A%0AHere%E2%80%99s%20a%20little%20about%20what%20we%20do%20and%20what%20we%E2%80%99d%20like%20help%20with%3A%0A%5Btell%20us%20what%20you%20sell%2C%20how%20you%20work%20and%20what%20you%E2%80%99d%20like%20to%20make%20easier%5D%0A%0AYou%20can%20reach%20me%20at%20%5Byour%20preferred%20email%20address%5D.%0A%0AThanks%2C%0A%5Byour%20name%5D">hello@popbia.com <span aria-hidden="true">↗</span></a>
+          <p>We’ll get back to you within 1 working day.</p>
+        </div>
       </div>
     </section>
   </main>
@@ -230,7 +210,6 @@
     <a href="stacked.html">Explore Stacked ↗</a>
   </footer>
 
-  <script src="popbia-config.js"></script>
   <script src="popbia.js"></script>
 </body>
 </html>

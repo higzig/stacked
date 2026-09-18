@@ -457,7 +457,7 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* Handwritten guidance for the homepage collection preview. */
-.demo-handnote { display: flex; align-items: center; gap: .4rem; color: #ffe49b; font: 600 clamp(1.35rem, 2vw, 1.7rem)/1.1 "Caveat", "Segoe Print", cursive; }
+.demo-handnote { display: flex; align-items: center; gap: .4rem; color: #fff; font: 600 clamp(1.35rem, 2vw, 1.7rem)/1.1 "Caveat", "Segoe Print", cursive; }
 .demo-handnote svg, .collection-link-arrow { flex: 0 0 64px; width: 64px; height: 40px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .demo-handnote-add { justify-content: flex-end; margin: -.2rem 0 .5rem; }
 .demo-handnote-add > span { transform: rotate(-3deg); }
@@ -484,3 +484,14 @@ button, input, textarea, select { font: inherit; }
 .demo-handnote-back { position: relative; margin: .25rem 0 0; padding-top: 42px; font-size: clamp(1.25rem, 1.8vw, 1.5rem); }
 .demo-handnote-back svg { position: absolute; top: 0; right: calc(25% - 18px); }
 .demo-handnote-back > span { display: block; max-width: 340px; transform: rotate(-2deg); }
+
+.contact-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Direct email contact, retaining the existing section layout. */
+.contact-layout-email { align-items: center; }
+.contact-layout-email .contact-copy { position: static; }
+.contact-email { min-width: 0; padding-block: 1.5rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.contact-email a { display: inline-flex; align-items: center; gap: .6rem; max-width: 100%; color: var(--ink); font: 700 clamp(1.4rem, 3vw, 2.6rem)/1.25 "Bricolage Grotesque", sans-serif; letter-spacing: -.035em; text-decoration-thickness: 2px; text-underline-offset: 7px; }
+.contact-email a:hover { color: var(--orange-dark); }
+.contact-email a span { color: var(--orange-dark); }
+.contact-email p { margin: 1rem 0 0; color: var(--muted); font-size: .9rem; }

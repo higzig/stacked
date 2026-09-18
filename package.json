@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "wrangler": "^4.133.0"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test",
+    "check": "node --check public/popbia.js && node --check src/contact.mjs && wrangler deploy --dry-run"
+  }
+}

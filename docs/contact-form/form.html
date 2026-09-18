@@ -1,0 +1,25 @@
+        <form class="contact-form" id="contactForm" action="/api/contact" method="post" novalidate>
+          <div class="field-pair">
+            <label>Your name<input name="name" maxlength="100" required autocomplete="name"></label>
+            <label>Business name<input name="business" maxlength="160" required autocomplete="organization"></label>
+          </div>
+          <label>Email<input name="email" maxlength="254" type="email" required autocomplete="email"></label>
+          <label for="contactInterest">What are you interested in?
+            <select id="contactInterest" name="interest" required aria-controls="collectionQuestion">
+              <option value="">Choose an option</option>
+              <option>Collection system</option><option>Website / template</option><option>Digital ordering</option>
+              <option>Website + Collection</option><option>Not sure yet</option><option>Something else</option>
+            </select>
+          </label>
+          <label id="collectionQuestion" for="collectionMethod" hidden>How do you currently let customers know when an order is ready?
+            <select id="collectionMethod" name="collectionMethod" disabled>
+              <option value="">Choose an option</option><option>Call out names</option><option>Call out numbers</option>
+              <option>Pagers / beepers</option><option>SMS</option><option>Existing collection display</option><option>Other</option>
+            </select>
+          </label>
+          <label>Where do you trade? <span class="field-hint">Optional</span><input name="location" maxlength="200" autocomplete="address-level2" placeholder="Town, market or regular pitch"></label>
+          <label>Tell us a little about what you need<textarea name="message" maxlength="5000" required rows="4" placeholder="A busy-service challenge, a new site or an idea to explore…"></textarea></label>
+          <div class="contact-trap" aria-hidden="true"><label>Leave this blank<input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <button class="button button-primary" id="contactSubmit" type="submit" aria-describedby="contactStatus">Let’s chat</button>
+          <p class="form-status" id="contactStatus" role="status">We’ll get back to you within 1 working day.</p>
+        </form>
