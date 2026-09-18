@@ -459,11 +459,6 @@ button, input, textarea, select { font: inherit; }
 /* Handwritten guidance for the homepage collection preview. */
 .demo-handnote { display: flex; align-items: center; gap: .4rem; color: #fff; font: 600 clamp(1.35rem, 2vw, 1.7rem)/1.1 "Caveat", "Segoe Print", cursive; }
 .demo-handnote svg, .collection-link-arrow { flex: 0 0 64px; width: 64px; height: 40px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.demo-handnote-add { justify-content: flex-end; margin: -.2rem 0 .5rem; }
-.demo-handnote-add > span { transform: rotate(-3deg); }
-.demo-handnote-ready { flex: 1; min-width: 0; }
-.demo-handnote-ready > span { max-width: 130px; transform: rotate(-3deg); }
-.demo-handnote-ready svg { flex-basis: 42px; width: 42px; transform: rotate(-65deg); }
 .homepage .collection-explore { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem 2rem; padding: 1.6rem clamp(1.2rem, 3vw, 2.4rem); border-top: 1px solid rgba(255,255,255,.15); }
 .collection-explore p { max-width: 520px; margin: 0; color: white; font: 700 clamp(1.35rem, 2.2vw, 1.75rem)/1.2 "Bricolage Grotesque", sans-serif; }
 .collection-explore-link { display: inline-flex; align-items: center; gap: .4rem; color: white; text-decoration: none; }
@@ -471,8 +466,6 @@ button, input, textarea, select { font: inherit; }
 .collection-smile { width: 72px; height: 72px; fill: none; stroke: white; transform: rotate(8deg); transition: transform .2s ease; }
 .collection-explore-link:hover .collection-smile { transform: rotate(-8deg); }
 @media (max-width: 520px) {
-  .demo-handnote-ready { font-size: 1.3rem; }
-  .demo-handnote-ready svg { flex-basis: 30px; width: 30px; }
   .homepage .collection-explore { justify-content: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -481,9 +474,6 @@ button, input, textarea, select { font: inherit; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
-.demo-handnote-back { position: relative; margin: .25rem 0 0; padding-top: 42px; font-size: clamp(1.25rem, 1.8vw, 1.5rem); }
-.demo-handnote-back svg { position: absolute; top: 0; right: calc(25% - 18px); }
-.demo-handnote-back > span { display: block; max-width: 340px; transform: rotate(-2deg); }
 
 .contact-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
@@ -531,3 +521,52 @@ button, input, textarea, select { font: inherit; }
   .collection-screen-choice { display: grid; grid-template-rows: subgrid; grid-row: span 4; }
   .collection-screen-choice .button { justify-self: start; align-self: start; }
 }
+
+/* A single drawn route through the collection steps. */
+.flow-steps li { position: relative; }
+.flow-steps li::before { content: ""; position: absolute; top: -2px; left: 0; height: 2px; width: calc(100% + clamp(1.5rem, 4vw, 4rem)); background: var(--ink); transform-origin: left; }
+.flow-steps li:last-child::before { width: 100%; }
+.collection-qr .qr-scan-note { display: block; margin: 0 0 .65rem; color: var(--orange-dark); font: 700 1.6rem/1.1 "Caveat", cursive; transform: rotate(-4deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .contact-email a span { display: inline-block; transition: transform .2s ease; }
+  .contact-email a:is(:hover, :focus-visible) span { transform: translate(3px, -3px); }
+  .flow-steps.has-entrance li { border-top-color: transparent; }
+  .flow-steps.has-entrance li:nth-child(2) { --step-delay: .2s; }
+  .flow-steps.has-entrance li:nth-child(3) { --step-delay: .4s; }
+  .flow-steps.has-entrance li::before { transform: scaleX(0); transition: transform .5s ease var(--step-delay, 0s); }
+  .flow-steps.has-entrance li > * { opacity: 0; transform: translateY(10px); transition: opacity .5s ease var(--step-delay, 0s), transform .5s ease var(--step-delay, 0s); }
+  .flow-steps.is-visible li::before { transform: scaleX(1); }
+  .flow-steps.is-visible li > * { opacity: 1; transform: none; }
+  .collection-qr.has-entrance { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .collection-qr.is-visible { opacity: 1; transform: none; }
+}
+@media (max-width: 720px) {
+  .flow-steps li::before { width: 100%; }
+}
+
+/* Shared footer for the PopBia marketing pages. */
+.popbia-footer { display: block; padding-block: clamp(3rem, 5vw, 4.5rem) 1.5rem; }
+.popbia-footer-grid { display: grid; grid-template-columns: 1.2fr .85fr 1fr; gap: 2.5rem; }
+.popbia-footer h2 { margin: 0 0 1.2rem; font: 800 .75rem/1.4 "Manrope", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #ffc947; }
+.popbia-footer-brand .popbia-brand { margin-bottom: 1.2rem; }
+.popbia-footer-brand p { max-width: 280px; margin-bottom: .65rem; font-size: .9rem; }
+.popbia-footer-nav, .popbia-footer-contact { display: flex; align-items: flex-start; flex-direction: column; gap: .7rem; }
+.popbia-footer-nav h2, .popbia-footer-contact h2 { margin-bottom: .5rem; }
+.popbia-footer a:not(.popbia-brand) { font-size: .875rem; text-decoration: none; text-underline-offset: 4px; }
+.popbia-footer a:not(.popbia-brand):is(:hover, :focus-visible) { text-decoration: underline; }
+.popbia-footer .popbia-footer-email { font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 800; overflow-wrap: anywhere; }
+.popbia-footer-demos { display: grid; gap: .55rem; margin-top: .45rem; padding-left: .85rem; border-left: 1px solid rgba(255,255,255,.25); }
+.popbia-footer-demos > span { color: rgba(255,255,255,.65); font-size: .7rem; }
+.popbia-footer-bottom { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,.18); }
+@media (max-width: 900px) {
+  .popbia-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .popbia-footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .popbia-footer-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+}
+
+.demo-helper { margin: .7rem 0 0; color: rgba(255,255,255,.75); font-size: .75rem; line-height: 1.5; }
+.collection-explore-link { max-width: 100%; }
+.collection-explore-link > span { min-width: 0; }
+.collection-explore-link .collection-smile { flex-shrink: 0; }

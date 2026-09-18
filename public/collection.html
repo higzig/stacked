@@ -140,16 +140,39 @@
   
       </div>
       <figure class="collection-qr">
+        <span class="qr-scan-note" aria-hidden="true">Scan me ↘</span>
         <canvas id="collectionQrCode" width="200" height="200" role="img" aria-label="Sample QR code for the collection board" aria-describedby="collectionQrCaption"></canvas>
         <figcaption id="collectionQrCaption">A board in your pocket.<span>Sample QR · Preview</span></figcaption>
       </figure>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
-    <p>Practical digital tools for independent food businesses.</p>
-    <a href="index.html#contact">Tell us about your business →</a>
+  <footer class="site-footer popbia-footer">
+    <div class="popbia-footer-grid">
+      <div class="popbia-footer-brand">
+        <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
+        <p>Digital tools for independent food businesses.</p>
+        <p>Websites, ordering and collection.</p>
+      </div>
+      <nav class="popbia-footer-nav" aria-label="Footer navigation">
+        <h2>Explore</h2>
+        <a href="index.html#templates">Website templates</a>
+        <a href="index.html#ordering">Digital ordering</a>
+        <a href="collection.html">PopBia Collection</a>
+        <div class="popbia-footer-demos">
+          <span>Collection demos</span>
+          <a href="board-admin.html" target="_blank" rel="noopener noreferrer">Staff controls ↗<span class="sr-only"> (opens in a new tab)</span></a>
+          <a href="board.html" target="_blank" rel="noopener noreferrer">Customer board ↗<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+      </nav>
+      <div class="popbia-footer-contact">
+        <h2>Get in touch</h2>
+        <a class="popbia-footer-email" href="mailto:hello@popbia.com">hello@popbia.com</a>
+        <a href="index.html#contact">Tell us about your business <span aria-hidden="true">→</span></a>
+        <p>We reply within 1 working day.</p>
+      </div>
+    </div>
+    <div class="popbia-footer-bottom"><p>© 2026 PopBia</p></div>
   </footer>
   <script src="collection.js"></script>
   <script src="client-config.js"></script>

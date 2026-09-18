@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Order status display powered by PopBia Collection." />
-  <title>PopBia Collection display</title>
+  <title>PopBia Collection — Customer board</title>
   <link rel="icon" href="popbia-favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
     :root {
@@ -494,6 +494,13 @@
     .order-card.ready.number-name .order-name, .order-card.ready.name .order-number { font-size: clamp(2.2rem, 3.2vw, 3.5rem); }
     .board-brand { text-transform: none; }
     .board-brand-mark { background: transparent; border: 0; border-radius: 50%; flex-shrink: 0; }
+    .board-brand { gap: .65rem; color: #10243d; }
+    .board-brand-mark { width: 34px; height: 34px; }
+    .board-brand h1 { margin: 0 0 .35rem; font: 800 1.2rem/1.1 "Bricolage Grotesque", sans-serif; letter-spacing: -.025em; text-transform: none; }
+    .board-brand-copy > span { display: block; color: #526170; font-size: .875rem; font-weight: 600; line-height: 1; letter-spacing: 0; }
+    @media (max-width: 520px) {
+      .board-header-meta > span { display: none; }
+    }
     /* Calm attention state and a fully contained footer utility. */
     .order-number { line-height: 1.1; }
     .order-card::before, .order-card::after { display: none; }
@@ -527,9 +534,9 @@
 </head>
 <body>
   <header class="board-header">
-    <div class="board-brand" aria-label="PopBia">
+    <div class="board-brand">
       <img class="board-brand-mark" src="popbia-favicon.svg" alt="" width="40" height="40">
-      <span>PopBia</span>
+      <div class="board-brand-copy"><h1>PopBia Collection</h1><span>Customer board</span></div>
     </div>
     <div class="board-header-meta">
       <span>Order status</span>
@@ -702,7 +709,7 @@
     function applyConfig() {
       const collectionConfig = getCollectionConfig();
       const businessName = "PopBia";
-      document.title = `${businessName} | Collection board`;
+      document.title = "PopBia Collection — Customer board";
       document.documentElement.style.setProperty("--board-accent", collectionConfig.accentColor || "#ffd83d");
 
       const requestedView = new URLSearchParams(window.location.search).get("view");

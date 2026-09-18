@@ -5,6 +5,8 @@
     const cartTotal = document.getElementById("cartTotal");
     const cartBadge = document.getElementById("cartBadge");
     const drawerPanel = drawer.querySelector(".drawer-panel");
+    drawer.inert = true;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const clientConfig = window.CLIENT_CONFIG || {};
     // The default must be supported and enabled; never silently choose another channel.
     const ordering = clientConfig.ordering || {};
@@ -169,10 +171,23 @@
     document.querySelectorAll(".faq-question").forEach(button => {
       button.addEventListener("click", () => {
         const item = button.closest(".faq-item");
+        const answer = document.getElementById(button.getAttribute("aria-controls"));
+        const startHeight = answer.getBoundingClientRect().height;
+        answer.getAnimations().forEach(animation => animation.cancel());
         const open = item.classList.toggle("open");
         button.setAttribute("aria-expanded", open);
-        document.getElementById(button.getAttribute("aria-controls")).hidden = !open;
-        button.querySelector("span").textContent = open ? "−" : "+";
+        answer.hidden = false;
+        answer.inert = !open;
+        if (motionPreference.matches) {
+          answer.hidden = !open;
+          return;
+        }
+        const endHeight = open ? answer.getBoundingClientRect().height : 0;
+        const animation = answer.animate([
+          { height: `${startHeight}px`, opacity: open ? 0 : 1 },
+          { height: `${endHeight}px`, opacity: open ? 1 : 0 }
+        ], { duration: 240, easing: "ease-out" });
+        animation.onfinish = () => { answer.hidden = !open; };
       });
     });
 
@@ -182,6 +197,7 @@
       navToggle.setAttribute("aria-expanded", "false");
       navToggle.setAttribute("aria-label", "Open menu");
       navToggle.textContent = "☰";
+      drawer.inert = false;
       drawer.classList.add("open");
       drawer.setAttribute("aria-hidden", "false");
       document.body.classList.add("locked");
@@ -189,6 +205,7 @@
     }
 
     function closeDrawer() {
+      drawer.inert = true;
       drawer.classList.remove("open");
       drawer.setAttribute("aria-hidden", "true");
       document.body.classList.remove("locked");
@@ -259,7 +276,12 @@
       const count = cart.reduce((sum, item) => sum + item.qty, 0);
       const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
+      const previousCount = Number(cartBadge.textContent) || 0;
       cartBadge.textContent = count;
+      if (count > previousCount && !motionPreference.matches) {
+        cartBadge.getAnimations().forEach(animation => animation.cancel());
+        cartBadge.animate([{ transform: "scale(1)" }, { transform: "scale(1.2)" }, { transform: "scale(1)" }], { duration: 300, easing: "ease-out" });
+      }
       cartTotal.textContent = formatCurrency(total);
 
       if (!cart.length) {

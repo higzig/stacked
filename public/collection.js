@@ -37,4 +37,23 @@
       screenLinks.classList.remove("has-screen-reveal");
     });
   }
+  const revealTargets = document.querySelectorAll(".flow-steps, .collection-qr");
+  if (!reducedMotion.matches && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    revealTargets.forEach(target => {
+      target.classList.add("has-entrance");
+      observer.observe(target);
+    });
+    reducedMotion.addEventListener("change", event => {
+      if (!event.matches) return;
+      observer.disconnect();
+      revealTargets.forEach(target => target.classList.remove("has-entrance"));
+    });
+  }
 })();

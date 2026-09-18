@@ -124,10 +124,6 @@
       const actions = document.createElement("div");
       actions.className = "staff-order-actions";
       if (order.status === "preparing") {
-        const hint = document.getElementById("demoReadyHint");
-        if (hint && showDemoHints) {
-          actions.append(hint.content.cloneNode(true));
-        }
         actions.append(actionButton("Mark ready", "ready", order));
       } else {
         actions.append(actionButton("Collected", "collected", order));

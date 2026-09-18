@@ -102,25 +102,12 @@
         <div class="demo-grid">
           <section class="staff-demo" aria-labelledby="staffDemoTitle">
             <h4 id="staffDemoTitle">Add an order</h4>
-            <p class="demo-handnote demo-handnote-add">
-              <span>Step 1: Add an order</span>
-              <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M5 8C36 0 70 8 68 37M56 28l12 12 13-12"/></svg>
-            </p>
             <div class="demo-add">
               <label for="demoName">Customer name <span>(optional)</span></label>
-              <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Sarah"><button id="demoAdd" type="button">Add order <span id="demoNextNumber">#49</span></button></div>
+              <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Ronan"><button id="demoAdd" type="button">Add order <span id="demoNextNumber">#49</span></button></div>
             </div>
             <template id="demoBackHint">
-              <p class="demo-handnote demo-handnote-back">
-                <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M5 40C35 47 68 38 68 9M56 20l12-14 13 13"/></svg>
-                <span>Made a mistake? You can return it to preparing at any time.</span>
-              </p>
-            </template>
-            <template id="demoReadyHint">
-              <span class="demo-handnote demo-handnote-ready">
-                <span>Step 2: Mark ready</span>
-                <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M5 8C36 0 70 8 68 37M56 28l12 12 13-12"/></svg>
-              </span>
+              <p class="demo-helper">Made a mistake? Use Back to return the order to preparing.</p>
             </template>
             <ol class="staff-orders" id="staffOrders" aria-live="polite"></ol>
           </section>
@@ -141,7 +128,7 @@
         <div class="collection-explore">
           <p>Interested to see how the proper collection system works?</p>
           <a class="collection-explore-link" href="collection.html">
-            <span>Click here <span class="sr-only">to explore PopBia Collection</span></span>
+            <span>Try the full collection system</span>
             <svg class="collection-link-arrow" viewBox="0 0 90 48" aria-hidden="true"><path d="M5 28C26 6 54 7 78 23M66 10l15 14-20 5"/></svg>
             <svg class="collection-smile" viewBox="0 0 64 64" aria-hidden="true">
               <path d="M18 35h28v4c0 8-6 14-14 14S18 47 18 39v-4Z" stroke-width="5" stroke-linejoin="round"/>
@@ -204,10 +191,32 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <a class="popbia-brand" href="#top"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
-    <p>Digital foundations for independent food businesses.</p>
-    <a href="stacked.html">Explore Stacked ↗</a>
+  <footer class="site-footer popbia-footer">
+    <div class="popbia-footer-grid">
+      <div class="popbia-footer-brand">
+        <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
+        <p>Digital tools for independent food businesses.</p>
+        <p>Websites, ordering and collection.</p>
+      </div>
+      <nav class="popbia-footer-nav" aria-label="Footer navigation">
+        <h2>Explore</h2>
+        <a href="index.html#templates">Website templates</a>
+        <a href="index.html#ordering">Digital ordering</a>
+        <a href="collection.html">PopBia Collection</a>
+        <div class="popbia-footer-demos">
+          <span>Collection demos</span>
+          <a href="board-admin.html" target="_blank" rel="noopener noreferrer">Staff controls ↗<span class="sr-only"> (opens in a new tab)</span></a>
+          <a href="board.html" target="_blank" rel="noopener noreferrer">Customer board ↗<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+      </nav>
+      <div class="popbia-footer-contact">
+        <h2>Get in touch</h2>
+        <a class="popbia-footer-email" href="mailto:hello@popbia.com">hello@popbia.com</a>
+        <a href="index.html#contact">Tell us about your business <span aria-hidden="true">→</span></a>
+        <p>We reply within 1 working day.</p>
+      </div>
+    </div>
+    <div class="popbia-footer-bottom"><p>© 2026 PopBia</p></div>
   </footer>
 
   <script src="popbia.js"></script>

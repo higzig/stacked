@@ -801,7 +801,7 @@
           <div class="admin-control-row">
             <div class="field" id="customerNameField">
               <label for="customerNameInput">Customer name <span aria-hidden="true">(optional)</span></label>
-              <input id="customerNameInput" type="text" placeholder="e.g. Sarah" />
+              <input id="customerNameInput" type="text" placeholder="e.g. Ronan" />
             </div>
 
             <div class="field admin-action-field">
@@ -1101,7 +1101,7 @@
           : queueStyle === "number-name"
             ? "Customer name (optional)"
             : "Customer name";
-        customerNameInput.placeholder = editingOrderId && queueStyle === "number" ? "e.g. 42" : "e.g. Sarah";
+        customerNameInput.placeholder = editingOrderId && queueStyle === "number" ? "e.g. 42" : "e.g. Ronan";
       }
       addOrderBtn.textContent = editingOrderId
         ? "Save edit"
@@ -1306,6 +1306,10 @@
       }
 
       writeOrders(orders, { silent: false, skipRender: false });
+      const updatedRow = [...ordersList.querySelectorAll("[data-row-id]")].find(row => row.dataset.rowId === orderId);
+      if (updatedRow && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        updatedRow.animate([{ backgroundColor: "#e3efdf" }, { backgroundColor: "#fffefb" }], { duration: 700, easing: "ease-out" });
+      }
     }
 
     function removeSpecificOrder(orderId) {

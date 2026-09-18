@@ -30,6 +30,13 @@
     .form-status.error { background: #ffe1dd; color: #7d211b; }
     .form-status.success { background: #e3f5df; color: #245c20; }
     .field-error { min-height: 1.25em; color: #a32920; font-size: .85rem; font-weight: 700; }
+    @media (prefers-reduced-motion: no-preference) {
+      .field input, .field select, .field textarea { transition: border-color .2s ease, box-shadow .2s ease; }
+      .form-status:not([hidden]), .field-error:not(:empty) { animation: feedback-in .2s ease; }
+      @keyframes feedback-in { from { opacity: 0; } to { opacity: 1; } }
+    }
+    .field :is(input, select, textarea):focus { border-color: #925026; box-shadow: 0 0 0 3px rgba(146,80,38,.15); }
+    .field [aria-invalid="true"] { border-color: #a32920; }
     .event-back { display: inline-block; margin-top: 1.5rem; font-weight: 800; }
     @media (max-width: 760px) {
       .event-page { padding-top: 7rem; }
