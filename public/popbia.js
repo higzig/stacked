@@ -57,7 +57,7 @@
   }
 
   const initialOrders = [
-    { id: 47, number: 47, name: "Maya", status: "ready" },
+    { id: 47, number: 47, name: "Maya", status: "preparing" },
     { id: 48, number: 48, name: "", status: "preparing" }
   ];
   let orders = initialOrders.map(order => ({ ...order }));
@@ -109,8 +109,8 @@
     demoNextNumber.textContent = `#${nextNumber}`;
     staffOrders.replaceChildren();
 
-    let readyHintShown = false;
     orders.filter(order => order.status !== "collected").forEach(order => {
+      const showDemoHints = order.id === initialOrders[0].id;
       const item = document.createElement("li");
       item.className = "staff-order";
       const head = document.createElement("div");
@@ -125,9 +125,8 @@
       actions.className = "staff-order-actions";
       if (order.status === "preparing") {
         const hint = document.getElementById("demoReadyHint");
-        if (hint && !readyHintShown) {
+        if (hint && showDemoHints) {
           actions.append(hint.content.cloneNode(true));
-          readyHintShown = true;
         }
         actions.append(actionButton("Mark ready", "ready", order));
       } else {
@@ -135,7 +134,7 @@
         actions.append(actionButton("Back", "preparing", order));
       }
       item.append(head, actions);
-      if (order.status === "ready") {
+      if (showDemoHints && order.status === "ready") {
         const backHint = document.getElementById("demoBackHint");
         if (backHint) item.append(backHint.content.cloneNode(true));
       }

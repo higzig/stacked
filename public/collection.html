@@ -8,7 +8,7 @@
   <link rel="icon" href="popbia-favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;family=Caveat:wght@600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="popbia.css">
 </head>
 <body class="collection-page">
@@ -31,7 +31,6 @@
     <section class="collection-hero">
       <div>
         <p class="kicker"><span></span> PopBia Collection</p>
-        <p class="availability availability-preview">Preview</p>
         <h1>Less shouting.<br><em>More serving.</em></h1>
         <p class="hero-lede">A simple way for busy food businesses to show customers when orders are being prepared and when they are ready.</p>
         <div class="hero-actions">
@@ -63,44 +62,60 @@
     <section class="collection-walkthrough" id="walkthrough" aria-labelledby="walkthrough-title">
       <div class="section-heading section-heading-light">
         <p class="section-number">The Collection workflow</p>
-        <h2 id="walkthrough-title">Staff controls on one side. Customer board on the other.</h2>
-        <p>Add an order, move it to Ready, and watch the customer display update beside it.</p>
+        <h2 id="walkthrough-title">See both sides of service.</h2>
       </div>
-
-      <div class="collection-demo collection-product-demo">
-        <div class="demo-toolbar">
-          <span class="demo-label">Preview</span>
-          <button class="demo-reset" id="demoReset" type="button">Start over</button>
-        </div>
-        <div class="demo-grid">
-          <section class="staff-demo" aria-labelledby="staffDemoTitle">
-            <div class="demo-pane-heading"><span>Staff controls</span><small>Add → Ready → Collected</small></div>
-            <h4 id="staffDemoTitle">Add an order</h4>
-            <div class="demo-add">
-              <label for="demoName">Customer name <span>(optional)</span></label>
-              <div><input id="demoName" type="text" maxlength="28" autocomplete="off" placeholder="e.g. Sarah"><button id="demoAdd" type="button">Add order <span id="demoNextNumber">#53</span></button></div>
-            </div>
-            <ol class="staff-orders" id="staffOrders" aria-live="polite"></ol>
-          </section>
-          <section class="customer-demo" aria-labelledby="customerDemoTitle">
-            <div class="demo-pane-heading"><span>Customer display</span><small>What customers see</small></div>
-            <h4 id="customerDemoTitle">Order status</h4>
-            <div class="customer-columns">
-              <div><h5>Preparing</h5><ul id="customerPreparing" aria-live="polite"></ul></div>
-              <div class="customer-ready"><h5>Ready</h5><ul id="customerReady" aria-live="polite"></ul></div>
-            </div>
-          </section>
-        </div>
-      </div>
-      <div class="board-popout">
-        <aside class="collection-utilities" id="full-setup" aria-label="Collection screens">
-          <span>Explore the separate screens</span>
-          <div class="setup-links">
-            <a class="button button-ink" href="board-admin.html">Open staff controls</a>
-            <a class="button button-secondary" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board ↗</a>
+      <div class="collection-screen-links" id="full-setup">
+        <section class="collection-screen-choice" aria-labelledby="staff-screen-title">
+          <h3 id="staff-screen-title">Staff controls on one side.</h3>
+          <div class="collection-screen-frame">
+            <div class="collection-screen-chrome" aria-hidden="true"><span></span></div>
+            <svg class="collection-screen-illustration" viewBox="0 0 560 340" role="img" aria-labelledby="staff-visual-title">
+              <title id="staff-visual-title">Staff controls illustration: add an order, mark it ready, then collected.</title>
+              <rect width="560" height="340" fill="#f5f3ed"/>
+              <g fill="#10243d" font-family="Manrope, sans-serif">
+                <text x="28" y="42" font-size="18" font-weight="800">Staff controls</text>
+                <rect x="28" y="62" width="504" height="48" rx="10" fill="#10243d"/>
+                <text x="48" y="92" fill="white" font-size="15" font-weight="700">+ Add an order</text>
+                <g fill="#fffefb" stroke="#d4d7d8"><rect x="28" y="126" width="504" height="54" rx="10"/><rect x="28" y="192" width="504" height="54" rx="10"/><rect x="28" y="258" width="504" height="54" rx="10"/></g>
+                <g font-size="18" font-weight="800"><text x="46" y="160">#44 · Sarah</text><text x="46" y="226">#45 · Daniel</text><text x="46" y="292">#42 · Aoife</text></g>
+                <g fill="#f3e2d5"><rect x="376" y="138" width="140" height="30" rx="15"/><rect x="376" y="204" width="140" height="30" rx="15"/></g>
+                <rect x="376" y="270" width="140" height="30" rx="15" fill="#dcecdf"/>
+                <g font-size="12" font-weight="800" text-anchor="middle"><text x="446" y="158">Mark ready →</text><text x="446" y="224">Mark ready →</text><text x="446" y="290">Collected ✓</text></g>
+              </g>
+            </svg>
           </div>
-        </aside>
+          <a class="button button-primary" href="board-admin.html" target="_blank" rel="noopener noreferrer">Open staff controls <span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <p class="demo-handnote screen-link-note">
+            <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M80 40C45 47 20 33 20 9M8 20L20 6l13 13"/></svg>
+            <span>Click here for what staff see.</span>
+          </p>
+        </section>
+        <section class="collection-screen-choice" aria-labelledby="customer-screen-title">
+          <h3 id="customer-screen-title">Customer board on the other.</h3>
+          <div class="collection-screen-frame">
+            <div class="collection-screen-chrome" aria-hidden="true"><span></span></div>
+            <svg class="collection-screen-illustration" viewBox="0 0 560 340" role="img" aria-labelledby="board-visual-title">
+              <title id="board-visual-title">Customer board illustration: order numbers grouped into preparing and ready for pickup.</title>
+              <rect width="560" height="340" fill="#f5f3ed"/>
+              <g fill="#10243d" font-family="Manrope, sans-serif">
+                <text x="28" y="42" font-size="18" font-weight="800">Order status</text>
+                <circle cx="450" cy="36" r="4" fill="#36794d"/><text x="462" y="40" font-size="11" font-weight="700">LIVE</text>
+                <rect x="28" y="62" width="244" height="250" rx="10" fill="#fffefb" stroke="#d4d7d8"/>
+                <rect x="288" y="62" width="244" height="250" rx="10" fill="#f3e2d5"/>
+                <g font-size="12" font-weight="800" text-anchor="middle" letter-spacing="1"><text x="150" y="92">PREPARING</text><text x="410" y="92">READY FOR PICKUP</text></g>
+                <g stroke="#d4d7d8"><path d="M44 110h212M44 176h212M44 242h212M304 110h212M304 176h212M304 242h212"/></g>
+                <g font-size="32" font-weight="800" text-anchor="middle"><text x="150" y="156">#44</text><text x="150" y="222">#45</text><text x="150" y="288">#46</text><text x="410" y="156">#41</text><text x="410" y="222">#42</text><text x="410" y="288">#43</text></g>
+              </g>
+            </svg>
+          </div>
+          <a class="button button-primary" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board <span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <p class="demo-handnote screen-link-note">
+            <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M80 40C45 47 20 33 20 9M8 20L20 6l13 13"/></svg>
+            <span>Click here for what the customer sees.</span>
+          </p>
+        </section>
       </div>
+      <p class="collection-tabs-tip"><strong>Try them together:</strong> open both tabs in the same browser on your device. Add an order in staff controls, mark it ready, then switch to the customer board to see it update.</p>
     </section>
 
     <section class="collection-benefits" aria-labelledby="benefits-title">
@@ -122,7 +137,7 @@
         <h2 id="phone-board-title">No spare screen — or don’t want customers crowding the counter?</h2>
         <p>A QR code gives customers a quick way to open the collection board on their phone.</p>
         <p>The board shows which orders are being prepared and which are Ready.</p>
-        <p class="qr-availability">This preview shares order updates only between tabs on the same device. The sample QR needs your public board address before customer use.</p>
+  
       </div>
       <figure class="collection-qr">
         <canvas id="collectionQrCode" width="200" height="200" role="img" aria-label="Sample QR code for the collection board" aria-describedby="collectionQrCaption"></canvas>
