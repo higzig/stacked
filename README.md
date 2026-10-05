@@ -1,6 +1,8 @@
 # PopBia
 
-Static PopBia sales website, Stacked food-truck template, and collection-board prototype prepared for Cloudflare Workers static assets.
+PopBia sales website, Stacked food-truck template, and account-based Collection served as Cloudflare Workers static assets. Collection uses Supabase Auth, Postgres and Realtime.
+
+See [Collection setup, architecture and tests](docs/collection-cloud.md) before using staff controls. Start at `/account.html`. Configure the public Supabase URL/key and apply the reproducible migration before deploying Collection.
 
 ## Project structure
 
@@ -11,8 +13,9 @@ Stacked/
 │   ├── collection.html     # PopBia Collection product walkthrough
 │   ├── stacked.html        # Stacked food-truck template demo
 │   ├── walkthrough.html    # Stacked prospect walkthrough
-│   ├── board-admin.html    # PopBia Collection staff controls
-│   ├── board.html          # Customer-facing collection display
+│   ├── account.html        # Login, signup and business onboarding
+│   ├── board-admin.html    # Authenticated Collection staff controls
+│   ├── board.html          # Public display, scoped by ?display=<UUID>
 │   ├── styles.css
 │   ├── app.js
 │   ├── client-config.js
@@ -55,12 +58,12 @@ Then test:
 
 ## Client configuration
 
-Edit `public/client-config.js` for business name, contact details, location, opening hours, ordering details, and the public collection-board URL.
+Edit `public/client-config.js` for the Stacked template business name, contact details, location, opening hours and ordering details. Account-based Collection uses workspace data and `public/supabase-config.js`. The scoped Collection display link comes from **Open board** in staff controls.
 
-Before sharing the QR code publicly, replace `publicBoardUrl` with the deployed board URL, for example:
+For links from the Stacked template to a real workspace, set `publicBoardUrl` to the scoped link from staff controls, for example:
 
 ```js
-publicBoardUrl: "https://stacked.example.workers.dev/board.html"
+publicBoardUrl: "https://stacked.example.workers.dev/board.html?display=<display-uuid>"
 ```
 
 Ordering uses `CLIENT_CONFIG.ordering.channels` and `defaultChannel`. The default

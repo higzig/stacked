@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PopBia Collection — Your account</title>
+  <link rel="icon" href="popbia-favicon.svg"><link rel="stylesheet" href="popbia.css">
+  <style>
+    .account-shell { max-width: 480px; margin: 8vh auto; padding: 2rem; border: 1px solid #d4d7d8; border-radius: 20px; background: #fffefb; }
+    .account-shell h1 { font-size: 2rem; } .account-shell label { display:block; margin: 1rem 0 .4rem; font-weight:700; }
+    .account-shell input { width:100%; padding:.85rem; border:1px solid #aeb6bf; border-radius:8px; font:inherit; }
+    .account-shell button { margin-top:1rem; cursor:pointer; } .account-shell [hidden] { display:none; }
+    #accountMessage { min-height: 1.5rem; } .account-shell .button { width:100%; }
+  </style>
+</head>
+<body>
+  <main class="account-shell">
+    <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span>PopBia</a>
+    <h1>Your Collection workspace</h1>
+    <p id="accountMessage" role="status" aria-live="polite">Loading your account…</p>
+    <form id="authForm" hidden>
+      <label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
+      <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="8" required>
+      <button id="authSubmit" class="button button-primary" type="submit">Log in</button>
+      <button id="switchAuth" class="button button-secondary" type="button">Create an account</button>
+    </form>
+    <form id="businessForm" hidden>
+      <p>Create the business that owns your Collection queue.</p>
+      <label for="businessName">Business name</label><input id="businessName" maxlength="120" required placeholder="e.g. Stacked" autocomplete="organization">
+      <button class="button button-primary" type="submit">Create business</button>
+    </form>
+    <button id="accountLogout" class="button button-secondary" type="button" hidden>Log out</button>
+  </main>
+  <script src="supabase-config.js"></script><script src="vendor/supabase.js"></script><script src="account.js"></script>
+</body>
+</html>
