@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="See how PopBia Collection helps independent food businesses manage preparing, ready and collected orders during busy service.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PopBia Collection — Less shouting. More serving.">
+  <meta property="og:description" content="A simple way for busy food businesses to show customers when orders are preparing and ready.">
   <title>PopBia Collection — Less shouting. More serving.</title>
   <link rel="icon" href="popbia-favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,26 +23,29 @@
     </a>
     <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
     <nav class="site-nav" id="siteNav" aria-label="Main navigation">
-      <a href="index.html#templates">Templates</a>
-      <a href="#walkthrough">Collection</a>
-      <a href="index.html#ordering">Digital ordering</a>
-      <a class="nav-cta" href="index.html#contact">Tell us about your business</a>
+      <a href="#walkthrough">How it works</a>
+      <a href="account.html">Sign in</a>
+      <a class="nav-cta" href="/account.html">Start free trial</a>
     </nav>
   </header>
 
   <main id="main">
-    <section class="collection-hero">
+    <section class="collection-hero" id="top">
       <div>
         <p class="kicker"><span></span> PopBia Collection</p>
-        <h1>Less shouting.<br><em>More serving.</em></h1>
+        <h1>Less shouting.<br><em>more serving.</em></h1>
         <p class="hero-lede">A simple way for busy food businesses to show customers when orders are being prepared and when they are ready.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#walkthrough">Try the walkthrough</a>
-          <a class="button button-secondary" href="#phone-board">Explore the QR option</a>
+          <a class="text-link" href="/account.html">Start 14-day free trial <span aria-hidden="true">↗</span></a>
+          <span class="hero-trial-note">
+            <svg viewBox="0 0 48 24" aria-hidden="true"><path d="M44 12H4m8-8-8 8 8 8"/></svg>
+            <span>14 days free · No card required</span>
+          </span>
         </div>
+        <p class="hero-hardware-note">Works alongside your existing register. No special hardware — use a phone, tablet or TV browser.</p>
       </div>
-      <div class="collection-hero-board" aria-label="Example Stacked collection display">
-        <div class="mini-board-head"><strong>STACKED</strong><span>ORDER STATUS</span></div>
+      <div class="collection-hero-board" aria-label="Example customer board">
+        <div class="mini-board-head"><strong>Collection</strong><span>ORDER STATUS</span></div>
         <div class="mini-board-columns">
           <div><small>NOW MAKING</small><b>AOIFE <i>#51</i></b><b>JACK <i>#52</i></b></div>
           <div><small>READY FOR PICKUP</small><b>MAYA <i>#49</i></b><b>RYAN <i>#48</i></b></div>
@@ -47,26 +53,14 @@
       </div>
     </section>
 
-    <section class="collection-flow" aria-labelledby="flow-title">
-      <div class="section-heading">
-        <p class="section-number">The service flow</p>
-        <h2 id="flow-title">Three taps from order to handover.</h2>
-      </div>
-      <ol class="flow-steps">
-        <li><span>1</span><div><h3>Add the order</h3><p>Every order gets an automatic number. Staff may optionally add the customer’s name.</p></div></li>
-        <li><span>2</span><div><h3>Mark it Ready</h3><p>When the order is finished, staff tap Ready.</p></div></li>
-        <li><span>3</span><div><h3>Customer collects</h3><p>The display updates, then staff mark the order Collected when it is handed over.</p></div></li>
-      </ol>
-    </section>
-
     <section class="collection-walkthrough" id="walkthrough" aria-labelledby="walkthrough-title">
+      <span id="collection" class="section-anchor" aria-hidden="true"></span>
       <div class="section-heading section-heading-light">
         <p class="section-number">The Collection workflow</p>
         <h2 id="walkthrough-title">See both sides of service.</h2>
       </div>
       <div class="collection-screen-links" id="full-setup">
         <section class="collection-screen-choice" aria-labelledby="staff-screen-title">
-          <h3 id="staff-screen-title">Staff controls on one side.</h3>
           <div class="collection-screen-frame">
             <div class="collection-screen-chrome" aria-hidden="true"><span></span></div>
             <svg class="collection-screen-illustration" viewBox="0 0 560 340" role="img" aria-labelledby="staff-visual-title">
@@ -84,14 +78,14 @@
               </g>
             </svg>
           </div>
-          <a class="button button-primary" href="board-admin.html" target="_blank" rel="noopener noreferrer">Open staff controls <span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
-          <p class="demo-handnote screen-link-note">
-            <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M80 40C45 47 20 33 20 9M8 20L20 6l13 13"/></svg>
-            <span>Click here for what staff see.</span>
-          </p>
+          <div class="walkthrough-copy">
+            <p class="section-number">01 / Behind the counter</p>
+            <h3 id="staff-screen-title">Staff controls</h3>
+            <p>Add each order to the queue with an automatic number and an optional customer name. Tap Ready when it’s finished, then Collected at handover. Staff keep the queue moving from one place.</p>
+          <a class="text-link" href="board-admin.html" target="_blank" rel="noopener noreferrer">Open staff controls <span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
         </section>
         <section class="collection-screen-choice" aria-labelledby="customer-screen-title">
-          <h3 id="customer-screen-title">Customer board on the other.</h3>
           <div class="collection-screen-frame">
             <div class="collection-screen-chrome" aria-hidden="true"><span></span></div>
             <svg class="collection-screen-illustration" viewBox="0 0 560 340" role="img" aria-labelledby="board-visual-title">
@@ -108,43 +102,127 @@
               </g>
             </svg>
           </div>
-          <a class="button button-primary" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board <span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
-          <p class="demo-handnote screen-link-note">
-            <svg viewBox="0 0 90 48" aria-hidden="true"><path d="M80 40C45 47 20 33 20 9M8 20L20 6l13 13"/></svg>
-            <span>Click here for what the customer sees.</span>
-          </p>
+          <div class="walkthrough-copy">
+            <p class="section-number">02 / In front of the counter</p>
+            <h3 id="customer-screen-title">Customer board</h3>
+            <p>Customers see their order number move from Preparing to Ready for pickup. On a screen by the hatch or on their own phone, they can follow progress and see when it’s time to collect.</p>
+          <a class="text-link" href="board.html" target="_blank" rel="noopener noreferrer">Open customer board <span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
         </section>
       </div>
-      <p class="collection-tabs-tip"><strong>Try them together:</strong> create an account in staff controls, then open your business’s customer display using “Open board”. Your queue stays in sync across browsers and devices.</p>
     </section>
 
-    <section class="collection-benefits" aria-labelledby="benefits-title">
+    <section class="collection-flow" aria-labelledby="flow-title">
       <div class="section-heading">
-        <p class="section-number">Built for busy counters</p>
-        <h2 id="benefits-title">A calmer wait. A clearer handover.</h2>
+        <p class="section-number">The service flow</p>
+        <h2 id="flow-title">Three taps from order to handover.</h2>
       </div>
-      <ul class="benefit-list">
-        <li><strong>Fewer repeated questions</strong><span>Customers can see whether their order is still being made or ready to collect.</span></li>
-        <li><strong>Less shouting</strong><span>Use automatic order numbers with optional customer names.</span></li>
-        <li><strong>More room to serve</strong><span>Customers can wait away from the serving hatch without losing sight of progress.</span></li>
-        <li><strong>Fits the process you have</strong><span>Collection works alongside the business’s existing register or ordering process.</span></li>
-      </ul>
+      <ol class="flow-steps">
+        <li><span>1</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 9h6M12 6v6M9 16h6"/></svg><h3>Add the order</h3><p>Automatic number. Optional name.</p></div></li>
+        <li><span>2</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></svg><h3>Mark it Ready</h3><p>One tap when it’s ready.</p></div></li>
+        <li><span>3</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h13m-5-5 5 5-5 5M20 5v14"/></svg><h3>Customer collects</h3><p>Hand it over. Mark it Collected.</p></div></li>
+      </ol>
+      <div class="collection-demo three-taps-demo" id="threeTapsDemo" hidden>
+        <div class="demo-grid">
+          <section class="staff-demo" aria-labelledby="tapStaffTitle">
+            <h3 id="tapStaffTitle">Staff controls</h3>
+            <form class="demo-add" id="tapAddForm">
+              <label for="tapName">Customer name <span>(optional)</span></label>
+              <div><input id="tapName" type="text" maxlength="28" autocomplete="off" value="Maya"><button type="submit" id="tapAdd">Add order #47</button></div>
+            </form>
+            <ol class="staff-orders" id="tapStaffOrders"></ol>
+          </section>
+          <section class="customer-demo" aria-labelledby="tapCustomerTitle">
+            <h3 id="tapCustomerTitle">Customer board</h3>
+            <div class="customer-columns">
+              <div><h4>Preparing</h4><ul id="tapPreparing"><li class="demo-empty">No orders</li></ul></div>
+              <div class="customer-ready"><h4>Ready</h4><ul id="tapReady"><li class="demo-empty">No orders</li></ul></div>
+            </div>
+          </section>
+        </div>
+        <div class="tap-demo-foot">
+          <p id="tapStatus" role="status" aria-live="polite">Try adding Maya’s order to start.</p>
+          <button class="demo-reset" id="tapReset" type="button">Start over</button>
+        </div>
+      </div>
+      <noscript><p>Enable JavaScript to try this example: add an order, mark it Ready, then mark it Collected.</p></noscript>
+
+    </section>
+
+    <section class="collection-trial-cta" aria-labelledby="trial-cta-title">
+      <div>
+        <h2 id="trial-cta-title">Want to see how the full thing works across all your devices?</h2>
+        <p>Start your 14-day free trial and use the real PopBia Collection system.</p>
+      </div>
+      <a class="button button-primary" href="/account.html">Start 14-day free trial</a>
     </section>
 
     <section class="collection-phone" id="phone-board" aria-labelledby="phone-board-title">
       <div class="section-heading">
         <p class="section-number">A little more room to wait</p>
         <h2 id="phone-board-title">No spare screen — or don’t want customers crowding the counter?</h2>
-        <p>A QR code gives customers a quick way to open the collection board on their phone.</p>
+        <p>A QR code gives customers a quick way to open the customer board on their phone.</p>
         <p>The board shows which orders are being prepared and which are Ready.</p>
-  
+
       </div>
       <figure class="collection-qr">
-        <span class="qr-scan-note" aria-hidden="true">Scan me ↘</span>
-        <canvas id="collectionQrCode" width="200" height="200" role="img" aria-label="Sample QR code for the collection board" aria-describedby="collectionQrCaption"></canvas>
+        <span class="qr-scan-note" >View on your phone</span>
+        <canvas id="collectionQrCode" width="200" height="200" role="img" aria-label="Sample QR code for the customer board" aria-describedby="collectionQrCaption"></canvas>
         <figcaption id="collectionQrCaption">A board in your pocket.<span>Sample QR · Preview</span></figcaption>
       </figure>
     </section>
+    <section class="section collection-faq" aria-labelledby="faq-title">
+      <div class="section-heading">
+        <p class="section-number">A few useful answers</p>
+        <h2 id="faq-title">Before you get started.</h2>
+      </div>
+      <details><summary>What hardware do I need?</summary><p>A phone or tablet browser for staff controls, and a browser on a screen or customers’ phones for the customer board. No special hardware needed.</p></details>
+      <details><summary>Does it replace my till/register?</summary><p>No. Collection works alongside your existing register or ordering process to manage order status and handover.</p></details>
+      <details><summary>Can customers use their own phones?</summary><p>Yes. A QR code opens your customer board on their phone so they can see Preparing and Ready orders.</p></details>
+      <details><summary>How long does setup take?</summary><p>Setup takes no more than 30 minutes.</p></details>
+      <details><summary>What does it cost?</summary><p>Try PopBia Collection free for 14 days. No card required — create an account to get started.</p></details>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="contact-layout contact-layout-email">
+        <div class="contact-copy">
+          <p class="section-number">Let’s chat</p>
+          <h2 id="contact-title">Ready for a calmer counter?</h2>
+          <p>Tell us what you sell and how you work. We’ll show you how Collection could fit your business.</p>
+        </div>
+        <div class="contact-email">
+          <p>Get in touch with us</p>
+          <a href="mailto:hello@popbia.com">hello@popbia.com</a>
+        </div>
+      </div>
+    </section>
+    <section class="section collection-templates" id="templates" aria-labelledby="templates-title" hidden>
+      <span id="ordering" class="section-anchor" aria-hidden="true"></span>
+      <div class="section-heading">
+        <p class="section-number">A little extra from PopBia</p>
+        <h2 id="templates-title">Need the website too?</h2>
+        <p>PopBia also offers websites and templates for independent food businesses. Start with one of our designs, then make it yours — branding, menu, locations, photography and all. Need something different? We can go custom.</p>
+      </div>
+      <article class="template-feature">
+        <div class="template-preview">
+          <div class="phone-top" aria-hidden="true"><span></span></div>
+          <div class="stacked-preview" role="region" aria-label="Stacked website preview" tabindex="0">
+            <img src="assets/stacked-mobile-preview.png" width="2174" height="14088" alt="Full-page preview of the Stacked street-food website template" loading="lazy" decoding="async">
+          </div>
+
+        </div>
+        <div class="template-copy">
+          <h3>Stacked</h3>
+          <p>A bold, mobile-ready website template created for food trucks and energetic independent food brands.</p>
+          <ul class="tick-list">
+            <li>Menu and collection-request flow</li>
+            <li>Locations, hours and event enquiries</li>
+          </ul>
+          <a class="text-link" href="stacked.html">Explore Stacked <span>↗</span></a>
+        </div>
+      </article>
+    </section>
+
   </main>
 
   <footer class="site-footer popbia-footer">
@@ -152,13 +230,11 @@
       <div class="popbia-footer-brand">
         <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span><span>PopBia</span></a>
         <p>Digital tools for independent food businesses.</p>
-        <p>Websites, ordering and collection.</p>
+        <p>Calmer collection. Websites too.</p>
       </div>
       <nav class="popbia-footer-nav" aria-label="Footer navigation">
         <h2>Explore</h2>
-        <a href="index.html#templates">Website templates</a>
-        <a href="index.html#ordering">Digital ordering</a>
-        <a href="collection.html">PopBia Collection</a>
+        <a href="index.html#walkthrough">PopBia Collection</a>
         <div class="popbia-footer-demos">
           <span>Collection demos</span>
           <a href="board-admin.html" target="_blank" rel="noopener noreferrer">Staff controls ↗<span class="sr-only"> (opens in a new tab)</span></a>
@@ -167,14 +243,18 @@
       </nav>
       <div class="popbia-footer-contact">
         <h2>Get in touch</h2>
-        <a class="popbia-footer-email" href="mailto:hello@popbia.com">hello@popbia.com</a>
-        <a href="index.html#contact">Tell us about your business <span aria-hidden="true">→</span></a>
+        <a class="button button-primary footer-demo-cta" href="/account.html">Start 14-day free trial</a>
+        <div class="footer-email-option">
+          <p>Prefer email?</p>
+          <a class="popbia-footer-email" href="mailto:hello@popbia.com">hello@popbia.com <span aria-hidden="true">↗</span></a>
+        </div>
         <p>We reply within 1 working day.</p>
       </div>
     </div>
     <div class="popbia-footer-bottom"><p>© 2026 PopBia</p></div>
   </footer>
   <script src="collection.js"></script>
+  <script src="collection-marketing-demo.js"></script>
   <script src="client-config.js"></script>
   <script src="qrcode.js"></script>
   <script src="collection-qr.js"></script>

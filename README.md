@@ -10,7 +10,7 @@ See [Collection setup, architecture and tests](docs/collection-cloud.md) before 
 Stacked/
 ├── public/
 │   ├── index.html          # PopBia sales website
-│   ├── collection.html     # PopBia Collection product walkthrough
+│   ├── collection.html     # Collection landing page (also available at /)
 │   ├── stacked.html        # Stacked food-truck template demo
 │   ├── walkthrough.html    # Stacked prospect walkthrough
 │   ├── account.html        # Login, signup and business onboarding
@@ -78,7 +78,9 @@ Ordering has no backend or connection to Collection.
 
 ## Contact section
 
-The homepage displays a direct `mailto:hello@popbia.com` link. There is no active
-form endpoint, automatic acknowledgement, or email-sending service dependency.
+The Collection landing pages display a direct `mailto:hello@popbia.com` link.
+There is no active form endpoint, automatic acknowledgement, or email-sending
+service dependency. Setup takes no more than 30 minutes. Public marketing CTAs link to `/account.html` for a 14-day free trial, with
+no card required. Billing and authentication are unchanged.
 The previous form implementation and setup notes are preserved in
 [docs/contact-form/README.md](docs/contact-form/README.md) for later use.
