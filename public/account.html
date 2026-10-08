@@ -4,19 +4,16 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PopBia Collection — Your account</title>
   <link rel="icon" href="popbia-favicon.svg"><link rel="stylesheet" href="popbia.css">
-  <style>
-    .account-shell { max-width: 480px; margin: 8vh auto; padding: 2rem; border: 1px solid #d4d7d8; border-radius: 20px; background: #fffefb; }
-    .account-shell h1 { font-size: 2rem; } .account-shell label { display:block; margin: 1rem 0 .4rem; font-weight:700; }
-    .account-shell input { width:100%; padding:.85rem; border:1px solid #aeb6bf; border-radius:8px; font:inherit; }
-    .account-shell button { margin-top:1rem; cursor:pointer; } .account-shell [hidden] { display:none; }
-    #accountMessage { min-height: 1.5rem; } .account-shell .button { width:100%; }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Manrope:wght@400;500;600;700;800&amp;family=Caveat:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="account.css">
   <link rel="stylesheet" href="collection-entitlement.css">
 </head>
 <body>
   <main class="account-shell">
     <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span>PopBia</a>
-    <h1>Your Collection workspace</h1>
+    <h1 id="accountTitle" tabindex="-1">Your Collection workspace</h1>
     <p id="accountMessage" role="status" aria-live="polite">Loading your account…</p>
     <div id="collectionEntitlement" class="collection-entitlement" role="status" aria-live="polite" hidden></div>
     <form id="authForm" hidden>
@@ -25,6 +22,44 @@
       <button id="authSubmit" class="button button-primary" type="submit">Log in</button>
       <button id="switchAuth" class="button button-secondary" type="button">Create an account</button>
     </form>
+    <section id="signupConfirmation" class="account-confirmation" aria-label="Email confirmation" hidden>
+      <span class="confirmation-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg></span>
+      <p>We’ve sent a confirmation link to <strong id="confirmationEmail"></strong>. Confirm your email to finish setting up your PopBia account.</p>
+      <p>Can’t find it? Check your spam or junk folder.</p>
+      <button id="backToLogin" class="button button-secondary" type="button">Back to login</button>
+    </section>
+    <section id="onboardingPlans" aria-label="Choose how to get started" hidden>
+      <p class="onboarding-intro">Start with full access to Collection for 14 days. Monthly and annual access are the same product, with different billing cadences, and are currently rolling out by invite.</p>
+      <div class="onboarding-options">
+        <article class="onboarding-card onboarding-trial">
+          <p class="onboarding-available">Available now</p>
+          <h2>14-day free trial</h2>
+          <p>Full access to PopBia Collection for 14 days.</p>
+          <ul><li>No card required.</li><li>Use across your devices.</li><li>Staff controls and customer display included.</li></ul>
+          <button id="startTrial" class="button button-primary" type="button">Start 14-day free trial</button>
+        </article>
+        <article class="onboarding-card">
+          <h2>Monthly</h2>
+          <p>Ongoing access to the same PopBia Collection product, billed monthly once available.</p>
+          <div class="invite-notice">
+            <span class="popbia-mark" aria-hidden="true"></span>
+            <h3>Currently rolling out by invite</h3>
+            <p>Interested in ongoing access? Register your interest with us.</p>
+            <a class="text-link" href="mailto:hello@popbia.com?subject=PopBia%20Collection%20%E2%80%94%20Monthly%20plan%20interest">Register interest <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+        <article class="onboarding-card">
+          <h2>Annual</h2>
+          <p>Ongoing access to the same PopBia Collection product, billed annually once available.</p>
+          <div class="invite-notice">
+            <span class="popbia-mark" aria-hidden="true"></span>
+            <h3>Currently rolling out by invite</h3>
+            <p>If you’d like early access, register your interest.</p>
+            <a class="text-link" href="mailto:hello@popbia.com?subject=PopBia%20Collection%20%E2%80%94%20Annual%20plan%20interest">Register interest <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
     <form id="businessForm" hidden>
       <p>Create the business that owns your Collection queue.</p>
       <label for="businessName">Business name</label><input id="businessName" maxlength="120" required placeholder="e.g. Stacked" autocomplete="organization">

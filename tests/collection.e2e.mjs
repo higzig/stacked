@@ -50,6 +50,7 @@ async function waitText(page, selector, text) {
 try {
   const a = await pageFor(chromium), b = await pageFor(firefox), display = await pageFor(chromium);
   await login(a, email, true);
+  await a.locator('#startTrial').click();
   await a.locator('#businessForm').waitFor({state:'visible'});
   await a.locator('#businessName').fill('Stacked'); await a.locator('#businessForm button').click();
   await a.waitForURL('**/board-admin.html');
