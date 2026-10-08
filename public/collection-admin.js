@@ -187,14 +187,14 @@ const getNextNumber = () => cloud.business.next_number;
 const getOverdueMinutes = () => cloud.business.overdue_seconds / 60;
 const isReadyChimeEnabled = () => cloud.business.ready_chime;
 async function action(work) {
-  if (busy) return;
+  if (busy || !cloud?.entitlement?.access_allowed) return;
   busy = true;
   document.querySelectorAll('#collection-demo button, #collection-demo input, #collection-demo select').forEach(el => el.disabled = true);
   try { await work(); message.textContent = ''; }
   catch (error) { message.textContent = error.message; }
   finally {
     busy = false;
-    document.querySelectorAll('#collection-demo button, #collection-demo input, #collection-demo select').forEach(el => el.disabled = false);
+    document.querySelectorAll('#collection-demo button, #collection-demo input, #collection-demo select').forEach(el => el.disabled = !cloud?.entitlement?.access_allowed);
   }
 }
 async function addOrder() {
@@ -252,7 +252,12 @@ $('logoutButton').addEventListener('click', async () => {
     $('logoutButton').hidden = false;
     cloud = new CollectionCloud(client, {
       onChange: () => {
-        document.querySelector('#collection-demo').hidden = false;
+        const locked = !cloud.entitlement?.access_allowed;
+        window.renderCollectionEntitlement($('collectionEntitlement'), cloud.entitlement);
+        document.querySelector('#collection-demo').hidden = locked;
+        $('openBoard').hidden = locked;
+        if (!busy) document.querySelectorAll('#collection-demo button, #collection-demo input, #collection-demo select').forEach(el => el.disabled = locked);
+        if (locked) editingOrderId = null;
         message.textContent = ''; 
         document.querySelector('.product-brand span:last-child').textContent = `${cloud.business.name} · Staff controls`;
         $('openBoard').href = `board.html?display=${cloud.business.display_id}`;

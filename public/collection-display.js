@@ -167,7 +167,11 @@ const readyAnnouncementQueue = [], justReadyOrderIds = new Set();
 let readyAnnouncementActive = false, previousOrdersById = new Map(), readyTransitionTrackingReady = false, cloud;
 const loadOrders = () => cloud?.orders || [];
 function renderBoard() {
-  detectReadyTransitions(loadOrders());
+  if (cloud.business.inactive) {
+    readyAnnouncementQueue.length = 0;
+    readyAnnouncementEl.classList.remove('is-visible');
+    readyAnnouncementEl.hidden = true;
+  } else { readyAnnouncementEl.hidden = false; detectReadyTransitions(loadOrders()); }
   renderOrderList(preparingList, 'preparing'); renderOrderList(readyList, 'ready');
 }
 (async () => {

@@ -36,22 +36,25 @@ class CollectionCloud {
     if (this.again && !this.closed) { this.again = false; return this.refresh(); }
   }
   async fetchSnapshot() {
-    let rows, business;
+    let rows, business, entitlement = null;
     if (this.display) {
       const { data, error } = await this.client.rpc('collection_display', { display: this.display });
       if (error) throw error;
       if (!data) throw new Error('Display not found. Open the link supplied by your business.');
       business = data; rows = data.orders;
     } else {
-      const [b, o] = await Promise.all([
+      const [b, o, e] = await Promise.all([
         this.client.from('businesses').select('*').eq('id', this.business.id).single(),
-        this.client.from('collection_orders').select('*').eq('business_id', this.business.id).neq('status', 'collected').order('created_at')
+        this.client.from('collection_orders').select('*').eq('business_id', this.business.id).neq('status', 'collected').order('created_at'),
+        this.client.rpc('collection_entitlement', { target_business: this.business.id })
       ]);
-      if (b.error || o.error) throw b.error || o.error;
+      if (b.error || o.error || e.error) throw b.error || o.error || e.error;
+      entitlement = e.data;
       business = b.data; rows = o.data;
     }
     if (this.closed) return;
     this.business = business;
+    this.entitlement = entitlement;
     this.orders = rows.map(row => ({
       id: row.id, type: row.type, status: row.status,
       number: row.type === 'number-name' ? String(row.number) : null,
@@ -60,11 +63,12 @@ class CollectionCloud {
       collectedAt: row.collected_at ? Date.parse(row.collected_at) : null
     }));
     this.onChange();
+    if (business.inactive) { this.onStatus('Collection is currently inactive. Please see staff about your order.'); return; }
     this.onStatus(this.channel?.state === 'joined' ? 'Live' : 'Connected · reconnecting live updates…');
   }
   async mutate(query) {
     const { error } = await query;
-    if (error) throw error;
+    if (error) { await this.refresh(); throw error; }
     await this.refresh();
   }
   add(name, number) {

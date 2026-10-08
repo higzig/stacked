@@ -11,12 +11,14 @@
     .account-shell button { margin-top:1rem; cursor:pointer; } .account-shell [hidden] { display:none; }
     #accountMessage { min-height: 1.5rem; } .account-shell .button { width:100%; }
   </style>
+  <link rel="stylesheet" href="collection-entitlement.css">
 </head>
 <body>
   <main class="account-shell">
     <a class="popbia-brand" href="index.html"><span class="popbia-mark" aria-hidden="true"></span>PopBia</a>
     <h1>Your Collection workspace</h1>
     <p id="accountMessage" role="status" aria-live="polite">Loading your account…</p>
+    <div id="collectionEntitlement" class="collection-entitlement" role="status" aria-live="polite" hidden></div>
     <form id="authForm" hidden>
       <label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
       <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="8" required>
@@ -30,6 +32,6 @@
     </form>
     <button id="accountLogout" class="button button-secondary" type="button" hidden>Log out</button>
   </main>
-  <script src="supabase-config.js"></script><script src="vendor/supabase.js"></script><script src="account.js"></script>
+  <script src="supabase-config.js"></script><script src="vendor/supabase.js"></script><script src="collection-entitlement.js"></script><script src="account.js"></script>
 </body>
 </html>

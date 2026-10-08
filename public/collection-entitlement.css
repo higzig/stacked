@@ -1,0 +1,10 @@
+.collection-entitlement { margin: 1rem 0; padding: .85rem 1rem; border: 1px solid #d4d7d8; border-radius: 12px; background: #fffefb; color: #10243d; }
+.collection-entitlement[hidden] { display: none; }
+.collection-entitlement p { color: #10243d; margin: .35rem 0; font-size: .95rem; }
+.collection-entitlement.entitlement-ending { border-color: #bb3812; }
+.collection-entitlement.entitlement-locked { padding: 1.5rem; }
+.collection-entitlement h2 { font-size: 1.7rem; line-height: 1.15; margin: 0 0 1rem; }
+.entitlement-contact { display: inline-flex; align-items: center; min-height: 44px; margin-block: .7rem; font-weight: 800; color: #10243d; text-underline-offset: 4px; }
+.entitlement-contact:focus-visible { outline: 3px solid #ff6433; outline-offset: 3px; }
+
+#openBoard[hidden] { display: none; }

@@ -11,13 +11,18 @@
       if (error) throw error;
       authForm.hidden = Boolean(data.session); businessForm.hidden = true;
       $('accountLogout').hidden = !data.session;
-      if (!data.session) { show('Log in to your business, or create an account.'); return; }
+      if (!data.session) { window.renderCollectionEntitlement($('collectionEntitlement'), null); show('Log in to your business, or create an account.'); return; }
       const business = await client.from('businesses').select('id').order('created_at').limit(1).maybeSingle();
       if (business.error) throw business.error;
       if (business.data) {
+        const entitlement = await client.rpc('collection_entitlement', { target_business: business.data.id });
+        if (entitlement.error) throw entitlement.error;
+        window.renderCollectionEntitlement($('collectionEntitlement'), entitlement.data);
+        if (!entitlement.data.access_allowed) { show('Your workspace is preserved. Contact us to continue.'); return; }
         if (!leaving) { leaving = true; location.replace('board-admin.html'); }
         return;
       }
+      window.renderCollectionEntitlement($('collectionEntitlement'), null);
       businessForm.hidden = false; show('Welcome. Set up your business to begin.');
     } catch (error) { show(error.message); }
     finally { checking = false; }
@@ -66,5 +71,6 @@
     // Schedule outside the auth callback to avoid holding the SDK's auth lock.
     client.auth.onAuthStateChange(() => setTimeout(() => { if (!busy) loadAccount(); }, 0));
     loadAccount();
+    setInterval(() => { if (!busy && !leaving) loadAccount(); }, 10000);
   } catch (error) { show(error.message); }
 })();

@@ -13,6 +13,7 @@
     "check": "node --check public/popbia.js && node --check src/contact.mjs && wrangler deploy --dry-run",
     "build": "node scripts/build.mjs",
     "check:collection": "node --check public/account.js && node --check public/collection-cloud.js && node --check public/collection-admin.js && node --check public/collection-display.js",
+    "test:entitlement-migration": "node tests/entitlement-migration.mjs",
     "test:collection": "npm run build && node tests/collection.e2e.mjs"
   },
   "dependencies": {
