@@ -795,6 +795,18 @@
                 <option value="off">Off</option>
               </select>
             </div>
+            <div class="settings-row">
+              <label for="autoClearSelect">Auto-clear Ready orders</label>
+              <select id="autoClearSelect" aria-describedby="autoClearHelp">
+                <option value="off">Off</option>
+                <option value="300">5 minutes</option>
+                <option value="600" selected>10 minutes</option>
+                <option value="900">15 minutes</option>
+                <option value="1200">20 minutes</option>
+                <option value="1800">30 minutes</option>
+              </select>
+            </div>
+            <p id="autoClearHelp">Automatically mark Ready orders as collected after this amount of time.</p>
             <div class="queue-settings-actions">
               <button class="queue-settings-btn" id="resetDemoBtn" type="button">Clear active queue</button>
             </div>
@@ -804,9 +816,8 @@
         </div>
 
           <div class="admin-control-row">
-            <div class="field"><label for="orderNumberInput">Order number (optional)</label><input id="orderNumberInput" type="number" min="1" step="1" placeholder="Automatic" /></div>
             <div class="field" id="customerNameField">
-              <label for="customerNameInput">Customer name <span aria-hidden="true">(optional)</span></label>
+              <label for="customerNameInput">Customer name</label>
               <input id="customerNameInput" type="text" maxlength="120" placeholder="e.g. Ronan" />
             </div>
 

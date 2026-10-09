@@ -43,31 +43,13 @@ function isOverdue(order) {
 function refreshQueueUi() {
   const queueStyle = getQueueStyle();
   const setupComplete = true;
-  const editStyle = loadOrders().find(order => order.id === editingOrderId)?.type || queueStyle;
-  orderNumberInput.parentElement.hidden = queueStyle === "name" || Boolean(editingOrderId);
   setupPanel.classList.toggle("hidden", setupComplete);
   adminQueueView.classList.toggle("hidden", !setupComplete);
-
-  const isNameMode = queueStyle === "name" || queueStyle === "number-name";
-  if (customerNameInput) {
-    customerNameField.style.display = isNameMode || Boolean(editingOrderId) ? "flex" : "none";
-    customerNameLabel.textContent = editingOrderId && editStyle === "number"
-      ? "Order number"
-      : editStyle === "number-name"
-        ? "Customer name (optional)"
-        : "Customer name";
-    customerNameInput.placeholder = editingOrderId && editStyle === "number" ? "e.g. 42" : "e.g. Ronan";
-  }
-  addOrderBtn.textContent = editingOrderId
-    ? "Save edit"
-    : queueStyle === "number-name"
-      ? `Add order #${getNextNumber()}`
-      : queueStyle === "number"
-        ? `Add order #${getNextNumber()}`
-        : "Add order";
+  addOrderBtn.textContent = editingOrderId ? "Save edit" : "Add order";
   if (queueStyleSelect) {
     queueStyleSelect.value = queueStyle;
   }
+  autoClearSelect.value = cloud.business.ready_auto_clear_seconds === null ? 'off' : String(cloud.business.ready_auto_clear_seconds ?? 600);
   if (overdueSelect) {
     overdueSelect.value = String(getOverdueMinutes() * 60);
   }
@@ -163,7 +145,7 @@ function editSpecificOrder(orderId) {
   const order = loadOrders().find(item => item.id === orderId);
   if (!order) return;
   editingOrderId = orderId;
-  customerNameInput.value = order.type === "number" ? order.label : order.label;
+  customerNameInput.value = order.customerName;
   customerNameInput.focus();
   refreshQueueUi();
 }
@@ -171,9 +153,9 @@ const $ = id => document.getElementById(id);
 const setupPanel = $('setupPanel'), adminQueueView = $('adminQueueView'), queueSettingsPanel = $('queueSettingsPanel');
 const queueSettingsToggle = $('queueSettingsToggle'), queueSettingsBody = $('queueSettingsBody');
 const queueStyleSelect = $('queueStyleSelect'), overdueSelect = $('overdueSelect'), readyChimeSelect = $('readyChimeSelect');
-const customerNameField = $('customerNameField'), customerNameLabel = customerNameField.querySelector('label');
+const autoClearSelect = $('autoClearSelect');
 const customerNameInput = $('customerNameInput'), addOrderBtn = $('addOrderBtn'), ordersList = $('ordersList');
-const orderNumberInput = $('orderNumberInput'), message = $('cloudMessage');
+const message = $('cloudMessage');
 let cloud, client, editingOrderId = null, busy = false, leaving = false;
 function redirectToAccount() {
   if (leaving) return;
@@ -183,7 +165,6 @@ function redirectToAccount() {
 }
 const loadOrders = () => cloud?.orders || [];
 const getQueueStyle = () => cloud.business.queue_style;
-const getNextNumber = () => cloud.business.next_number;
 const getOverdueMinutes = () => cloud.business.overdue_seconds / 60;
 const isReadyChimeEnabled = () => cloud.business.ready_chime;
 async function action(work) {
@@ -203,21 +184,20 @@ async function addOrder() {
       const order = loadOrders().find(o => o.id === editingOrderId);
       if (!order) throw new Error('This order is no longer active.');
       const value = customerNameInput.value.trim();
-      const fields = order.type === 'number' ? { number: Number(value) } : { customer_name: value };
-      await cloud.update(order.id, fields);
+      await cloud.update(order.id, { customer_name: value });
       editingOrderId = null;
     } else {
-      const number = orderNumberInput.value ? Number(orderNumberInput.value) : null;
-      if (number !== null && (!Number.isInteger(number) || number < 1)) throw new Error('Enter a positive whole order number.');
-      if (getQueueStyle() === 'name' && !customerNameInput.value.trim()) throw new Error('Enter a customer name.');
-      await cloud.add(customerNameInput.value.trim(), number);
+      const name = customerNameInput.value.trim();
+      if (!name) throw new Error('Enter a customer name.');
+      await cloud.add(name);
     }
-    customerNameInput.value = ''; orderNumberInput.value = '';
+    customerNameInput.value = '';
     refreshQueueUi(); customerNameInput.focus();
   });
 }
 queueSettingsToggle.addEventListener('click', () => queueSettingsToggle.setAttribute('aria-expanded', String(!queueSettingsBody.classList.toggle('hidden'))));
 queueStyleSelect.addEventListener('change', () => action(() => cloud.settings({ queue_style: queueStyleSelect.value })));
+autoClearSelect.addEventListener('change', () => action(() => cloud.settings({ ready_auto_clear_seconds: autoClearSelect.value === 'off' ? null : Number(autoClearSelect.value) })));
 overdueSelect.addEventListener('change', () => action(() => cloud.settings({ overdue_seconds: Number(overdueSelect.value) })));
 readyChimeSelect.addEventListener('change', () => action(() => cloud.settings({ ready_chime: readyChimeSelect.value === 'on' })));
 addOrderBtn.addEventListener('click', addOrder);

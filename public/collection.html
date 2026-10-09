@@ -53,6 +53,44 @@
       </div>
     </section>
 
+    <section class="collection-flow" aria-labelledby="flow-title">
+      <div class="section-heading">
+        <p class="section-number">The service flow</p>
+        <h2 id="flow-title">Three taps from order to handover.</h2>
+      </div>
+      <ol class="flow-steps">
+        <li><span>1</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 9h6M12 6v6M9 16h6"/></svg><h3>Add the order</h3><p>Automatic number. Optional name.</p></div></li>
+        <li><span>2</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></svg><h3>Mark it Ready</h3><p>One tap when it’s ready.</p></div></li>
+        <li><span>3</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h13m-5-5 5 5-5 5M20 5v14"/></svg><h3>Customer collects</h3><p>Hand it over. Mark it Collected.</p></div></li>
+      </ol>
+      <div class="collection-demo three-taps-demo" id="threeTapsDemo" hidden>
+        <div class="demo-grid">
+          <section class="staff-demo" aria-labelledby="tapStaffTitle">
+            <h3 id="tapStaffTitle">Staff controls</h3>
+            <form class="demo-add" id="tapAddForm">
+              <label for="tapName">Customer name <span>(optional)</span></label>
+              <div><input id="tapName" type="text" maxlength="28" autocomplete="off" value="Maya" aria-describedby="tapInputHint"><button type="submit" id="tapAdd">Add order #47</button></div>
+            </form>
+            <p class="tap-input-hint" id="tapInputHint">Try adding Maya’s order to start.</p>
+            <ol class="staff-orders" id="tapStaffOrders"></ol>
+          </section>
+          <section class="customer-demo" aria-labelledby="tapCustomerTitle">
+            <h3 id="tapCustomerTitle">Customer board</h3>
+            <div class="customer-columns">
+              <div><h4>Preparing</h4><ul id="tapPreparing"><li class="demo-empty">No orders</li></ul></div>
+              <div class="customer-ready"><h4>Ready</h4><ul id="tapReady"><li class="demo-empty">No orders</li></ul></div>
+            </div>
+          </section>
+        </div>
+        <div class="tap-demo-foot">
+          <p id="tapStatus" role="status" aria-live="polite">Try adding Maya’s order to start.</p>
+          <button class="demo-reset" id="tapReset" type="button">Start over</button>
+        </div>
+      </div>
+      <noscript><p>Enable JavaScript to try this example: add an order, mark it Ready, then mark it Collected.</p></noscript>
+
+    </section>
+
     <section class="collection-walkthrough" id="walkthrough" aria-labelledby="walkthrough-title">
       <span id="collection" class="section-anchor" aria-hidden="true"></span>
       <div class="section-heading section-heading-light">
@@ -110,57 +148,10 @@
           </div>
         </section>
       </div>
-    </section>
-
-    <section class="collection-flow" aria-labelledby="flow-title">
-      <div class="section-heading">
-        <p class="section-number">The service flow</p>
-        <h2 id="flow-title">Three taps from order to handover.</h2>
-      </div>
-      <ol class="flow-steps">
-        <li><span>1</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 9h6M12 6v6M9 16h6"/></svg><h3>Add the order</h3><p>Automatic number. Optional name.</p></div></li>
-        <li><span>2</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></svg><h3>Mark it Ready</h3><p>One tap when it’s ready.</p></div></li>
-        <li><span>3</span><div><svg class="flow-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h13m-5-5 5 5-5 5M20 5v14"/></svg><h3>Customer collects</h3><p>Hand it over. Mark it Collected.</p></div></li>
-      </ol>
-      <div class="collection-demo three-taps-demo" id="threeTapsDemo" hidden>
-        <div class="demo-grid">
-          <section class="staff-demo" aria-labelledby="tapStaffTitle">
-            <h3 id="tapStaffTitle">Staff controls</h3>
-            <form class="demo-add" id="tapAddForm">
-              <label for="tapName">Customer name <span>(optional)</span></label>
-              <div><input id="tapName" type="text" maxlength="28" autocomplete="off" value="Maya"><button type="submit" id="tapAdd">Add order #47</button></div>
-            </form>
-            <ol class="staff-orders" id="tapStaffOrders"></ol>
-          </section>
-          <section class="customer-demo" aria-labelledby="tapCustomerTitle">
-            <h3 id="tapCustomerTitle">Customer board</h3>
-            <div class="customer-columns">
-              <div><h4>Preparing</h4><ul id="tapPreparing"><li class="demo-empty">No orders</li></ul></div>
-              <div class="customer-ready"><h4>Ready</h4><ul id="tapReady"><li class="demo-empty">No orders</li></ul></div>
-            </div>
-          </section>
-        </div>
-        <div class="tap-demo-foot">
-          <p id="tapStatus" role="status" aria-live="polite">Try adding Maya’s order to start.</p>
-          <button class="demo-reset" id="tapReset" type="button">Start over</button>
-        </div>
-      </div>
-      <noscript><p>Enable JavaScript to try this example: add an order, mark it Ready, then mark it Collected.</p></noscript>
-
-    </section>
-
-    <section class="collection-trial-cta" aria-labelledby="trial-cta-title">
-      <div>
-        <h2 id="trial-cta-title">Want to see how the full thing works across all your devices?</h2>
-        <p>Start your 14-day free trial and use the real PopBia Collection system.</p>
-      </div>
-      <a class="button button-primary" href="/account.html">Start 14-day free trial</a>
-    </section>
-
     <section class="collection-phone" id="phone-board" aria-labelledby="phone-board-title">
-      <div class="section-heading">
-        <p class="section-number">A little more room to wait</p>
-        <h2 id="phone-board-title">No spare screen — or don’t want customers crowding the counter?</h2>
+      <div class="section-heading section-heading-light">
+        <p class="section-number">03 / On your phone</p>
+        <h3 id="phone-board-title">No spare screen — or don’t want customers crowding the counter?</h3>
         <p>A QR code gives customers a quick way to open the customer board on their phone.</p>
         <p>The board shows which orders are being prepared and which are Ready.</p>
 
@@ -171,6 +162,17 @@
         <figcaption id="collectionQrCaption">A board in your pocket.<span>Sample QR · Preview</span></figcaption>
       </figure>
     </section>
+    </section>
+
+    <section class="collection-trial-cta" aria-labelledby="trial-cta-title">
+      <div>
+        <h2 id="trial-cta-title">Want to see how the full thing works across all your devices?</h2>
+        <p>Start your 14-day free trial and use the real PopBia Collection system.</p>
+      </div>
+      <a class="button button-primary" href="/account.html">Start 14-day free trial</a>
+    </section>
+
+
     <section class="section collection-faq" aria-labelledby="faq-title">
       <div class="section-heading">
         <p class="section-number">A few useful answers</p>

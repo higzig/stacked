@@ -530,6 +530,19 @@
       .order-card.ready.number-name .order-number { grid-column: 3; }
       .order-card.ready.overdue .overdue-note { grid-column: 2 / -1; grid-row: 2; justify-self: start; }
     }
+    /* Shared screens page fixed-height rows; personal phone views keep the full queue. */
+    @media (min-width: 761px) {
+      body:not(.phone-view) .board-list { overflow: hidden; flex: 1; height: auto; grid-auto-rows: clamp(68px, 8vh, 88px); }
+      body:not(.phone-view) .order-card { min-height: 0; }
+      body:not(.phone-view) .order-name, body:not(.phone-view) .order-number { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    }
+    .board-more { flex: 0 0 24px; min-height: 24px; margin: .25rem 0 0; color: var(--board-muted); font-size: .85rem; font-weight: 600; }
+    html:has(body.phone-view) { height: auto; overflow-y: auto; }
+    body.phone-view { height: auto; min-height: 100svh; grid-template-rows: auto auto auto; overflow-y: auto; }
+    body.phone-view .board-main { overflow: visible; }
+    body.phone-view .board-list { height: auto; overflow: visible; }
+    body.phone-view .board-column { height: auto; }
+    @media (max-width: 760px) { .board-more { display: none; } .board-list { height: auto; overflow: visible; } }
   </style>
 </head>
 <body>
@@ -557,11 +570,13 @@
     <section class="board-column preparing" aria-label="Preparing orders">
       <h2>Now making</h2>
       <ul class="board-list" id="preparingList" aria-live="polite"></ul>
+      <p class="board-more" id="preparingMore" aria-live="polite"></p>
     </section>
 
     <section class="board-column ready" aria-label="Ready orders">
       <h2>Ready for pickup</h2>
       <ul class="board-list" id="readyList" aria-live="polite"></ul>
+      <p class="board-more" id="readyMore" aria-live="polite"></p>
     </section>
   </main>
 

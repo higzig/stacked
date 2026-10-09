@@ -1,5 +1,6 @@
 // Disposable local Supabase only; runs Chromium and Firefox, not two tabs.
 import assert from 'node:assert/strict';
+import { testCollectionFlow } from './collection-flow.mjs';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -55,30 +56,32 @@ try {
   await a.locator('#businessName').fill('Stacked'); await a.locator('#businessForm button').click();
   await a.waitForURL('**/board-admin.html');
   await a.locator('#collection-demo').waitFor({state:'visible'});
-  await a.locator('#orderNumberInput').fill('42'); await a.locator('#customerNameInput').fill('Aoife');
-  await a.locator('#addOrderBtn').click(); await waitText(a,'#ordersList','#42');
+  assert.equal(await a.locator('#orderNumberInput').count(), 0);
+  assert.equal(await a.locator('#addOrderBtn').textContent(), 'Add order');
+  await a.locator('#customerNameInput').fill('Aoife');
+  await a.locator('#addOrderBtn').click(); await waitText(a,'#ordersList','#1');
   const displayUrl = await a.locator('#openBoard').getAttribute('href');
   await display.goto(base + '/' + displayUrl);
-  await waitText(display,'#preparingList','#42');
+  await waitText(display,'#preparingList','#1');
   await waitText(a,'.admin-connection-status','Live'); await waitText(display,'#cloudMessage','Live');
   // Disable catch-up polling to prove the following updates arrive via Realtime.
   await a.evaluate(() => clearInterval(cloud.timer)); await display.evaluate(() => clearInterval(cloud.timer));
   await login(b, email);
-  await b.waitForURL('**/board-admin.html'); await waitText(b,'#ordersList','#42');
+  await b.waitForURL('**/board-admin.html'); await waitText(b,'#ordersList','#1');
   await b.locator('[data-action="ready"]').click();
-  await a.waitForSelector('.order-row.ready'); await waitText(display,'#readyList','#42');
+  await a.waitForSelector('.order-row.ready'); await waitText(display,'#readyList','#1');
   assert.equal(await display.locator('#preparingList').textContent(), 'No orders');
   console.log('PASS: Chromium signup/onboarding → Firefox login → Ready sync to Chromium and anonymous display via Realtime.');
-  await b.reload(); await waitText(b,'#ordersList','#42');
+  await b.reload(); await waitText(b,'#ordersList','#1');
   await a.locator('#logoutButton').click(); await a.waitForURL('**/account.html');
-  await login(a,email); await a.waitForURL('**/board-admin.html'); await waitText(a,'#ordersList','#42');
+  await login(a,email); await a.waitForURL('**/board-admin.html'); await waitText(a,'#ordersList','#1');
   console.log('PASS: persistent session after reload, logout and login preserve business and order.');
   const staff = createClient(url,key,{auth:{persistSession:false}}), other = createClient(url,key,{auth:{persistSession:false}}), anon = createClient(url,key,{auth:{persistSession:false}});
   const loginResult = await staff.auth.signInWithPassword({email,password}); assert.ifError(loginResult.error);
   const signupResult = await other.auth.signUp({email:otherEmail,password}); assert.ifError(signupResult.error);
   const workspace = await other.rpc('create_business',{business_name:'Other business'}); assert.ifError(workspace.error);
   const business = (await staff.from('businesses').select('*').single()).data;
-  const order = (await staff.from('collection_orders').select('*').eq('number',42).single()).data;
+  const order = (await staff.from('collection_orders').select('*').eq('number',1).single()).data;
   assert.deepEqual((await other.from('collection_orders').select('*').eq('business_id',business.id)).data,[]);
   assert.deepEqual((await other.from('businesses').select('*').eq('id',business.id)).data,[]);
   const edit = await other.from('collection_orders').update({status:'collected'}).eq('id',order.id).select(); assert.deepEqual(edit.data,[]);
@@ -98,8 +101,14 @@ try {
   concurrent.forEach(r => assert.ifError(r.error));
   const numbered = await staff.from('collection_orders').select('number').eq('business_id',business.id);
   assert.equal(new Set(numbered.data.map(o => o.number)).size,numbered.data.length);
+  assert.deepEqual(numbered.data.map(o => o.number).sort((a,b) => a-b), [1,2,3,4,5,6,7,8,9]);
+  assert.ok((await staff.rpc('add_collection_order', {target_business:business.id,customer_name:'Manual',requested_number:999})).error);
+  assert.ok((await staff.from('collection_orders').update({number:999}).eq('id',order.id)).error);
+  assert.equal((await staff.from('businesses').select('next_number').eq('id',business.id).single()).data.next_number,10);
+  assert.equal(order.customer_name,'Aoife');
+  assert.equal(order.number,1);
   await b.locator('[data-action="collected"]').first().click();
-  await display.waitForFunction(() => !document.getElementById('readyList').textContent.includes('#42'));
+  await display.waitForFunction(() => !document.getElementById('readyList').textContent.includes('#1'));
   const history = await staff.from('collection_orders').select('*').eq('id',order.id).single(); assert.equal(history.data.status,'collected'); assert.ok(history.data.collected_at);
   console.log('PASS: concurrent numbering stays unique; collected orders disappear publicly and remain in staff history.');
   assert.ok((await staff.from('businesses').update({next_number:999}).eq('id',business.id)).error);
@@ -129,6 +138,7 @@ try {
   await display.waitForFunction(() => document.getElementById('preparingList').textContent === 'No orders');
   assert.ok(!(await anon.rpc('collection_display',{display:business.display_id})).data.orders.length);
   console.log('PASS: settings sync, queue style preserves orders, edits/removals/name-only orders/clear queue work; protected columns and direct inserts are denied.');
+  await testCollectionFlow({ a, b, display, staff, admin, anon, business, base });
   // Workspace trial is server-created, never writable by ordinary members.
   const trial = await staff.rpc('collection_entitlement', { target_business: business.id });
   assert.ifError(trial.error);
@@ -180,7 +190,7 @@ try {
   assert.equal(await b.locator('#collectionEntitlement p').first().evaluate(el => getComputedStyle(el).color), 'rgb(16, 36, 61)');
   assert.equal(await a.locator('#collection-demo').isVisible(), false);
   await waitText(display, '#cloudMessage', 'inactive');
-  await b.evaluate(() => action(() => cloud.add('Denied after expiry', null)));
+  await b.evaluate(() => action(() => cloud.add('Denied after expiry')));
   assert.equal(await b.locator('#addOrderBtn').isEnabled(), false);
   await a.evaluate(() => { document.getElementById('collection-demo').hidden = false; Date.now = () => 0; localStorage.setItem('trial_ends_at', '2099-01-01'); });
   assert.ok((await staff.rpc('add_collection_order', { target_business: business.id, customer_name: 'Still denied' })).error);

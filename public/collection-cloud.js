@@ -56,7 +56,7 @@ class CollectionCloud {
     this.business = business;
     this.entitlement = entitlement;
     this.orders = rows.map(row => ({
-      id: row.id, type: row.type, status: row.status,
+      id: row.id, type: row.type, status: row.status, customerName: row.customer_name,
       number: row.type === 'number-name' ? String(row.number) : null,
       label: row.type === 'number' ? String(row.number) : row.customer_name,
       createdAt: Date.parse(row.created_at), readyAt: row.ready_at ? Date.parse(row.ready_at) : null,
@@ -71,9 +71,9 @@ class CollectionCloud {
     if (error) { await this.refresh(); throw error; }
     await this.refresh();
   }
-  add(name, number) {
+  add(name) {
     return this.mutate(this.client.rpc('add_collection_order', {
-      target_business: this.business.id, customer_name: name, requested_number: number
+      target_business: this.business.id, customer_name: name
     }));
   }
   update(id, fields) {

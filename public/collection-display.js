@@ -104,6 +104,8 @@ function detectReadyTransitions(currentOrders) {
   for (const [orderId, nextOrder] of nextMap.entries()) {
     const previousOrder = previousOrdersById.get(orderId);
     if (previousOrder && previousOrder.status === "preparing" && nextOrder.status === "ready") {
+      boardPages.ready.page = 0;
+      boardPages.ready.changedAt = performance.now();
       readyTransitions.push({ id: orderId, label: nextOrder.label, type: nextOrder.type, number: nextOrder.number });
       queueJustReadyOrder(orderId);
     }
@@ -133,12 +135,27 @@ function renderOrderList(listElement, status) {
     });
   }
 
+  const state = boardPages[status];
+  const sharedScreen = !document.body.classList.contains('phone-view') && window.matchMedia('(min-width: 761px)').matches;
+  const rowHeight = Math.max(68, Math.min(88, window.innerHeight * .08));
+  const capacity = sharedScreen ? Math.max(1, Math.floor(listElement.clientHeight / rowHeight)) : Math.max(1, orders.length);
+  const pageCount = Math.ceil(orders.length / capacity);
+  if (capacity !== state.capacity || pageCount <= 1 || state.page >= pageCount) {
+    state.page = 0; state.changedAt = performance.now();
+  } else if (performance.now() - state.changedAt >= 7000) {
+    state.page = (state.page + 1) % pageCount; state.changedAt = performance.now();
+  }
+  state.capacity = capacity;
+  const visibleOrders = orders.slice(state.page * capacity, (state.page + 1) * capacity);
+  document.getElementById(`${status}More`).textContent = orders.length > capacity
+    ? `+ ${orders.length - visibleOrders.length} more ${status}` : '';
+
   if (!orders.length) {
     listElement.innerHTML = '<li class="empty-state">No orders</li>';
     return;
   }
 
-  listElement.innerHTML = orders.map(({ order }) => {
+  const markup = visibleOrders.map(({ order }) => {
     const classes = ["order-card", status];
     const overdue = status === "ready" && Number.isFinite(Number(order.readyAt)) && Date.now() - Number(order.readyAt) >= overdueMinutes * 60000;
     if (overdue) classes.push("overdue");
@@ -150,14 +167,16 @@ function renderOrderList(listElement, status) {
       ? `<span class="order-name">${escapeHtml(order.label)}</span>${overdue ? '<span class="overdue-note">Please see staff</span>' : ""}`
       : overdue ? '<span class="overdue-note">Please see staff</span>' : "";
     return `
-      <li class="${classes.join(" ")} ${order.type}">
+      <li data-order-id="${escapeHtml(order.id)}" class="${classes.join(" ")} ${order.type}">
         ${overdue ? '<svg class="attention-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M9 20a3 3 0 0 0 6 0M12 2V1"/></svg>' : ""}
         <span class="order-number">${identifier}</span>
         ${customerName}
       </li>
     `;
   }).join("");
+  if (listElement.innerHTML !== markup) listElement.innerHTML = markup;
 }
+const boardPages = { preparing: { page: 0, capacity: 0, changedAt: performance.now() }, ready: { page: 0, capacity: 0, changedAt: performance.now() } };
 const boardClock = document.getElementById('boardClock');
 const preparingList = document.getElementById('preparingList'), readyList = document.getElementById('readyList');
 const readyAnnouncementEl = document.getElementById('readyAnnouncement');
@@ -174,16 +193,18 @@ function renderBoard() {
   } else { readyAnnouncementEl.hidden = false; detectReadyTransitions(loadOrders()); }
   renderOrderList(preparingList, 'preparing'); renderOrderList(readyList, 'ready');
 }
+window.addEventListener('resize', () => { if (cloud?.business) renderBoard(); });
 (async () => {
   const message = document.getElementById('cloudMessage');
   try {
     const display = new URLSearchParams(location.search).get('display');
     if (!display || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(display)) throw new Error('Open your business’s customer display link from staff controls.');
+    document.body.classList.toggle('phone-view', new URLSearchParams(location.search).get('phone') === '1');
     const view = new URLSearchParams(location.search).get('view');
     document.querySelector('.board-column.preparing').classList.toggle('is-hidden', view === 'ready');
     document.querySelector('.board-column.ready').classList.toggle('is-hidden', view === 'preparing');
     document.querySelector('.board-grid').classList.toggle('single-view', ['ready','preparing'].includes(view));
-    const boardUrl = new URL(`board.html?display=${display}`, location.href).href;
+    const boardUrl = new URL(`board.html?display=${display}&phone=1`, location.href).href;
     document.getElementById('boardQrUrl').href = boardUrl;
     window.QRCode?.toCanvas(document.getElementById('boardQrCode'), boardUrl, { width: 88, margin: 1 });
     cloud = new CollectionCloud(window.createPopBiaClient(true), { display,

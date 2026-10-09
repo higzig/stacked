@@ -11,6 +11,8 @@
   const ready = document.getElementById('tapReady');
   const status = document.getElementById('tapStatus');
   const steps = [...demo.closest('.collection-flow').querySelectorAll('.flow-steps > li')];
+  const flow = demo.closest('.collection-flow');
+  const hint = document.getElementById('tapInputHint');
   let order = null;
 
   // Reuse the original demo's DOM-based rendering, avoiding HTML interpolation.
@@ -36,6 +38,9 @@
 
   function render() {
     const phase = order?.status;
+    flow.classList.toggle('is-flow-complete', phase === 'collected');
+    hint.hidden = !!order;
+    status.hidden = !order;
     const active = !order ? 0 : phase === 'preparing' ? 1 : 2;
     steps.forEach((step, index) => {
       step.classList.toggle('is-active-step', index === active && phase !== 'collected');
@@ -43,11 +48,16 @@
       if (index === active && phase !== 'collected') step.setAttribute('aria-current', 'step');
       else step.removeAttribute('aria-current');
     });
+    const finalNumber = steps[2].querySelector(':scope > span');
+    finalNumber.textContent = phase === 'collected' ? '✓' : '3';
+    if (phase === 'collected') finalNumber.setAttribute('aria-label', 'Step 3 complete');
+    else finalNumber.removeAttribute('aria-label');
     name.disabled = add.disabled = !!order;
     staff.replaceChildren();
     if (order) {
       const card = document.createElement('li');
       card.className = 'staff-order';
+      card.dataset.status = phase;
       const head = document.createElement('div');
       head.className = 'staff-order-head';
       const identity = document.createElement('strong');
