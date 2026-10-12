@@ -19,6 +19,7 @@
     <form id="authForm" hidden>
       <label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
       <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="8" required>
+      <p id="signupAcknowledgement" class="account-legal-note" hidden>By creating an account, you agree to the <a href="/terms.html">Terms of Use</a> and acknowledge the <a href="/privacy.html">Privacy Policy</a>.</p>
       <button id="authSubmit" class="button button-primary" type="submit">Log in</button>
       <button id="switchAuth" class="button button-secondary" type="button">Create an account</button>
     </form>
@@ -62,10 +63,12 @@
     </section>
     <form id="businessForm" hidden>
       <p>Create the business that owns your Collection queue.</p>
+      <p class="account-legal-note">Please enter only customer information your business is entitled to use. See our <a href="/terms.html">Terms of Use</a> and <a href="/privacy.html">Privacy Policy</a>.</p>
       <label for="businessName">Business name</label><input id="businessName" maxlength="120" required placeholder="e.g. Stacked" autocomplete="organization">
       <button class="button button-primary" type="submit">Create business</button>
     </form>
     <button id="accountLogout" class="button button-secondary" type="button" hidden>Log out</button>
+    <footer class="account-legal-footer"><nav class="legal-links" aria-label="Legal information"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav></footer>
   </main>
   <script src="supabase-config.js"></script><script src="vendor/supabase.js"></script><script src="collection-entitlement.js"></script><script src="account.js"></script>
 </body>

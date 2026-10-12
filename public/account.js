@@ -6,6 +6,7 @@
   const show = text => { message.textContent = text; };
   function setAuthMode(isSignup) {
     signup = isSignup;
+    $('signupAcknowledgement').hidden = !signup;
     $('authSubmit').textContent = signup ? 'Sign up' : 'Log in';
     $('switchAuth').textContent = signup ? 'Already have an account? Log in' : 'Create an account';
     $('password').autocomplete = signup ? 'new-password' : 'current-password';

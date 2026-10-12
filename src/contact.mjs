@@ -34,7 +34,7 @@ export function buildEmails(data, reference) {
     html: layout("New website enquiry", `<p>Reply to this email to respond directly to the customer.</p><table width="100%" cellspacing="0" cellpadding="0">${fields.map(([label, value]) => `<tr><th scope="row" style="padding:12px 12px 12px 0;border-bottom:1px solid #e7e5e0;text-align:left;vertical-align:top;width:35%;font-size:13px">${label}</th><td style="padding:12px 0;border-bottom:1px solid #e7e5e0;white-space:pre-wrap;overflow-wrap:anywhere">${escapeHtml(value)}</td></tr>`).join("")}</table>`)
   };
   const acknowledgement = {
-    from, to: data.email, replyTo: INBOX,
+    from, to: data.email, replyTo: "hello@popbia.com",
     subject: "Thank you for your interest in PopBia",
     text: `Hello ${data.name},\n\nThank you for getting in touch and for your interest in PopBia. We’ve received your enquiry and will get back to you within 1 working day.\n\nWe look forward to learning more about your business and how we can help. If you’d like to add anything in the meantime, simply reply to this email.\n\nKind regards,\nRyan\nPopBia\n\nReference: ${reference}`,
     html: layout("Thank you for getting in touch", `<p>Hello ${escapeHtml(data.name)},</p><p>Thank you for getting in touch and for your interest in PopBia. We’ve received your enquiry and will get back to you <strong>within 1 working day.</strong></p><p>We look forward to learning more about your business and how we can help. If you’d like to add anything in the meantime, simply reply to this email.</p><p>Kind regards,<br><strong>Ryan</strong><br>PopBia</p><p style="font-size:12px;color:#596574">Reference: ${reference}</p>`)
@@ -75,7 +75,7 @@ export default {
     } catch (error) {
       return failure(error instanceof RangeError ? "Your message is too long." : "Please check your answers and complete all required fields.", error instanceof RangeError ? 413 : 400);
     }
-    if (!env.EMAIL || !env.CONTACT_LIMITER) return failure("The form is temporarily unavailable. Please contact ryan@popbia.com.", 503);
+    if (!env.EMAIL || !env.CONTACT_LIMITER) return failure("The form is temporarily unavailable. Please contact hello@popbia.com.", 503);
     try {
       const ip = request.headers.get("CF-Connecting-IP") || "local";
       for (const key of [`ip:${ip}`, `email:${data.email.toLowerCase()}`]) {
@@ -95,7 +95,7 @@ export default {
       return json({ ok: true, message: "Query submitted" });
     } catch {
       console.error(JSON.stringify({ event: "contact_submission_failed" }));
-      return failure("We couldn’t submit your query. Please try again shortly or contact ryan@popbia.com.", 502);
+      return failure("We couldn’t submit your query. Please try again shortly or contact hello@popbia.com.", 502);
     }
   }
 };

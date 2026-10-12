@@ -20,7 +20,7 @@ test('sends every answer to Ryan and a professional acknowledgement to customer 
   assert.equal(emails[0].replyTo, valid.email);
   for (const value of Object.values(valid)) assert.ok(emails[0].text.includes(value));
   assert.equal(emails[1].to, valid.email);
-  assert.equal(emails[1].replyTo, 'ryan@popbia.com');
+  assert.equal(emails[1].replyTo, 'hello@popbia.com');
   assert.match(emails[1].text, /within 1 working day/);
   assert.match(emails[0].html, /Food &amp; Friends/);
 });

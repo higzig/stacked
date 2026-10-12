@@ -40,7 +40,7 @@
       contactStatus.textContent = "Query submitted";
     } catch (error) {
       contactStatus.textContent = error instanceof SyntaxError || error instanceof TypeError
-        ? "We couldn’t confirm your submission. Please try again shortly or contact ryan@popbia.com."
+        ? "We couldn’t confirm your submission. Please try again shortly or contact hello@popbia.com."
         : error.message;
     } finally {
       submitting = false;
