@@ -3,45 +3,55 @@
 No schema, RLS or entitlement changes. Everything lives in `board-admin.html`,
 `collection-admin.js` and `collection-staff.css`.
 
-## Getting-started guide
+## First-run walkthrough (`collection-walkthrough.js`)
 
-A dismissible card at the top of the queue with three steps, each with progress:
+A five-step walkthrough over the real staff controls. A single coach card sits at
+the bottom of the screen; the control being taught is outlined and focused (it is
+described by the card's text); unrelated sections are dimmed but stay usable.
 
-1. **Add a test order.** Its button adds an order named "Test" (no name for
-   number-only queues) through the normal `add_collection_order` RPC. The hint
-   says which number it takes and that numbers are never reused, so the first
-   real customer gets the next one.
-2. **Open your customer screen.** Opens `board.html?display=<UUID>` in a new tab.
-   Staff controls are not reloaded or reset. Anything in the Customer screen panel
-   (open, print or show the poster, copy a link) counts too.
-3. **Mark it Ready.** Points to the real Mark Ready button rather than doing it,
-   so owners learn the control they will use in service.
+1. **Your orders**: the add bar. Adding any order records it as the test order.
+2. **Customer screen**: the header button, then **Open customer screen** inside
+   the panel. During this step the screen opens in the same tab, so phone-only
+   businesses don't juggle tabs.
+3. **What customers see**, on the real customer screen (`board.html?...&tour=intro`):
+   Preparing, Ready for collection, automatic updates, TV/tablet or QR. **Back to
+   staff controls** returns.
+4. **Mark it Ready**: the test order's own Mark Ready button, then a confirmation
+   with **Next** and **See the customer screen** (`tour=ready`, Ready column
+   highlighted).
+5. **Your turn!**: nothing dimmed. **Finish walkthrough** offers to remove the
+   practice orders created during the walkthrough (normal Remove path; numbers are
+   never reused) or keep them.
 
-When all three are done the card says "You're ready for service" with the next
-order number, **Remove test order** (deletes the guide's own test order through
-the normal Remove path; its number is not reused) and **Done**. Queue settings has
-**Show getting-started guide** to reopen it. A reopened guide stays until Done or
-Hide guide.
+**Skip walkthrough** is on every step. Queue settings has **Restart walkthrough**,
+which starts again at step 1. A note after finishing or skipping explains how to
+restart.
 
-Progress sources:
+### State and navigation
 
-- Steps 1 and 3 come from the business's order history (head-count queries on
-  `collection_orders`, including collected rows, which members can already read),
-  so they survive refreshes and other devices.
-- Step 2, finished steps, the test order ID and dismissal/completion are stored per
-  device and business in `localStorage` (`popbia-first-run:<business id>`), so
-  removing the test order doesn't undo progress. Storage failure only means
-  the guide may reappear on that device.
+- Progress (`popbia-walkthrough:<business id>`: step, test order, practice order
+  IDs, status) is per device in `localStorage`. Refreshing resumes the same step.
+  Returning from the customer screen by any route (button, browser Back, a new
+  load) advances, and `pageshow` re-reads state after a back/forward-cache restore.
+- If storage is unavailable the walkthrough does not start, since progress couldn't
+  survive the trip to the customer screen. It hides whenever access has ended.
+- It starts automatically only for new businesses: created within 14 days, fewer
+  than 5 orders ever, and no stored state on this device.
 
-The guide is shown only when it is not dismissed or finished, not all steps are
-done, and the business is new: created within the last 14 days and fewer than 5
-orders ever. Established businesses never see it, even on a new device. If the
-history query fails, the guide stays hidden; it never blocks service.
+### Customer-screen gating
+
+The customer screen shows its explanation only when `?tour=intro|ready` is present
+**and** this device holds `popbia-walkthrough-screen` = `{display, until}`. Staff
+controls write it, for its own display ID and 30 minutes, immediately before
+navigating, and remove it on return. Customers' phones, TVs, copied links and QR
+scans never have it, so `?tour=` alone does nothing. The token contains no auth
+data. The "Back to staff controls" link gets its address only when the explanation
+is shown, so ordinary public pages contain no link to staff controls.
 
 ## Queue and order entry
 
 - The empty queue is a dashed panel, not a fake order row: guidance while the
-  guide is active, "No active orders…" otherwise.
+  walkthrough is active, "No active orders…" otherwise.
 - The Add button previews the next automatic number ("Add order #4"). The
   database still assigns it.
 - Number + name: "Customer name (optional)". Number only: no name field. Name
@@ -55,7 +65,18 @@ history query fails, the guide stays hidden; it never blocks service.
 ## Verification
 
 `npm run test:first-run` (local Supabase; creates confirmed users through the
-admin API, so it works with confirmation on or off): new-business guide and empty
-state, numbering hint, each step, refresh persistence, new-tab customer screen
-with Realtime, completion, dismissal persistence (Firefox, 390px), established
-business, all three queue styles, and editing/cancelling.
+admin API, so it works with confirmation on or off) covers:
+
+- all five steps, with targets, focus, dimming and `aria-describedby`
+- refreshing at each step, and keyboard-only progress
+- the same-tab trip to the customer screen and back, by button and by browser Back
+- gating: no explanation for other devices, phone views, expired tokens or other
+  businesses' tokens
+- practice-order cleanup without number reuse
+- restart, skip persistence, and an established business
+- Firefox at 390px, with Skip reachable by keyboard
+- every queue style and in-row editing after the walkthrough
+- screenshots of every step at 1280 and 390px in `/tmp/popbia-wt-*.png`
+
+Suites accept `POPBIA_TEST_PORT` (default 8787) to run beside a dev server; add
+`http://127.0.0.1:<port>/account.html` to that project's Auth redirect URLs.

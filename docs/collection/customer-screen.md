@@ -7,10 +7,10 @@ No schema, RLS, Auth or entitlement changes.
 The header **Customer screen** button opens a panel with two options that can be
 used together:
 
-- **Show it on a TV or tablet**: **Open customer screen**
+- **TV or tablet** ("Display live orders on a screen."): **Open customer screen**
   (`board.html?display=<UUID>`, new tab; staff controls are not reloaded) and
   **Copy screen link**.
-- **Let customers scan a QR code**: a live QR code for the phone view
+- **QR code** ("Let customers check orders on their phones."): a live QR code for the phone view
   (`board.html?display=<UUID>&phone=1`), **Print QR poster**
   (`qr-poster.html?display=<UUID>&print=1`, opens the print dialog), **Show QR on
   this screen** (same poster page without printing, for phone-only businesses)
@@ -18,7 +18,7 @@ used together:
 
 Copying uses the Clipboard API. When it is refused (insecure page, permissions),
 the link appears selected in a read-only field to copy by hand. Opening, printing,
-showing or copying also completes the getting-started guide's step 2.
+During the walkthrough's step 2, Open customer screen opens in the same tab instead (see first-run.md), and the QR section, Copy screen link and the copy status are hidden so the highlighted button is the only action.
 
 ## QR poster (`qr-poster.html`, `collection-poster.js`)
 
@@ -104,7 +104,7 @@ off) covers:
 - the auto-print poster: a single-page A4 PDF, the phone display and invalid links
 - the new-tab customer screen with its wording, empty states, real-time Ready,
   sound unlock, chimes, fullscreen and the chime setting
-- removing the test order without reusing its number, and reopening the guide
+- removing the test order without reusing its number
 - the anonymous phone view with no session or staff links, the staff redirect and
   the projection's fields
 - per-business QR destinations

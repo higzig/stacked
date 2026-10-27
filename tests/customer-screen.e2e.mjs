@@ -26,8 +26,10 @@ const server = createServer(async (req, res) => {
     res.end(data);
   } catch { res.writeHead(404).end(); }
 });
-await new Promise(done => server.listen(8787, '127.0.0.1', done));
-const base = 'http://127.0.0.1:8787';
+// POPBIA_TEST_PORT lets the suite run beside a dev server on 8787 (add it to the Auth redirect URLs).
+const port = Number(process.env.POPBIA_TEST_PORT || 8787);
+await new Promise(done => server.listen(port, '127.0.0.1', done));
+const base = `http://127.0.0.1:${port}`;
 const browsers = [], errors = [], password = 'PopBia-screen-42!', suffix = Date.now();
 const emails = ['owner', 'second'].map(name => `screen-${name}-${suffix}@example.com`);
 const admin = createClient(url, status.SERVICE_ROLE_KEY, {auth:{persistSession:false}});
@@ -90,7 +92,9 @@ try {
   const screenUrl = `${base}/board.html?display=${business.display_id}`;
   const customerUrl = `${screenUrl}&phone=1`;
   const posterUrl = `${base}/qr-poster.html?display=${business.display_id}`;
-  await staff.locator('#firstRunAdd').click();
+  // The walkthrough has its own suite; skip it here so its card doesn't cover the controls.
+  await staff.locator('#wtSkip').click();
+  await staff.locator('#customerNameInput').fill('Test'); await staff.locator('#addOrderBtn').click();
   await waitText(staff, '#ordersList', '#1 · Test');
 
   // 1. Customer screen panel: discoverable from the header, both options, correct links.
@@ -99,8 +103,8 @@ try {
   await staff.locator('#screenPanel').waitFor({state:'visible'});
   assert.equal(await staff.locator('#screenPanelToggle').getAttribute('aria-expanded'), 'true');
   assert.equal(await staff.evaluate(() => document.activeElement.id), 'screenPanelTitle');
-  assert.equal(await text(staff, '#screenTvTitle'), 'Show it on a TV or tablet');
-  assert.equal(await text(staff, '#screenQrTitle'), 'Let customers scan a QR code');
+  assert.equal(await text(staff, '#screenTvTitle'), 'TV or tablet');
+  assert.equal(await text(staff, '#screenQrTitle'), 'QR code');
   assert.equal(await staff.locator('#openBoard').getAttribute('href'), screenUrl);
   assert.equal(await staff.locator('#showPoster').getAttribute('href'), posterUrl);
   assert.equal(await staff.locator('#printPoster').getAttribute('href'), `${posterUrl}&print=1`);
@@ -120,7 +124,6 @@ try {
   await staff.locator('#copyScreenLink').click();
   await waitText(staff, '#screenCopyStatus', 'Screen link copied');
   assert.equal(await staff.evaluate(() => navigator.clipboard.readText()), screenUrl);
-  await waitText(staff, '#firstRunProgress', '2 of 3 done'); // Setting up the screen counts as the guide's step 2.
   await staff.evaluate(() => { navigator.clipboard.writeText = () => Promise.reject(new Error('Denied')); });
   await staff.locator('#copyCustomerLink').click();
   await waitText(staff, '#screenCopyStatus', 'Couldn’t copy automatically');
@@ -157,31 +160,18 @@ try {
   await board.waitForFunction(() => !document.fullscreenElement);
   assert.equal(await text(board, '#fullscreenToggle'), 'Full screen');
 
-  // 4. Real-time Ready update with chime, then the guide's test order is removed cleanly.
+  // 4. Real-time Ready update with chime, then the test order is removed cleanly.
   await staff.locator('[data-action="ready"]').first().click();
   await waitText(board, '#readyList', '#1');
   assert.equal(await text(board, '#preparingList'), 'No orders being prepared');
   await board.waitForFunction(before => window.chimes > before, chimesBefore);
-  await waitText(staff, '#firstRunProgress', 'All done');
-  assert.equal(await staff.locator('#firstRunRemoveTest').isVisible(), true);
-  await staff.locator('#firstRunRemoveTest').click();
+  // Removing the test order keeps the number sequence.
+  await staff.locator('.order-row', { hasText: 'Test' }).locator('[data-action="remove"]').click();
   await staff.waitForFunction(() => !document.getElementById('ordersList').textContent.includes('Test'));
   await waitText(board, '#readyList', 'No orders ready yet');
   assert.equal(await text(staff, '#addOrderBtn'), 'Add order #2'); // Numbers are never reused.
-  assert.match(await text(staff, '#firstRunFinishText'), /Your next order will be #2\. Numbers aren’t reused\./);
-  assert.equal(await staff.locator('#firstRunRemoveTest').isVisible(), false);
-  await staff.locator('#firstRunDone').click();
-  assert.equal(await staff.locator('#firstRun').isVisible(), false);
-  // Reopen the guide from Queue settings.
-  await staff.locator('#queueSettingsToggle').click();
-  await staff.locator('#showGuideBtn').click();
-  await staff.locator('#firstRun').waitFor({state:'visible'});
-  assert.equal(await text(staff, '#firstRunProgress'), 'All done');
-  assert.equal(await staff.evaluate(() => document.activeElement.id), 'firstRunTitle');
-  await staff.reload(); await staff.locator('#firstRun').waitFor({state:'visible'}); // A reopened guide survives refresh.
-  await staff.locator('#firstRunDone').click();
   await staff.reload(); await staff.locator('.queue-empty').waitFor(); await staff.waitForTimeout(1000);
-  assert.equal(await staff.locator('#firstRun').isVisible(), false);
+  assert.equal(await staff.locator('#walkthrough').isVisible(), false); // Skipping persists.
   // Refreshing the customer screen keeps it working.
   await staff.locator('#customerNameInput').fill('Aoife'); await staff.locator('#addOrderBtn').click();
   await board.reload(); await waitText(board, '#preparingList', 'Aoife');
@@ -192,7 +182,7 @@ try {
   await board.waitForFunction(() => document.getElementById('soundToggle').hidden);
   await staff.locator('#readyChimeSelect').selectOption('on');
   await board.waitForFunction(() => !document.getElementById('soundToggle').hidden);
-  console.log('PASS: customer screen panel (desktop/mobile), QR verified module-by-module for the phone link, copy links with fallback, new-tab customer screen with consistent wording and empty states, footer QR, sound unlock and chimes, fullscreen toggle, real-time Ready, test order removal without number reuse, guide reopened from Queue settings, refresh, chime setting.');
+  console.log('PASS: customer screen panel (desktop/mobile), QR verified module-by-module for the phone link, copy links with fallback, new-tab customer screen with consistent wording and empty states, footer QR, sound unlock and chimes, fullscreen toggle, real-time Ready, test order removal without number reuse, refresh, chime setting.');
 
   // 5. QR poster: auto print, correct QR, one A4 page; on-screen version for phones; invalid links.
   await staff.locator('#screenPanelToggle').click();

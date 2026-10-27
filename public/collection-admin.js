@@ -72,7 +72,7 @@ function refreshQueueUi() {
   if (queueSettingsPanel) {
     queueSettingsPanel.classList.remove("hidden");
   }
-  renderFirstRun();
+  renderWalkthrough();
 }
 
 function elapsedLabel(order) {
@@ -202,10 +202,10 @@ function renderOrders() {
   }
 
   if (!sortedOrders.length) {
-    const html = firstRun.active
-      ? '<p class="queue-empty is-first-run">No orders yet. Add a test order to see how it works. It will appear here and on your customer screen.</p>'
+    const html = walkthroughActive()
+      ? '<p class="queue-empty is-first-run">No orders yet. Your test order will appear here and on your customer screen.</p>'
       : '<p class="queue-empty">No active orders. New orders appear here and on your customer screen.</p>';
-    patchOrders([{ key: firstRun.active ? "empty:first-run" : "empty", html }]);
+    patchOrders([{ key: walkthroughActive() ? "empty:first-run" : "empty", html }]);
     refreshQueueUi();
     return;
   }
@@ -232,90 +232,6 @@ function cancelEdit() {
   ordersList.querySelector(`[data-row-id="${CSS.escape(orderId || "")}"] [data-action="edit"]`)?.focus();
 }
 
-/* First-run guide. Progress comes from the business's order history; completed steps,
-   the guide's test order and dismissal are also remembered per device in localStorage. */
-const firstRun = { active: false, ordered: false, readied: false };
-const firstRunKey = () => `popbia-first-run:${cloud.business.id}`;
-function readFirstRun() {
-  try { return JSON.parse(localStorage.getItem(firstRunKey())) || {}; } catch { return {}; }
-}
-function saveFirstRun(changes) {
-  try { localStorage.setItem(firstRunKey(), JSON.stringify({ ...readFirstRun(), ...changes })); } catch {}
-}
-function firstRunSteps() {
-  const orders = loadOrders(), stored = readFirstRun();
-  const ordered = firstRun.ordered || orders.length > 0, readied = firstRun.readied || orders.some(order => order.status === "ready");
-  // Remember finished steps, so removing the test order doesn't undo them.
-  if (ordered !== !!stored.ordered || readied !== !!stored.readied) saveFirstRun({ ordered, readied });
-  firstRun.ordered = ordered; firstRun.readied = readied;
-  return { order: ordered, screen: !!stored.screen, ready: readied };
-}
-// `reopen` is the owner asking for the guide again from Queue settings.
-async function startFirstRun(reopen = false) {
-  const stored = readFirstRun();
-  if (!reopen && (stored.dismissed || stored.finished)) return;
-  const history = () => client.from("collection_orders").select("id", { count: "exact", head: true }).eq("business_id", cloud.business.id);
-  const [all, ready] = await Promise.all([history(), history().not("ready_at", "is", null)]);
-  if (all.error || ready.error) return; // The guide is optional; never block service over it.
-  firstRun.ordered = all.count > 0 || !!stored.ordered;
-  firstRun.readied = ready.count > 0 || !!stored.readied;
-  const ageDays = (Date.now() - Date.parse(cloud.business.created_at)) / 86400000;
-  const established = ageDays > 14 || all.count >= 5;
-  const steps = firstRunSteps();
-  firstRun.active = reopen || !!stored.reopened || (!established && !(steps.order && steps.screen && steps.ready));
-  renderOrders();
-}
-async function reopenFirstRun() {
-  saveFirstRun({ dismissed: false, finished: false, reopened: true });
-  await startFirstRun(true);
-  $('firstRun').scrollIntoView({ block: "start" });
-  $('firstRunTitle').focus();
-}
-function endFirstRun(flag) {
-  saveFirstRun({ [flag]: true, reopened: false });
-  firstRun.active = false;
-  renderOrders();
-  customerNameField.hidden ? addOrderBtn.focus() : customerNameInput.focus();
-}
-function markScreenOpened() {
-  if (!cloud?.business?.id) return;
-  saveFirstRun({ screen: true });
-  renderFirstRun();
-}
-function renderFirstRun() {
-  const card = $('firstRun');
-  card.hidden = !firstRun.active;
-  if (!firstRun.active) return;
-  const steps = firstRunSteps();
-  const done = Object.values(steps).filter(Boolean).length;
-  const complete = done === 3;
-  const current = !steps.order ? "order" : !steps.screen ? "screen" : !steps.ready ? "ready" : null;
-  const next = nextOrderNumber();
-  card.classList.toggle("is-complete", complete);
-  $('firstRunProgress').textContent = complete ? "All done" : `${done} of 3 done`;
-  $('firstRunTitle').textContent = complete ? "You’re ready for service" : "Try a test order before service";
-  $('firstRunIntro').hidden = complete;
-  card.querySelector("ol").hidden = complete;
-  $('firstRunFinish').hidden = !complete;
-  $('firstRunDismiss').hidden = complete;
-  card.querySelectorAll("[data-step]").forEach(step => {
-    const isDone = steps[step.dataset.step];
-    step.classList.toggle("is-done", isDone);
-    step.classList.toggle("is-current", step.dataset.step === current);
-    step.querySelector(".first-run-status").textContent = isDone ? "Done" : "";
-  });
-  $('firstRunAdd').hidden = steps.order;
-  $('firstRunScreen').hidden = steps.screen;
-  $('firstRunOrderHint').textContent = getQueueStyle() === "name"
-    ? "We’ll add one called “Test”. You can remove it afterwards."
-    : `It takes order #${next}. Numbers keep counting up and aren’t reused, so your first real customer will be #${next + 1}.`;
-  const testOrderActive = loadOrders().some(order => order.id === readFirstRun().testOrder);
-  $('firstRunRemoveTest').hidden = !testOrderActive;
-  $('firstRunFinishText').textContent = [
-    testOrderActive ? "Remove the test order so customers don’t see it." : "",
-    next ? `Your next order will be #${next}. Numbers aren’t reused.` : ""
-  ].filter(Boolean).join(" ") || "Your queue is ready for real orders.";
-}
 /* Customer screen panel. Public links carry only the business's random display ID. */
 const screenLinks = () => {
   const display = encodeURIComponent(cloud.business.display_id);
@@ -329,7 +245,7 @@ const screenLinks = () => {
 let screenQrUrl = null;
 function renderScreenPanel() {
   const links = screenLinks();
-  $('openBoard').href = $('firstRunScreen').href = links.screen;
+  $('openBoard').href = links.screen;
   $('showPoster').href = links.poster;
   $('printPoster').href = `${links.poster}&print=1`;
   if (screenQrUrl === links.customer || !window.QRCode) return;
@@ -341,11 +257,10 @@ function renderScreenPanel() {
 function toggleScreenPanel(open = $('screenPanel').hidden) {
   $('screenPanel').hidden = !open;
   $('screenPanelToggle').setAttribute('aria-expanded', String(open));
-  if (open) $('screenPanelTitle').focus(); else $('screenPanelToggle').focus();
+  if (!renderWalkthrough()) open ? $('screenPanelTitle').focus() : $('screenPanelToggle').focus();
 }
 async function copyLink(url, label) {
   const status = $('screenCopyStatus'), fallback = $('screenCopyFallback');
-  markScreenOpened();
   fallback.hidden = true;
   try {
     await navigator.clipboard.writeText(url);
@@ -375,9 +290,11 @@ const loadOrders = () => cloud?.orders || [];
 const getQueueStyle = () => cloud.business.queue_style;
 const getOverdueMinutes = () => cloud.business.overdue_seconds / 60;
 const isReadyChimeEnabled = () => cloud.business.ready_chime;
+// Resolves to true when the walkthrough moved focus to its next control.
 async function action(work) {
-  if (busy || !cloud?.entitlement?.access_allowed) return;
+  if (busy || !cloud?.entitlement?.access_allowed) return false;
   busy = true;
+  $('wtNote').hidden = true;
   document.querySelectorAll('#collection-demo button, #collection-demo input, #collection-demo select').forEach(el => el.disabled = true);
   try { await work(); message.textContent = ''; }
   catch (error) { message.textContent = error.message; }
@@ -385,16 +302,18 @@ async function action(work) {
     busy = false;
     document.querySelectorAll('#collection-demo button, #collection-demo input, #collection-demo select').forEach(el => el.disabled = !cloud?.entitlement?.access_allowed);
   }
+  return renderWalkthrough();
 }
 async function addOrder() {
-  await action(async () => {
+  const moved = await action(async () => {
     const style = getQueueStyle();
     const name = style === 'number' ? '' : customerNameInput.value.trim();
     if (style === 'name' && !name) throw new Error('Enter the customer’s name. This queue shows names only.');
-    await cloud.add(name);
+    walkthroughOrderAdded(await cloud.add(name));
     customerNameInput.value = '';
   });
-  customerNameField.hidden ? addOrderBtn.focus() : customerNameInput.focus();
+  // The walkthrough moves focus to its next control when this order completes a step.
+  if (!moved) customerNameField.hidden ? addOrderBtn.focus() : customerNameInput.focus();
 }
 async function saveEdit(orderId) {
   const order = loadOrders().find(item => item.id === orderId);
@@ -433,23 +352,13 @@ ordersList.addEventListener('keydown', event => {
   if (event.key === 'Enter') { event.preventDefault(); saveEdit(editingOrderId); }
   if (event.key === 'Escape') { event.preventDefault(); cancelEdit(); }
 });
-$('firstRunAdd').addEventListener('click', async () => {
-  await action(async () => saveFirstRun({ testOrder: await cloud.add(getQueueStyle() === 'number' ? '' : 'Test') }));
-  $('firstRunScreen').hidden ? ordersList.querySelector('[data-action="ready"]')?.focus() : $('firstRunScreen').focus();
-});
-$('firstRunScreen').addEventListener('click', markScreenOpened);
-['openBoard', 'printPoster', 'showPoster'].forEach(id => $(id).addEventListener('click', markScreenOpened));
+// collection-walkthrough.js loads after this file.
+$('openBoard').addEventListener('click', event => walkthroughOpenScreen(event));
 $('screenPanelToggle').addEventListener('click', () => toggleScreenPanel());
 $('screenPanelClose').addEventListener('click', () => toggleScreenPanel(false));
 $('copyScreenLink').addEventListener('click', () => copyLink(screenLinks().screen, 'Screen link'));
 $('copyCustomerLink').addEventListener('click', () => copyLink(screenLinks().customer, 'Customer link'));
-$('showGuideBtn').addEventListener('click', reopenFirstRun);
-$('firstRunRemoveTest').addEventListener('click', async () => {
-  await action(() => cloud.remove(readFirstRun().testOrder));
-  $('firstRunDone').focus();
-});
-$('firstRunDismiss').addEventListener('click', () => endFirstRun('dismissed'));
-$('firstRunDone').addEventListener('click', () => endFirstRun('finished'));
+$('restartWalkthrough').addEventListener('click', () => startWalkthrough(true));
 $('logoutButton').addEventListener('click', async () => {
   const { error } = await client.auth.signOut();
   if (error) { message.textContent = error.message; return; }
@@ -489,6 +398,6 @@ $('logoutButton').addEventListener('click', async () => {
     });
     await cloud.start(result.data);
     setInterval(updateOrderTimes, 1000);
-    await startFirstRun();
+    await startWalkthrough();
   } catch (error) { message.textContent = error.message; }
 })();

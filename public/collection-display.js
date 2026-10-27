@@ -258,6 +258,32 @@ function showConnection(text) {
   status.dataset.state = state;
   status.textContent = label;
 }
+/* The walkthrough explanation appears only when staff controls on this device just sent the owner here.
+   ?tour= on its own is ignored, so shared and customer screens never show it. */
+function walkthroughStage(display) {
+  const stage = new URLSearchParams(location.search).get('tour');
+  if (stage !== 'intro' && stage !== 'ready') return null;
+  try {
+    const token = JSON.parse(localStorage.getItem('popbia-walkthrough-screen'));
+    return token?.display === display && token.until > Date.now() ? stage : null;
+  } catch (error) {
+    return null;
+  }
+}
+function showWalkthrough(stage) {
+  const intro = stage === 'intro';
+  document.getElementById('wtStep').textContent = intro ? 'Step 3 of 5' : 'Step 4 of 5';
+  document.getElementById('wtTitle').textContent = intro ? 'What customers see' : 'Customers see it’s ready';
+  document.getElementById('wtText').textContent = intro
+    ? 'Orders move from Preparing to Ready for collection. Let’s head back and try it.'
+    : 'Your order is now under Ready for collection, so the customer knows to collect it.';
+  // The link to staff controls exists only for the owner taking the walkthrough.
+  document.getElementById('wtBack').href = 'board-admin.html';
+  document.body.classList.add('wt-active');
+  document.querySelector(`.board-column.${intro ? 'preparing' : 'ready'}`).classList.add('wt-target');
+  document.getElementById('walkthrough').hidden = false;
+  document.getElementById('wtBack').focus();
+}
 document.getElementById('fullscreenToggle').addEventListener('click', toggleFullscreen);
 document.getElementById('soundToggle').addEventListener('click', toggleSound);
 document.addEventListener('fullscreenchange', renderDisplayControls);
@@ -278,6 +304,8 @@ window.addEventListener('resize', () => { if (cloud?.business) renderBoard(); })
     const display = new URLSearchParams(location.search).get('display');
     if (!display || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(display)) throw new Error('This customer screen link isn’t complete. Scan the QR code again, or ask staff for the link.');
     document.body.classList.toggle('phone-view', new URLSearchParams(location.search).get('phone') === '1');
+    const tour = walkthroughStage(display);
+    if (tour) showWalkthrough(tour);
     const view = new URLSearchParams(location.search).get('view');
     document.querySelector('.board-column.preparing').classList.toggle('is-hidden', view === 'ready');
     document.querySelector('.board-column.ready').classList.toggle('is-hidden', view === 'preparing');

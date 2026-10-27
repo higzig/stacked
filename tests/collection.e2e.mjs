@@ -27,8 +27,10 @@ const server = createServer(async (req, res) => {
     res.end(data);
   } catch { res.writeHead(404).end(); }
 });
-await new Promise(done => server.listen(8787, '127.0.0.1', done));
-const base = 'http://127.0.0.1:8787';
+// POPBIA_TEST_PORT lets the suite run beside a dev server on 8787 (add it to the Auth redirect URLs).
+const port = Number(process.env.POPBIA_TEST_PORT || 8787);
+await new Promise(done => server.listen(port, '127.0.0.1', done));
+const base = `http://127.0.0.1:${port}`;
 const browsers = [], errors = [];
 
 const suffix = Date.now();
@@ -46,6 +48,11 @@ async function login(page, address, signup = false) {
   await page.locator('#email').fill(address); await page.locator('#password').fill(password);
   await page.locator('#authSubmit').click();
 }
+// New businesses get the first-run walkthrough; it has its own suite, so skip it here.
+async function skipWalkthrough(page) {
+  await page.locator('#walkthrough').waitFor({ state: 'visible', timeout: 10000 });
+  await page.locator('#wtSkip').click();
+}
 async function waitText(page, selector, text) {
   await page.waitForFunction(({selector,text}) => document.querySelector(selector)?.textContent.includes(text), {selector,text}, {timeout: 15000});
 }
@@ -58,6 +65,7 @@ try {
   await a.locator('#businessName').fill('Stacked'); await a.locator('#businessForm button').click();
   await a.waitForURL('**/board-admin.html');
   await a.locator('#collection-demo').waitFor({state:'visible'});
+  await skipWalkthrough(a);
   assert.equal(await a.locator('#orderNumberInput').count(), 0);
   assert.equal(await a.locator('#addOrderBtn').textContent(), 'Add order #1');
   await a.locator('#customerNameInput').fill('Aoife');
@@ -69,7 +77,7 @@ try {
   // Disable catch-up polling to prove the following updates arrive via Realtime.
   await a.evaluate(() => clearInterval(cloud.timer)); await display.evaluate(() => clearInterval(cloud.timer));
   await login(b, email);
-  await b.waitForURL('**/board-admin.html'); await waitText(b,'#ordersList','#1');
+  await b.waitForURL('**/board-admin.html'); await waitText(b,'#ordersList','#1'); await skipWalkthrough(b);
   await b.locator('[data-action="ready"]').click();
   await a.waitForSelector('.order-row.ready'); await waitText(display,'#readyList','#1');
   assert.equal(await display.locator('#preparingList').textContent(), 'No orders being prepared');

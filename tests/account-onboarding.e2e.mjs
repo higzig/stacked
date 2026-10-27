@@ -26,8 +26,10 @@ const server = createServer(async (req, res) => {
     res.end(data);
   } catch { res.writeHead(404).end(); }
 });
-await new Promise(done => server.listen(8787, '127.0.0.1', done));
-const base = 'http://127.0.0.1:8787';
+// POPBIA_TEST_PORT lets the suite run beside a dev server on 8787 (add it to the Auth redirect URLs).
+const port = Number(process.env.POPBIA_TEST_PORT || 8787);
+await new Promise(done => server.listen(port, '127.0.0.1', done));
+const base = `http://127.0.0.1:${port}`;
 const browsers = [], errors = [];
 
 const suffix = Date.now(), email = `onboarding-${suffix}@example.com`, password = 'PopBia-test-42!', newPassword = 'PopBia-reset-42!';
