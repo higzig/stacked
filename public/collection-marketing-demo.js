@@ -80,7 +80,7 @@
     }
     renderCustomerList(preparing, phase === 'preparing' ? [order] : []);
     renderCustomerList(ready, phase === 'ready' ? [order] : []);
-    status.textContent = !order ? 'Try adding Maya’s order to start.' : phase === 'preparing' ? 'Order #47 is Preparing. Mark it ready when it’s finished.' : phase === 'ready' ? 'Order #47 is Ready on the customer board. Time to collect.' : 'Flow complete — order #47 is Collected and off the customer board.';
+    status.textContent = !order ? 'Try adding Maya’s order to start.' : phase === 'preparing' ? 'Order #47 is Preparing. Mark it ready when it’s finished.' : phase === 'ready' ? 'Order #47 is Ready on the customer screen. Time to collect.' : 'Flow complete — order #47 is Collected and off the customer screen.';
   }
   form.addEventListener('submit', event => {
     event.preventDefault();

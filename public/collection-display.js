@@ -64,9 +64,10 @@ function processReadyAnnouncementQueue() {
 
 function playReadyChime() {
   const enabled = cloud.business.ready_chime;
-  if (!enabled || !window.AudioContext) return;
+  // Browsers keep sound off until someone taps the screen (see Turn sound on).
+  const context = sound.context;
+  if (!enabled || sound.muted || !context || context.state !== "running") return;
   try {
-    const context = new AudioContext();
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     oscillator.frequency.value = 740;
@@ -76,7 +77,6 @@ function playReadyChime() {
     oscillator.connect(gain).connect(context.destination);
     oscillator.start();
     oscillator.stop(context.currentTime + .2);
-    oscillator.addEventListener("ended", () => context.close());
   } catch (error) {
     // Browser autoplay restrictions can prevent a demo chime.
   }
@@ -151,7 +151,7 @@ function renderOrderList(listElement, status) {
     ? `+ ${orders.length - visibleOrders.length} more ${status}` : '';
 
   if (!orders.length) {
-    listElement.innerHTML = '<li class="empty-state">No orders</li>';
+    listElement.innerHTML = `<li class="empty-state">${status === "ready" ? "No orders ready yet" : "No orders being prepared"}</li>`;
     return;
   }
 
@@ -185,6 +185,84 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const readyAnnouncementQueue = [], justReadyOrderIds = new Set();
 let readyAnnouncementActive = false, previousOrdersById = new Map(), readyTransitionTrackingReady = false, cloud;
 const loadOrders = () => cloud?.orders || [];
+
+/* Shared-screen helpers. Each is optional: a browser without the feature simply hides its control. */
+const sound = { context: null, muted: false };
+let wakeLock = null, lastUpdated = null;
+const sharedScreen = () => !document.body.classList.contains('phone-view');
+const fullscreenElement = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+function canFullscreen() {
+  const root = document.documentElement;
+  return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled) && !!(root.requestFullscreen || root.webkitRequestFullscreen);
+}
+function displayNote(text) { document.getElementById('displayNote').textContent = text; }
+function renderDisplayControls() {
+  const fullscreen = document.getElementById('fullscreenToggle'), soundToggle = document.getElementById('soundToggle');
+  document.getElementById('displayControls').hidden = !sharedScreen();
+  fullscreen.hidden = !canFullscreen();
+  fullscreen.textContent = fullscreenElement() ? 'Exit full screen' : 'Full screen';
+  const on = !sound.muted && sound.context?.state === 'running';
+  soundToggle.hidden = !window.AudioContext || !cloud?.business?.ready_chime || !!cloud.business.inactive;
+  soundToggle.textContent = on ? 'Sound on' : 'Turn sound on';
+  soundToggle.setAttribute('aria-pressed', String(on));
+}
+async function toggleFullscreen() {
+  try {
+    if (fullscreenElement()) await (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else {
+      const root = document.documentElement;
+      await (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+    }
+  } catch (error) {
+    displayNote('Full screen isn’t available here. Use the browser or TV menu instead.');
+  }
+  requestWakeLock();
+  renderDisplayControls();
+}
+async function toggleSound() {
+  if (!sound.muted && sound.context?.state === 'running') { sound.muted = true; renderDisplayControls(); return; }
+  try {
+    sound.muted = false;
+    sound.context ||= new AudioContext();
+    await sound.context.resume();
+    if (sound.context.state === 'running') playReadyChime(); // A short chime confirms sound works.
+    else displayNote('This browser blocked sound. Check the device volume and browser settings.');
+  } catch (error) {
+    displayNote('Sound isn’t available in this browser.');
+  }
+  requestWakeLock();
+  renderDisplayControls();
+}
+// Keeps the screen from sleeping where supported; the browser releases it when the page is hidden.
+async function requestWakeLock() {
+  if (!sharedScreen() || !navigator.wakeLock || wakeLock || document.hidden) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; displayNote(''); });
+    displayNote('Screen stays on');
+  } catch (error) {
+    wakeLock = null;
+  }
+}
+function showConnection(text) {
+  const status = document.getElementById('cloudMessage');
+  let state = 'live', label = text;
+  if (text.includes('Display not found')) {
+    state = 'offline';
+    label = 'This customer screen link isn’t valid. Ask staff for the current link.';
+  } else if (text.startsWith('Connection error')) {
+    state = 'offline';
+    label = `Offline · retrying${lastUpdated ? ` · last update ${new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }).format(lastUpdated)}` : ''}`;
+  } else if (text.startsWith('Collection is currently inactive')) state = 'inactive';
+  else if (/reconnecting|connecting/i.test(text)) { state = 'reconnecting'; label = 'Reconnecting…'; }
+  status.dataset.state = state;
+  status.textContent = label;
+}
+document.getElementById('fullscreenToggle').addEventListener('click', toggleFullscreen);
+document.getElementById('soundToggle').addEventListener('click', toggleSound);
+document.addEventListener('fullscreenchange', renderDisplayControls);
+document.addEventListener('webkitfullscreenchange', renderDisplayControls);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) requestWakeLock(); });
 function renderBoard() {
   if (cloud.business.inactive) {
     readyAnnouncementQueue.length = 0;
@@ -198,7 +276,7 @@ window.addEventListener('resize', () => { if (cloud?.business) renderBoard(); })
   const message = document.getElementById('cloudMessage');
   try {
     const display = new URLSearchParams(location.search).get('display');
-    if (!display || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(display)) throw new Error('Open your business’s customer display link from staff controls.');
+    if (!display || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(display)) throw new Error('This customer screen link isn’t complete. Scan the QR code again, or ask staff for the link.');
     document.body.classList.toggle('phone-view', new URLSearchParams(location.search).get('phone') === '1');
     const view = new URLSearchParams(location.search).get('view');
     document.querySelector('.board-column.preparing').classList.toggle('is-hidden', view === 'ready');
@@ -209,14 +287,18 @@ window.addEventListener('resize', () => { if (cloud?.business) renderBoard(); })
     window.QRCode?.toCanvas(document.getElementById('boardQrCode'), boardUrl, { width: 88, margin: 1 });
     cloud = new CollectionCloud(window.createPopBiaClient(true), { display,
       onChange: () => {
-        document.title = `${cloud.business.name} — Collection`;
+        lastUpdated = new Date();
+        document.title = `${cloud.business.name} — Order status`;
         document.querySelector('.board-brand-copy h1').textContent = cloud.business.name;
         renderBoard();
+        renderDisplayControls();
       },
-      onStatus: text => { message.textContent = text; }
+      onStatus: showConnection
     });
+    renderDisplayControls();
+    requestWakeLock();
     await cloud.start();
     updateClock(); setInterval(updateClock, 1000);
     setInterval(() => { if (cloud.business.queue_style) renderBoard(); }, 1000);
-  } catch (error) { message.textContent = error.message; }
+  } catch (error) { message.dataset.state = 'offline'; message.textContent = error.message; }
 })();

@@ -80,7 +80,7 @@ Ordering has no backend or connection to Collection.
 
 The Collection landing pages display a direct `mailto:hello@popbia.com` link.
 There is no active form endpoint, automatic acknowledgement, or email-sending
-service dependency. Setup takes no more than 30 minutes. Public marketing CTAs link to `/account.html` for a 14-day free trial, with
+service dependency. Setup takes a few minutes. Public marketing CTAs link to `/account.html?signup=1` (signup mode) for a 14-day free trial, with
 no card required. Billing and authentication are unchanged.
 The previous form implementation and setup notes are preserved in
 [docs/contact-form/README.md](docs/contact-form/README.md) for later use.

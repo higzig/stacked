@@ -23,6 +23,8 @@ class CollectionCloud {
     this.timer = setInterval(() => this.refresh(), 10000);
     this.visibility = () => { if (!document.hidden) this.refresh(); };
     document.addEventListener('visibilitychange', this.visibility);
+    this.online = () => this.refresh();
+    window.addEventListener('online', this.online);
     await this.refresh();
   }
   async refresh() {
@@ -71,10 +73,14 @@ class CollectionCloud {
     if (error) { await this.refresh(); throw error; }
     await this.refresh();
   }
-  add(name) {
-    return this.mutate(this.client.rpc('add_collection_order', {
+  // Resolves to the new order's ID.
+  async add(name) {
+    const { data, error } = await this.client.rpc('add_collection_order', {
       target_business: this.business.id, customer_name: name
-    }));
+    });
+    await this.refresh();
+    if (error) throw error;
+    return data;
   }
   update(id, fields) {
     return this.mutate(this.client.from('collection_orders').update(fields).eq('business_id', this.business.id).eq('id', id).select('id').single());
@@ -90,6 +96,7 @@ class CollectionCloud {
     this.orders = [];
     clearInterval(this.timer);
     document.removeEventListener('visibilitychange', this.visibility);
+    window.removeEventListener('online', this.online);
     if (this.channel) this.client.removeChannel(this.channel);
   }
 }

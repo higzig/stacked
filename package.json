@@ -15,7 +15,9 @@
     "check:collection": "node --check public/account.js && node --check public/collection-cloud.js && node --check public/collection-admin.js && node --check public/collection-display.js",
     "test:entitlement-migration": "node tests/entitlement-migration.mjs",
     "test:collection": "npm run build && node tests/collection.e2e.mjs",
-    "test:account-onboarding": "npm run build && node tests/account-onboarding.e2e.mjs"
+    "test:account-onboarding": "npm run build && node tests/account-onboarding.e2e.mjs",
+    "test:first-run": "npm run build && node tests/first-run.e2e.mjs",
+    "test:customer-screen": "npm run build && node tests/customer-screen.e2e.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2"

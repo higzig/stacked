@@ -1,7 +1,7 @@
-/* Presentation only: use the same destination as the customer board QR. */
+/* Presentation only: a real board needs a business display link, so the sample opens this demo. */
 (() => {
   const canvas = document.getElementById("collectionQrCode");
-  const destination = window.CLIENT_CONFIG?.publicBoardUrl || new URL("board.html", window.location.href).href;
+  const destination = new URL("#flow-title", window.location.href).href;
   if (!canvas || !window.QRCode) return;
   window.QRCode.toCanvas(canvas, destination, {
     width: 200,
@@ -10,7 +10,7 @@
   }, error => {
     if (error) {
       canvas.hidden = true;
-      document.getElementById("collectionQrCaption").textContent = "QR preview unavailable. Explore the customer board below.";
+      document.getElementById("collectionQrCaption").textContent = "QR preview unavailable. Try the demo above.";
     }
   });
 })();

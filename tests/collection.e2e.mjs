@@ -39,9 +39,10 @@ async function pageFor(engine) {
   const page = await browser.newPage(); page.on('pageerror', error => errors.push(error.message)); return page;
 }
 async function login(page, address, signup = false) {
-  await page.goto(base + '/account.html');
+  // Trial CTAs open signup mode directly; returning users arrive in login mode.
+  await page.goto(base + (signup ? '/account.html?signup=1' : '/account.html'));
   await page.locator('#authForm').waitFor({ state: 'visible' });
-  if (signup) await page.locator('#switchAuth').click();
+  assert.equal(await page.locator('#authSubmit').textContent(), signup ? 'Create account' : 'Log in');
   await page.locator('#email').fill(address); await page.locator('#password').fill(password);
   await page.locator('#authSubmit').click();
 }
@@ -51,17 +52,18 @@ async function waitText(page, selector, text) {
 try {
   const a = await pageFor(chromium), b = await pageFor(firefox), display = await pageFor(chromium);
   await login(a, email, true);
-  await a.locator('#startTrial').click();
+  // No plan-selection step: a confirmed account without a workspace goes straight to naming it.
   await a.locator('#businessForm').waitFor({state:'visible'});
+  assert.equal(await a.locator('#onboardingPlans').count(), 0);
   await a.locator('#businessName').fill('Stacked'); await a.locator('#businessForm button').click();
   await a.waitForURL('**/board-admin.html');
   await a.locator('#collection-demo').waitFor({state:'visible'});
   assert.equal(await a.locator('#orderNumberInput').count(), 0);
-  assert.equal(await a.locator('#addOrderBtn').textContent(), 'Add order');
+  assert.equal(await a.locator('#addOrderBtn').textContent(), 'Add order #1');
   await a.locator('#customerNameInput').fill('Aoife');
   await a.locator('#addOrderBtn').click(); await waitText(a,'#ordersList','#1');
   const displayUrl = await a.locator('#openBoard').getAttribute('href');
-  await display.goto(base + '/' + displayUrl);
+  await display.goto(new URL(displayUrl, base + '/').href);
   await waitText(display,'#preparingList','#1');
   await waitText(a,'.admin-connection-status','Live'); await waitText(display,'#cloudMessage','Live');
   // Disable catch-up polling to prove the following updates arrive via Realtime.
@@ -70,7 +72,7 @@ try {
   await b.waitForURL('**/board-admin.html'); await waitText(b,'#ordersList','#1');
   await b.locator('[data-action="ready"]').click();
   await a.waitForSelector('.order-row.ready'); await waitText(display,'#readyList','#1');
-  assert.equal(await display.locator('#preparingList').textContent(), 'No orders');
+  assert.equal(await display.locator('#preparingList').textContent(), 'No orders being prepared');
   console.log('PASS: Chromium signup/onboarding → Firefox login → Ready sync to Chromium and anonymous display via Realtime.');
   await b.reload(); await waitText(b,'#ordersList','#1');
   await a.locator('#logoutButton').click(); await a.waitForURL('**/account.html');
@@ -127,7 +129,9 @@ try {
   await display.waitForFunction(() => !cloud.business.ready_chime);
   const editRow = b.locator('.order-row').first(); const editId = await editRow.getAttribute('data-row-id');
   await editRow.locator('[data-action="edit"]').click();
-  await b.locator('#customerNameInput').fill('Edited'); await b.locator('#addOrderBtn').click();
+  // Editing happens in the order's own row; the add bar keeps adding new orders.
+  await b.locator(`[data-row-id="${editId}"] .order-edit-input`).fill('Edited');
+  await b.locator(`[data-row-id="${editId}"] [data-action="save-edit"]`).click();
   await waitText(display,'#preparingList','Edited');
   await b.locator(`[data-row-id="${editId}"] [data-action="remove"]`).click();
   await display.waitForFunction(() => !document.getElementById('preparingList').textContent.includes('Edited'));
@@ -135,7 +139,7 @@ try {
   await waitText(display,'#preparingList','Name only');
   await b.waitForFunction(() => !busy);
   b.once('dialog', dialog => dialog.accept()); await b.locator('#resetDemoBtn').click();
-  await display.waitForFunction(() => document.getElementById('preparingList').textContent === 'No orders');
+  await display.waitForFunction(() => document.getElementById('preparingList').textContent === 'No orders being prepared');
   assert.ok(!(await anon.rpc('collection_display',{display:business.display_id})).data.orders.length);
   console.log('PASS: settings sync, queue style preserves orders, edits/removals/name-only orders/clear queue work; protected columns and direct inserts are denied.');
   await testCollectionFlow({ a, b, display, staff, admin, anon, business, base });

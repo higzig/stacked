@@ -751,12 +751,79 @@
     <div class="demo-panel">
       <header class="staff-header">
         <div class="product-brand"><span class="product-brand-mark" aria-hidden="true"></span><div><h1>PopBia Collection</h1><span>Staff controls</span></div></div>
-        <a class="btn btn-dark" id="openBoard" href="board.html" target="_blank" rel="noopener noreferrer">Open board</a>
+        <button class="btn btn-dark" id="screenPanelToggle" type="button" aria-expanded="false" aria-controls="screenPanel">Customer screen</button>
       </header>
+      <section id="screenPanel" class="screen-panel" aria-labelledby="screenPanelTitle" hidden>
+        <div class="screen-panel-head">
+          <h2 id="screenPanelTitle" tabindex="-1">Customer screen</h2>
+          <button id="screenPanelClose" class="first-run-dismiss" type="button">Close</button>
+        </div>
+        <p class="screen-panel-intro">Customers see their order move from <strong>Preparing</strong> to <strong>Ready for collection</strong>. It updates by itself as you manage orders here. Use one option or both.</p>
+        <div class="screen-options">
+          <article class="screen-option" aria-labelledby="screenTvTitle">
+            <h3 id="screenTvTitle">Show it on a TV or tablet</h3>
+            <p>Open the customer screen on the device customers can see, then tap <b>Full screen</b> and <b>Turn sound on</b> at the bottom of it.</p>
+            <div class="screen-actions">
+              <a class="first-run-action" id="openBoard" href="board.html" target="_blank" rel="noopener noreferrer">Open customer screen <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+              <button class="first-run-action is-secondary" id="copyScreenLink" type="button">Copy screen link</button>
+            </div>
+            <p class="screen-tip">On another device? Send yourself the screen link, or log in to staff controls on that device and tap Open customer screen.</p>
+          </article>
+          <article class="screen-option" aria-labelledby="screenQrTitle">
+            <h3 id="screenQrTitle">Let customers scan a QR code</h3>
+            <div class="screen-qr"><canvas id="screenQrCode" width="168" height="168" role="img" aria-label="QR code that opens your customer screen on a phone"></canvas></div>
+            <p>Customers scan it with their phone camera to follow their order. No app or sign-in needed.</p>
+            <div class="screen-actions">
+              <a class="first-run-action" id="printPoster" href="qr-poster.html" target="_blank" rel="noopener noreferrer">Print QR poster <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+              <a class="first-run-action is-secondary" id="showPoster" href="qr-poster.html" target="_blank" rel="noopener noreferrer">Show QR on this screen <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+              <button class="first-run-action is-secondary" id="copyCustomerLink" type="button">Copy customer link</button>
+            </div>
+          </article>
+        </div>
+        <p id="screenCopyStatus" class="screen-copy-status" role="status" aria-live="polite"></p>
+        <label class="sr-only" for="screenCopyFallback">Link to copy</label>
+        <input id="screenCopyFallback" class="screen-copy-fallback" type="text" readonly hidden>
+      </section>
       <p id="cloudMessage" role="status" aria-live="polite">Loading your workspace…</p>
       <button hidden id="logoutButton" class="queue-settings-btn" type="button">Log out</button>
     <div id="collectionEntitlement" class="collection-entitlement" role="status" aria-live="polite" hidden></div>
       <section hidden class="collection-demo" id="collection-demo" aria-label="Active queue">
+        <section id="firstRun" class="first-run" aria-labelledby="firstRunTitle" hidden>
+          <div class="first-run-head">
+            <div>
+              <p class="first-run-kicker" aria-live="polite">Getting started · <span id="firstRunProgress">0 of 3 done</span></p>
+              <h2 id="firstRunTitle" tabindex="-1">Try a test order before service</h2>
+            </div>
+            <button id="firstRunDismiss" class="first-run-dismiss" type="button">Hide guide</button>
+          </div>
+          <p class="first-run-intro" id="firstRunIntro">PopBia has two screens that stay in sync: <strong>staff controls</strong> (this page) and the <strong>customer screen</strong>, where customers see when their order is ready.</p>
+          <ol class="first-run-steps">
+            <li data-step="order">
+              <span class="first-run-mark" aria-hidden="true"></span>
+              <div class="first-run-copy"><strong>Add a test order</strong><p id="firstRunOrderHint"></p></div>
+              <button id="firstRunAdd" class="first-run-action" type="button">Add a test order</button>
+              <span class="first-run-status"></span>
+            </li>
+            <li data-step="screen">
+              <span class="first-run-mark" aria-hidden="true"></span>
+              <div class="first-run-copy"><strong>Open your customer screen</strong><p>It opens in a new tab, so this page stays as it is. For a TV, tablet or printable QR poster, use <b>Customer screen</b> at the top.</p></div>
+              <a id="firstRunScreen" class="first-run-action" href="board.html" target="_blank" rel="noopener noreferrer">Open customer screen <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+              <span class="first-run-status"></span>
+            </li>
+            <li data-step="ready">
+              <span class="first-run-mark" aria-hidden="true"></span>
+              <div class="first-run-copy"><strong>Mark it Ready</strong><p>Tap <b>Mark Ready</b> on your test order below, then look at the customer screen: it moves to Ready for collection.</p></div>
+              <span class="first-run-status"></span>
+            </li>
+          </ol>
+          <div class="first-run-finish" id="firstRunFinish" hidden>
+            <p id="firstRunFinishText"></p>
+            <div class="screen-actions">
+              <button id="firstRunRemoveTest" class="first-run-action is-secondary" type="button" hidden>Remove test order</button>
+              <button id="firstRunDone" class="first-run-action" type="button">Done</button>
+            </div>
+          </div>
+        </section>
         <div id="setupPanel" class="setup-panel hidden" aria-live="polite" hidden>
           <h3>How do you identify orders?</h3>
           <div class="setup-options">
@@ -808,6 +875,7 @@
             </div>
             <p id="autoClearHelp">Automatically mark Ready orders as collected after this amount of time.</p>
             <div class="queue-settings-actions">
+              <button class="queue-settings-btn" id="showGuideBtn" type="button">Show getting-started guide</button>
               <button class="queue-settings-btn" id="resetDemoBtn" type="button">Clear active queue</button>
             </div>
             </div>
@@ -815,10 +883,10 @@
 
         </div>
 
-          <div class="admin-control-row">
+          <div class="admin-control-row" id="adminControlRow">
             <div class="field" id="customerNameField">
-              <label for="customerNameInput">Customer name</label>
-              <input id="customerNameInput" type="text" maxlength="120" placeholder="e.g. Ronan" />
+              <label for="customerNameInput" id="customerNameLabel">Customer name</label>
+              <input id="customerNameInput" type="text" maxlength="120" placeholder="e.g. Ronan" autocomplete="off" />
             </div>
 
             <div class="field admin-action-field">
@@ -837,6 +905,7 @@
   <script src="supabase-config.js"></script>
   <script src="vendor/supabase.js"></script>
   <script src="collection-cloud.js"></script>
+  <script src="qrcode.js"></script>
   <script src="collection-entitlement.js"></script>
   <script src="collection-admin.js"></script>
 </body>

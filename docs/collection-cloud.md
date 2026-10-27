@@ -69,7 +69,7 @@ It checks signup/onboarding, order #42, Firefox login, Ready updates reaching Ch
 
 No automatic import of device-local demo data: new businesses start empty. Old localStorage values are ignored and left untouched. There are no demo/sample-order fallbacks. No offline edits or optimistic writes; failed requests show an error and retain the last fetched snapshot with a connection warning. For network ambiguity, inspect the queue before retrying an add.
 
-No billing, invitations, roles, workspace switcher, password recovery UI, display rotation UI or marketing redesign. Existing QR rendering now uses the scoped display URL. Accounts can administer their workspace without a separate settings dashboard.
+No billing, invitations, roles, workspace switcher, display rotation UI or marketing redesign. Password recovery and confirmation resend are on the account page (see collection/account-onboarding.md). Existing QR rendering now uses the scoped display URL. Accounts can administer their workspace without a separate settings dashboard.
 
 Dependency audit: the Supabase browser dependency has no reported audit findings. The existing Wrangler development toolchain reports three findings through `miniflare`/`undici` (one high, two moderate); upgrade that toolchain separately before broader deployment work.
 

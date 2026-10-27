@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>QR poster — PopBia Collection</title>
+  <link rel="icon" href="popbia-favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=DM+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --ink: #10243d; --muted: #526170; --orange: #ff6433; --paper: #f5f3ed; --line: #d4d7d8; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; }
+    .poster-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem 1rem; padding: 1rem 16px; }
+    .poster-toolbar p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .poster-button { min-height: 48px; padding: .6rem 1.2rem; border: 1px solid var(--ink); border-radius: 10px; background: var(--ink); color: white; font: 800 1rem "DM Sans", sans-serif; cursor: pointer; }
+    .poster-button:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .poster-message { max-width: 560px; margin: 0 auto 1rem; padding: 0 16px; text-align: center; color: var(--ink); font-weight: 600; }
+    .poster-message:empty { display: none; }
+    .poster { display: flex; flex-direction: column; align-items: center; gap: clamp(.9rem, 3.5vw, 7mm); width: min(210mm, calc(100% - 32px)); margin: 0 auto 2rem; padding: clamp(1.4rem, 6vw, 16mm) clamp(1.1rem, 6vw, 16mm); border-top: 10px solid var(--orange); border-radius: 12px; background: white; box-shadow: 0 10px 30px rgba(16,36,61,.08); text-align: center; }
+    .poster-kicker { margin: 0; color: #a33a17; font-size: clamp(.8rem, 2.6vw, 12pt); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .poster-business { margin: 0; max-width: 100%; font: 800 clamp(2rem, 9vw, 44pt)/1.05 "Bricolage Grotesque", sans-serif; letter-spacing: -.02em; overflow-wrap: anywhere; }
+    .poster.long-name .poster-business { font-size: clamp(1.5rem, 6vw, 30pt); }
+    .poster-headline { margin: 0; font-size: clamp(1.35rem, 5.5vw, 28pt); font-weight: 800; line-height: 1.15; }
+    .poster-qr { width: min(100%, 120mm); aspect-ratio: 1; background: white; }
+    .poster-qr svg { display: block; width: 100%; height: 100%; }
+    .poster-steps { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; text-align: left; font-size: clamp(1rem, 3.8vw, 15pt); line-height: 1.35; }
+    .poster-steps li { display: flex; align-items: flex-start; gap: .7rem; }
+    .poster-steps li > span { display: grid; flex: 0 0 auto; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--ink); color: white; font-weight: 800; font-size: .85em; }
+    .poster-foot { display: flex; align-items: center; justify-content: center; gap: .45rem; margin: 0; color: var(--muted); font-size: clamp(.8rem, 2.8vw, 11pt); }
+    @page { size: A4 portrait; margin: 0; }
+    @media print {
+      body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .poster-toolbar, .poster-message { display: none !important; }
+      .poster { width: 210mm; height: 297mm; margin: 0; padding: 16mm 18mm 13mm; justify-content: space-between; border-radius: 0; box-shadow: none; break-inside: avoid; overflow: hidden; }
+      .poster-qr { width: 120mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster-toolbar">
+    <button id="posterPrint" class="poster-button" type="button">Print poster</button>
+    <p>Fits one A4 page. Print at 100% scale. To make a PDF, choose “Save as PDF” as the printer.</p>
+  </div>
+  <p id="posterMessage" class="poster-message" role="status" aria-live="polite">Loading your poster…</p>
+  <main id="poster" class="poster" hidden>
+    <p class="poster-kicker">Order status</p>
+    <h1 id="posterBusiness" class="poster-business"></h1>
+    <p class="poster-headline">Scan to check when your order is ready</p>
+    <div id="posterQr" class="poster-qr" role="img" aria-label="QR code that opens this business’s order status page"></div>
+    <ol class="poster-steps">
+      <li><span aria-hidden="true">1</span><div>Open your phone camera and point it at the code.</div></li>
+      <li><span aria-hidden="true">2</span><div>Your order moves to <strong>Ready for collection</strong> when it’s ready.</div></li>
+    </ol>
+    <p class="poster-foot"><img src="popbia-favicon.svg" width="20" height="20" alt="">No app or sign-in needed · PopBia</p>
+  </main>
+  <script src="qrcode.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="vendor/supabase.js"></script>
+  <script src="collection-poster.js"></script>
+</body>
+</html>
