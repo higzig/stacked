@@ -62,7 +62,8 @@ function refreshQueueUi() {
   if (queueStyleSelect) {
     queueStyleSelect.value = queueStyle;
   }
-  autoClearSelect.value = cloud.business.ready_auto_clear_seconds === null ? 'off' : String(cloud.business.ready_auto_clear_seconds ?? 600);
+  // NULL (or a database without the setting yet) means auto-clear is Off; never imply a default.
+  autoClearSelect.value = cloud.business.ready_auto_clear_seconds == null ? 'off' : String(cloud.business.ready_auto_clear_seconds);
   if (overdueSelect) {
     overdueSelect.value = String(getOverdueMinutes() * 60);
   }

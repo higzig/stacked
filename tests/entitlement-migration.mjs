@@ -14,7 +14,8 @@ try {
     grant usage on schema auth to authenticated; grant execute on function auth.uid() to authenticated;`);
   sql(readFileSync('supabase/migrations/202610050001_collection.sql','utf8'));
   sql(`insert into public.businesses(id,name) values('00000000-0000-0000-0000-000000000001','Legacy business');
-    insert into public.collection_orders(business_id,number,type) values('00000000-0000-0000-0000-000000000001',47,'number');`);
+    insert into public.collection_orders(business_id,number,type) values('00000000-0000-0000-0000-000000000001',47,'number');
+    insert into public.collection_orders(business_id,number,type,status,ready_at) values('00000000-0000-0000-0000-000000000001',48,'number','ready',now()-interval '2 hours');`);
   sql(readFileSync('supabase/migrations/202610070001_collection_entitlements.sql','utf8'));
   sql(readFileSync('supabase/migrations/202610090001_automatic_order_numbers.sql','utf8'));
   sql(`do $$ begin
@@ -24,8 +25,11 @@ try {
   // Cron itself is exercised in the main local Supabase database/browser suite.
   sql(readFileSync('supabase/migrations/202610090002_ready_auto_clear.sql','utf8').split('-- No browser heartbeat')[0] + '\ncommit;');
   sql(`do $$ begin
-    if (select ready_auto_clear_seconds from public.businesses where id='00000000-0000-0000-0000-000000000001') <> 600 then raise exception 'Legacy default incorrect'; end if;
+    -- Existing workspaces start Off: applying the migration must not collect their Ready orders.
+    if (select ready_auto_clear_seconds from public.businesses where id='00000000-0000-0000-0000-000000000001') is not null then raise exception 'Legacy auto-clear should be Off'; end if;
     if not exists(select 1 from public.collection_orders where number=47) then raise exception 'Existing order changed'; end if;
+    perform public.auto_collect_ready_orders();
+    if (select status from public.collection_orders where number=48) <> 'ready' then raise exception 'Legacy Ready order was auto-collected'; end if;
   end $$;`);
   sql(`do $$ declare e public.business_entitlements; begin
     select * into e from public.business_entitlements where business_id='00000000-0000-0000-0000-000000000001';
@@ -33,7 +37,12 @@ try {
     if not public.collection_access_allowed(e.business_id) then raise exception 'Legacy business locked'; end if;
     if not exists(select 1 from public.collection_orders where business_id=e.business_id and number=47) then raise exception 'Legacy data lost'; end if;
     insert into public.businesses(id,name) values('00000000-0000-0000-0000-000000000002','New trial');
-    if (select ready_auto_clear_seconds from public.businesses where id='00000000-0000-0000-0000-000000000002') <> 600 then raise exception 'New workspace default incorrect'; end if;
+    if (select ready_auto_clear_seconds from public.businesses where id='00000000-0000-0000-0000-000000000002') is distinct from 600 then raise exception 'New workspace default incorrect'; end if;
+    -- New workspaces do auto-collect; the legacy order stays Ready.
+    insert into public.collection_orders(business_id,number,type,status,ready_at) values('00000000-0000-0000-0000-000000000002',1,'number','ready',now()-interval '11 minutes');
+    if public.auto_collect_ready_orders() <> 1 then raise exception 'New workspace order not auto-collected'; end if;
+    if (select status from public.collection_orders where business_id='00000000-0000-0000-0000-000000000002' and number=1) <> 'collected' then raise exception 'New workspace order still Ready'; end if;
+    if (select status from public.collection_orders where number=48) <> 'ready' then raise exception 'Legacy Ready order was auto-collected'; end if;
     select * into e from public.business_entitlements where business_id='00000000-0000-0000-0000-000000000002';
     if e.subscription_status <> 'trialing' or e.legacy_access or e.trial_ends_at-e.trial_started_at <> interval '336 hours' then raise exception 'New trial incorrect'; end if;
     -- At the deadline, without materializing status, access is already denied.
@@ -43,7 +52,7 @@ try {
     if public.collection_access_allowed('00000000-0000-0000-0000-000000000002') then raise exception 'Deadline bypass'; end if;
     if not public.collection_access_allowed('00000000-0000-0000-0000-000000000001') then raise exception 'Legacy access changed'; end if;
   end $$;`);
-  console.log('PASS: original schema → legacy business/order → migration preserves active non-expiring access; new businesses get exact 336-hour trials; deadline is enforced without a status refresh.');
+  console.log('PASS: original schema → legacy business/order → migration preserves active non-expiring access; new businesses get exact 336-hour trials; deadline is enforced without a status refresh; existing businesses start with auto-clear Off (their Ready orders are kept) while new businesses default to 10 minutes and are auto-collected.');
 } finally {
   execFileSync('docker',['exec',container,'psql','-U','postgres','-c',`drop database ${db} with (force)`]);
 }

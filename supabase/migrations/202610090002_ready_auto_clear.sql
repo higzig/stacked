@@ -1,8 +1,11 @@
 begin;
 
--- NULL means Off. Existing and new workspaces receive the same ten-minute default.
-alter table public.businesses add column ready_auto_clear_seconds integer default 600
+-- NULL means Off. Existing workspaces start Off, so applying this migration never collects
+-- their orders. The column is added without a default (existing rows get NULL); the default
+-- set afterwards applies only to rows inserted later, so new workspaces start at ten minutes.
+alter table public.businesses add column ready_auto_clear_seconds integer
   check (ready_auto_clear_seconds in (300,600,900,1200,1800));
+alter table public.businesses alter column ready_auto_clear_seconds set default 600;
 grant update(ready_auto_clear_seconds) on public.businesses to authenticated;
 create index collection_ready_expiry on public.collection_orders(business_id,ready_at) where status = 'ready';
 
